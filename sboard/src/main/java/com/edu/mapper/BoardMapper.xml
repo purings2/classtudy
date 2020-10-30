@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.mapper.BoardMapper">
+
+	<!-- 게시판 자료 등록 -->
+	<!-- <insert id="boardInsert" parameterType="com.edu.dto.BoardDTO" > -->
+	<insert id="boardInsert">
+	INSERT INTO s_board 
+				(b_title, b_writer, b_detail, b_date)
+		VALUES	(#{b_title}, #{b_writer}, #{b_detail}, SYSDATE())
+	</insert>
+
+	<!-- 게시판 정보 수정 -->
+	<update id="boardUpdate">
+	UPDATE	s_board
+	SET		b_title=#{b_title}, b_detail=#{b_detail} 
+	WHERE	b_no = #{b_no}
+	</update>
+	
+	<!-- 게시판 정보 삭제 -->
+	<delete id="boardDelete">
+	DELETE 	FROM s_board 
+	WHERE	b_no = #{b_no}
+	</delete>
+	
+	<!-- 게시글 번호에 해당하는 게시판 정보 가져오기 -->
+	<select id="boardDetail" parameterType="int" resultType="com.edu.dto.BoardDTO">
+	SELECT	*
+	FROM	s_board
+	WHERE	b_no = #{b_no}
+	</select>
+	
+	<!-- 게시글 목록 보기 -->
+	<select id="boardList" resultType="com.edu.dto.BoardDTO">
+	<![CDATA[
+	SELECT	*
+	FROM	s_board
+	]]>
+	</select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
