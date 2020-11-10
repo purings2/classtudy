@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.member.mapper.MemberMapper">
+
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="int">
+	SELECT	COUNT(*) 
+	FROM	TBL_MEMBER
+	WHERE	userid = #{userid}
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="register">
+	INSERT INTO tbl_member
+			( userid, passwd, name )
+	VALUES	( #{userid}, #{passwd}, #{name} )
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.member.domain.MemberDTO">
+	SELECT	userid, passwd, name	
+	FROM	tbl_member
+	WHERE	userid	= #{userid}
+	AND		passwd	= #{passwd}
+	</select>
+	
+	<!-- 회원정보수정 -->
+	<update id="memberUpdate">
+	UPDATE	tbl_member
+	SET		passwd	= #{passwd},
+			name  	= #{name}
+	WHERE	userid	= #{userid}
+	</update>
+
+	<!-- 회원탈퇴 -->
+	<delete id="memberDelete">
+	DELETE	
+	FROM	tbl_member
+	WHERE	userid	= #{userid}
+	AND		passwd	= #{passwd}		
+	</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.board.mapper.BoardMapper">
+
+	<select id="boardCount" resultType="int">
+	SELECT	COUNT(*)
+	FROM	s_BOARD
+	</select>
+
+	<insert id="boardInsert" parameterType="com.edu.board.domain.BoardDTO" useGeneratedKeys="true" keyProperty="bno">
+	INSERT	INTO	s_BOARD
+			(BNO, 		SUBJECT, 	CONTENT, 	WRITER, 	REG_DATE)
+	VALUES	(#{bno},	#{subject},	#{content},	#{writer},	now() )
+	</insert>
+
+	<insert id="fileInsert" parameterType="com.edu.board.domain.FileDTO">
+	INSERT	INTO	FILES
+			(FNO,		BNO,	FILENAME,		FILEORINAME,	FILEURL)
+	VALUES	(#{fno},	#{bno},	#{fileName},	#{fileOriName},	#{fileUrl})
+	</insert>
+
+	<!-- 게시글 목록 보기 -->
+	<select id="boardList" resultType="com.edu.board.domain.BoardDTO">
+	SELECT	*
+	FROM	s_BOARD
+	</select>
+
+	<!-- 게시글 번호에 해당하는 자료를 추출한다. -->
+	<select id="boardDetail" parameterType="int" resultType="com.edu.board.domain.BoardDTO">
+	SELECT	*
+	FROM	s_BOARD
+	WHERE	BNO		= #{bno}
+	</select>
+	
+	<!-- bno에 해당하는 게시글의 정보를 수정한다. -->
+	<update id="boardUpdate" parameterType="com.edu.board.domain.BoardDTO">
+	UPDATE	s_BOARD
+	SET		<if test="subject != null and subject !=''">SUBJECT = #{subject}</if>
+			<if test="subject != null and subject !='' and content != null and content !=''"> , </if>
+			<if test="content != null and content !=''">CONTENT = #{content}</if>
+	WHERE	BNO		= #{bno}
+	</update>
+	
+	<!-- bno에 해당하는 자료를 삭제한다. -->
+	<delete id="boardDelete" parameterType="int">
+	DELETE
+	FROM	s_BOARD
+	WHERE	BNO		= #{bno}
+	</delete>
+	
+	<select id="fileDetail" parameterType="int" resultType="com.edu.board.domain.FileDTO">
+	SELECT	*
+	FROM	FILES
+	WHERE	BNO		= #{bno}
+	</select>
+</mapper>

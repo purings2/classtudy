@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.board.mapper.CommentMapper">
+
+	<!-- 댓글의 개수를 구한다. -->
+	<select id="commentCount" resultType="int">
+	SELECT	COUNT(*) FROM COMMENT
+	</select>
+	
+	<!-- 댓글 목록 -->
+	<select id="commentList" parameterType="int" resultType="com.edu.board.domain.CommentDTO">
+	SELECT	*	FROM COMMENT
+	WHERE	BNO			= #{bno}
+	</select>
+	
+	<!-- 댓글 등록 -->
+	<insert id="commentInsert" parameterType="com.edu.board.domain.CommentDTO">
+	INSERT	INTO	COMMENT
+			(CNO,		BNO,	CONTENT,	WRITER,		REG_DATE)
+	VALUES	(#{cno},	#{bno},	#{content},	#{writer},	NOW() )
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="commentUpdate" parameterType="com.edu.board.domain.CommentDTO">
+	UPDATE	COMMENT
+	SET		CONTENT		= #{content}
+	WHERE	CNO			= #{cno}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="commentDelete" parameterType="int">
+	DELETE	
+	FROM	COMMENT		
+	WHERE	CNO			= #{cno}
+	</delete>
+
+
+
+</mapper>
+
+
+
+
+
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/strBtn1" />
+
+    <Button
+        android:id="@+id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffcc"
+        android:text="구글 홈페이지 열기"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="48dp" />
+
+    <Button
+        android:id="@+id/btn911"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b3d1ff"
+        android:text="응급전화(911) 걸기"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="96dp" />
+
+    <Button
+        android:id="@+id/btnGall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ccffcc"
+        android:text="그림들 보기"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="144dp" />
+
+    <Button
+        android:id="@+id/btnEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff0000"
+        android:text="끝내기"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:background="#ffd6cc"
+        android:text="성별선택" />
+
+    <RadioButton
+        android:id="@+id/female"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여성" />
+
+    <RadioButton
+        android:id="@+id/male"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="남성" />
+
+    <TextView
+        android:id="@+id/testVies2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="이곳에 이름을 입력하세요." />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Button1" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Button2"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:visibility="invisible" />3 />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Button4"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="Button5" />
+
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+BOARD
+public class BoardDTO 
+	private		int		bno;		//게시글 일련번호
+	private		String	subject;	//게시글 제목
+	private		String	content;	//게시글 내용
+	private		String	writer;		//게시글 작성자
+	private		Date	reg_date;	//게시글 작성일시
+
+COMMENT
+public class CommentDTO 
+	private		int			cno;		//댓글 일련번호
+	private		int			bno;		//댓글이 달릴 게시글의 일련번호
+	private		String		content;	//댓글의 내용
+	private		String		writer;		//댓글 작성자
+	private		Date		reg_date;	//댓글 작성 일시
+
+FILES
+public class FileDTO 
+	private		int			fno;			// 파일 일련번호
+	private		int			bno;			// 게시글 번호
+	private		String		fileName;		// 저장될 파일명
+	private		String		fileOriName;	// 원래 파일명
+	private		String		fileUrl;		// 파일의 위치
+
+
+create table BOARD (
+	bno			INT NOT NULL AUTO_INCREMENT, -- 게시글 일련번호
+	subject		VARCHAR(100),	-- 게시글 제목
+	content		TEXT,			-- 게시글 내용
+	writer		VARCHAR(40),	-- 게시글 작성자
+	reg_date	DATETIME,		-- 게시글 작성일시
+	PRIMARY KEY(bno)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create table COMMENT (
+	cno			INT NOT NULL AUTO_INCREMENT,		-- 댓글 일련번호
+	bno			INT NOT NULL,	-- 댓글이 달릴 게시글의 일련번호
+	content		TEXT,				-- 댓글의 내용
+	writer		VARCHAR(40),		-- 댓글 작성자
+	reg_date	DATETIME,			-- 댓글 작성 일시
+	PRIMARY KEY(cno),
+	FOREIGN KEY(bno) REFERENCES BOARD(bno)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+
+create table FILES (
+	fno			INT NOT NULL,	-- 파일 일련번호
+	bno			INT NOT NULL,	-- 게시글 번호
+	fileName	VARCHAR(80),	-- 저장될 파일명
+	fileOriName VARCHAR(80), 	-- 원래 파일명
+	fileUrl		VARCHAR(80),	-- 파일의 위치
+	FOREIGN KEY(bno) REFERENCES BOARD(bno)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
