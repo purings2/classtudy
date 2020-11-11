@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.member.mapper.MemberMapper">
+
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="int">
+		select	count(*)
+		from	member
+		where	userid = #{userid}
+	</select>
+	
+	<insert id="memberInsert">
+		INSERT INTO member 
+				(userid, passwd, passwdCheck, name, dateOfBirth, gender, tel, zipcode, address, addressDetail, email, date)
+		VALUES	(#{userid}, #{passwd}, #{passwdCheck}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, #{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE())
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.member.domain.MemberDTO">
+		SELECT userid, passwd, name, dateOfBirth, gender, tel, zipcode, address, addressDetail, email, date
+		FROM member
+		WHERE userid = #{userid}
+		AND passwd = #{passwd}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="memberUpdate">
+		UPDATE	member
+		SET		userid = #{userid}, passwd = #{passwd}, name = #{name}, dateOfBirth = #{dateOfBirth}, gender = #{gender},
+			    tel = #{tel}, zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail}, email = #{email}
+		WHERE	userid = #{userid}
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<delete id="memberDelete">
+		DELETE 
+		FROM member
+		WHERE userid = #{userid}
+		AND passwd = #{passwd}
+	</delete>
+	
+</mapper>
