@@ -15,7 +15,7 @@
 				<div class="col-sm-2"></div>
 				<div class="col-sm-6">
 					<h2 align="left">회원탈퇴</h2>
-					<h5><span class="label label-warning">회원 탈퇴 진행을 위해 비밀번호와 비밀번호확인을 다시 한 번 입력해주세요.</span></h5>
+					<h5><span class="label label-warning">회원 탈퇴 진행을 위해 비밀번호를 다시 한 번 입력해주세요.</span></h5>
 				</div>
 			</div>
 			<div class="form-group">

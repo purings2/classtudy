@@ -1,0 +1,192 @@
+//---------------------------------------------------------------------
+// 각종 검사
+//---------------------------------------------------------------------
+// 최상위 체크 로직(chars로 넘긴 값이 있다면 false)
+function containsChars(input, chars) 
+{
+	for (var inx = 0; inx < input.length; inx++) {
+		if (chars.indexOf(input.charAt(inx)) != -1)
+			return true;
+	}
+	return false;
+}
+// 최상위 체크 로직(chars로 넘긴 값이 있다면 true)
+function containsCharsOnly(input, chars) 
+{
+	for (var inx = 0; inx < input.length; inx++) {
+		if (chars.indexOf(input.charAt(inx)) == -1)
+			return false;
+	}
+	return true;
+}
+// 숫자 체크
+function isNumberCheck ( inputVal ) 
+{
+	var var_normalize = /[^0-9]/gi; //정규식
+	if (var_normalize.test(inputVal) == true) return false;
+	else return true;
+}
+function isNum(input) 
+{
+	var chars = "0123456789";
+	return containsCharsOnly(input, chars);
+}
+// 영대소문자 및 숫자 체크
+function isAlphaNumCheck(input) 
+{ 
+	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	return containsCharsOnly(input, chars);
+}
+// 숫자 및 특수문자 체크
+function isNameCheck(input) 
+{
+	var chars = "0123456789~!@#$%^&*()_-+=|{}[]<>,./?";
+	return containsChars(input, chars);
+}
+
+//---------------------------------------------------------------------
+// 회원가입 검사
+//---------------------------------------------------------------------
+function registerCheckForm(memberForm)
+{
+	// 아이디 검사
+	if(memberForm.userid.value == "") {
+		alert("아이디를 입력하세요.");
+		document.memberForm.userid.focus();
+		return false;
+	}
+	if(isAlphaNumCheck(memberForm.userid.value) == false) {
+		alert("아이디는 숫자와 영문자만 가능합니다.");
+		document.memberForm.userid.focus();
+		return false;
+	}
+	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
+		alert("아이디는 4~10자리로만 가능합니다.");
+		memberForm.userid.focus();
+		return false;
+	}
+	// 비밀번호 검사
+	if(memberForm.passwd.value == "") {
+		alert("비밀번호를 입력하세요.");
+		memberForm.passwd.focus();
+		return false;
+	}
+	if(isAlphaNumCheck(memberForm.passwd.value) == false) {
+		alert("비밀번호는 숫자와 영문자만 가능합니다.");
+		document.memberForm.passwd.focus();
+		return false;
+	}
+	if( (memberForm.passwd.value.length < 4) || (memberForm.passwd.value.length > 10)) {
+		alert("비밀번호는 4~10자리로만 가능합니다.");
+		memberForm.passwd.focus();
+		return false;
+	}
+	if(memberForm.passwdCheck.value == "") {
+		alert("비밀번호확인을 입력하세요.");
+		memberForm.passwdCheck.focus();
+		return false;
+	}
+	if( (memberForm.passwd.value) != (memberForm.passwdCheck.value) ) {
+		alert("비밀번호와 비밀번호 확인이 다릅니다.");
+		memberForm.passwdCheck.focus();
+		return false;
+	}
+	// 이름 검사
+	if(memberForm.name.value == "") {
+		alert("이름을 입력하세요.");
+		memberForm.name.focus();
+		return false;
+	}
+	if(isNameCheck(memberForm.name.value) == true) {
+		alert("이름에 숫자나 특수문자를 입력할 수 없습니다.");
+		document.memberForm.name.focus();
+		return false;
+	}
+	// 생년월일 검사
+	if(memberForm.birthYear.value == "" ||
+		memberForm.birthMonth.value == "" ||
+		memberForm.birthMonth.value == "") {
+		alert("생년월일을 모두 선택하세요.");
+		memberForm.birthYear.focus();
+		return false;
+	}
+	// 성별 검사
+	if(memberForm.gender.value == "") {
+		alert("성별을 선택하세요.");
+		memberForm.gender.focus();
+		return false;
+	}	
+	// 전화번호 검사
+	if(memberForm.tel1.value == "" ||
+		memberForm.tel2.value == "" ||
+		memberForm.tel3.value == "") {
+		alert("전화번호를 모두 입력하세요.");
+		memberForm.tel1.focus();
+		return false;
+	}
+	if (isNumberCheck(memberForm.tel2.value) == false) {
+		alert("전화번호는 숫자만 입력 가능합니다.");
+		memberForm.tel2.focus();
+		return false;
+	}
+	if (memberForm.tel2.value.length < 3) {
+		alert("전화번호가 너무 짧습니다.");
+		memberForm.tel2.focus();
+		return false;
+	}
+	if (isNumberCheck(memberForm.tel3.value) == false) {
+		alert("전화번호는 숫자만 입력 가능합니다.");
+		memberForm.tel3.focus();
+		return false;
+	}
+	if (memberForm.tel3.value.length < 4) {
+		alert("전화번호가 너무 짧습니다.");
+		memberForm.tel3.focus();
+		return false;
+	}
+	// 주소 검사
+	if(memberForm.zipcode.value == "") {
+		alert("우편번호를 입력하세요.");
+		memberForm.zipcode.focus();
+		return false;
+	}
+	if(memberForm.address.value == "") {
+		alert("주소를 입력하세요.");
+		memberForm.address.focus();
+		return false;
+	}
+	// 상세주소도 null 비허용할 경우 수정
+	/*
+	if(memberForm.addressDetail.value == "") {
+		alert("상세주소를 입력하세요.");
+		memberForm.addressDetail.focus();
+		return;
+	}
+	*/
+	// 이메일 검사
+	if(memberForm.email.value == "") {
+		alert("이메일을 입력하세요.");
+		memberForm.email.focus();
+		return false;
+	}
+	// 회원가입 동의 필요할 경우 수정
+	/*
+	if(memberForm.registerYn[0].checked == false) {
+	//if(memberForm.registerYn.value[0] != "Y") {
+		alert("회원가입 동의를 해야 가입할 수 있습니다.");
+		memberForm.registerYn.focus();
+		return;
+	}
+	
+	if(memberForm.is_subscribed.checked == false) {
+		alert("개인정보 수집 및 이용에 동의해야 가입 할 수 있습니다.");
+		memberForm.is_subscribed.focus();
+		return;
+	}
+	*/
+	//document.memberForm.submit();
+	//memberForm.setAttribute("charset", "UTF-8");
+	//memberForm.setAttribute("method", "Post");
+	//memberForm.setAttribute("action", "/member/register");
+	memberForm.submit();
+}

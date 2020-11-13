@@ -1,0 +1,50 @@
+Git bash
+
+**필독 : 아래 커맨드에서 사용되는 temp라는 단어는 사용자가 원하는 이름으로 바꿀 수 있기때문에 설명을 위해 임시로 적었다는 의미로 모두 temp로 사용하였습니다.
+
+* 사용되는 커맨드
+	1. mkdir temp : 해당 위치에 temp라는 디렉토리를 생성한다.(폴더를 만든다고 생각하면 됨)
+
+	2. ls : 현재 디렉토리에 있는 내용을 출력한다.
+		- ls -a : all, 숨겨진 파일이나 디렉토리도 보여준다.
+		- ls -l : long, 자세한 내용(권한, 포함된 파일수, 소유자, 그룹, 파일크기, 수정일자, 파일이름)을 출력한다. 기본적으로 mtime(수정시간)을 출력한다.
+		- ls -al : all&long, 가장 많이 사용하는 방식으로 위 2가지 방식을 합친 것. ls -al /home/ 과 같이 출력하고 싶은 디렉토리를 지정할 수도 있다.
+		- ls -S : size, 파일 크기 순으로 정렬하여 출력한다.
+		- ls -r : reverse, 거꾸로 출력한다.(ls 명령어의 기본은 알파벳 순서이다.)
+		- ls -R : recursive, 하위 디렉토리까지 출력한다.
+		- ls -h : human, K, M, G 단위를 사용하여 파일 크기를 사람이 보기 좋게 표시한다.
+		- ls -lu : u옵션을 사용하면 atime(접근 시간)을 출력한다.
+		- ls -lc : c옵션을 사용하면 ctime(변경 시간)을 출력한다.
+	  * ls에 대한 정보는 https://withcoding.com/89 참고 
+	  * mtime, atime, ctime에 대한 자세한 정보는 https://withcoding.com/115 참고
+
+	3. cd : 디렉토리를 변경한다.
+		- cd temp/ : temp라는 디렉토리로 Git bash의 위치를 변경한다.
+		- cd .. : 한 단계 상위 디렉토리로 이동한다. temp안에 temp2라는 디렉토리가 있고 temp2에서 작업을 하다가 temp로 가고싶을 때 해당 커맨드를 사용하면 된다.
+	  * cd에 대한 정보는 https://shaeod.tistory.com/930 참고
+
+	4. git : git과 관련된 커맨드를 사용할 때 
+		- git init : 비어있는 레포지토리를 생성
+		- git config user.name "temp" : temp라는 Git에서 사용할 이름을 저장한다.
+		- git config user.email "temp@com" : temp@com라는 Git에서 사용할 이메일을 저장한다.
+		- git add temp : temp라는 파일이 커밋에 포함될 것이라고 지정해 준다.
+		- git add . : 현재 project directory 내에서 변경사항이 생긴 모든 파일들을 staging area에 추가하라
+		- git reset temp : temp 파일을 staging area에서 파일 제거한다. 하지만 변경된 새 모습은 그대로 working directory에 남아있다.
+		- git update-index --assume-unchanged temp : Git이 temp 파일을 변경되지 않은 것으로 인식시킨다. temp파일 제외 나머지 모든파일 add할 때 사용하면 유용하다.
+		- git update-indew --no-assume-unchanged temp : temp 파일을 다시 변경파일로 인식시킬 때 사용한다.
+		- git commit -m "temp and temp2" : temp와 temp2라는 파일을 만들었다라는 커밋 메시지를 커밋할 때 남긴다. 
+		- git status : Git이 인식하고 있는 프로젝트 디렉토리의 현재 상태를 보여준다.
+		- git push : 로컬 레포지토리의 커밋파일을 리모트 레포지토리에 올리는 것.(로컬 레포지토리가 더 최근자료일 때 리모트 레포지토리에도 해당 내용을 반영하기 위해 사용)
+		- git pull : 리모트 레포지토리의 커밋파일을 로컬 레포지토리로 당겨오는 것.(리모트 레포지토리가 더 최근자료일 때 로컬 레포지토리에도 해당 내용을 반영하기 위해 사용)
+		- git help [알고 싶은 커맨드 이름] : Git에서 사용되는 커맨드의 자세한 사용법이 궁금할 때 사용한다.
+	  * git update-index --assume-unchanged에 대한 정보는 https://blog.outsider.ne.kr/817 참고
+
+	5. touch : 빈 파일을 작성하거나 파일의 타임스탬프를 변경하는 용도로 사용한다.
+		- touch temp : temp라는 빈 파일을 만든다.
+	  * touch에 대한 정보는 https://grace8snorlax.tistory.com/entry/%EB%A6%AC%EB%88%85%EC%8A%A4-%EB%AA%85%EB%A0%B9%EC%96%B4-touch 참고
+
+	6. cat temp : 콘솔창(git bash)에 temp파일의 내용을 출력할 때 사용하는 커맨드
+
+    
+
+

@@ -32,7 +32,6 @@ public class ClasstudyApplication {
 	 * SqlSessionFactory 설정을 한다.
 	 * sqlSessionFactory(DataSource dataSource)
 	 * MyBatis의 SqlSessionFactory를 반환해 준다.
-	 *   
 	 */
 	@Bean //스프링에서 필요한 객체를 생성한다.
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {

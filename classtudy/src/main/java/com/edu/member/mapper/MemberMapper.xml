@@ -13,12 +13,12 @@
 		WHERE userid = #{userid}	
 	</select>
 
-	<!-- 게시판 자료 등록 -->
+	<!-- 회원 가입 -->
 	<!-- <insert id="memberInsert" parameterType="com.edu.member.domain.MemberDTO" > -->
 	<insert id="memberInsert">
 		INSERT INTO member 
-				(userid, passwd, passwdCheck, name, dateOfBirth, gender, tel, zipcode, address, addressDetail, email, date)
-		VALUES	(#{userid}, #{passwd}, #{passwdCheck}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, #{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE())
+				(userid, passwd, name, dateOfBirth, gender, tel, zipcode, address, addressDetail, email, date)
+		VALUES	(#{userid}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, #{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE())
 	</insert>
 	
 	<!-- 로그인 -->
