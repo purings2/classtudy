@@ -42,11 +42,4 @@ public class MainController {
 		return "/academy"; // => WEB-INF/views/academy.jsp
 	}
 	
-	// 학원
-	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public String search(Model model, HttpSession session) throws Exception {
-		LOGGER.info("MainController academy().....");
-		return "/search"; // => WEB-INF/views/academy.jsp
-	}	
-
 }

@@ -49,39 +49,39 @@ function isNameCheck(input)
 // 입력한 아이디에 해당하는 정보가 있는지 검사하고, 결과값(정수)을 리턴받는다.
 //---------------------------------------------------------------------
 function dupCheck(memberForm) {
-	if(memberForm.userid.value == "") {
+	if(memberForm.memberId.value == "") {
 		document.getElementById("checkMsg").innerHTML 
 			= '<p style="color:red">아이디를 입력하세요.</p>';
 		//alert("아이디를 입력하세요.");
-		memberForm.userid.focus();
+		memberForm.memberId.focus();
 		return false;
 	}
-	if(isAlphaNumCheck(memberForm.userid.value) == false) {
+	if(isAlphaNumCheck(memberForm.memberId.value) == false) {
 		document.getElementById("checkMsg").innerHTML 
 			= '<p style="color:red">아이디는 숫자와 영문자만 가능합니다.</p>';
 		//alert("아이디는 숫자와 영문자만 가능합니다.");
-		memberForm.userid.focus();
+		memberForm.memberId.focus();
 		return false;
 	}
-	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
+	if( (memberForm.memberId.value.length < 4) || (memberForm.memberId.value.length > 10)) {
 		document.getElementById("checkMsg").innerHTML 
 			= '<p style="color:red">아이디는 4~10자리로만 가능합니다.</p>';
 		//alert("아이디는 4~10자리로만 가능합니다.");
-		memberForm.userid.focus();
+		memberForm.memberId.focus();
 		return false;
 	}
 	$.ajax({
 		url: "/member/idCheck",
 		type: "post",
 		dataType: "json",
-		data: {"userid" : memberForm.userid.value},	
+		data: {"memberId" : memberForm.memberId.value},	
 		success: function(data) {
 					if(data == 1) {
 						document.getElementById("checkMsg").innerHTML 
 							= '<p style="color:red">이미 사용중인 아이디입니다.<br>다른 아이디를 입력하세요.</p>';
 						memberForm.idCheck.setAttribute("value", "N");
-						memberForm.userid.setAttribute("value", "");
-						memberForm.userid.focus();
+						memberForm.memberId.setAttribute("value", "");
+						memberForm.memberId.focus();
 					} else if(data == 0) {
 						document.getElementById("checkMsg").innerHTML 
 							= '<p style="color:blue">사용가능한 아이디입니다!</p>';
@@ -98,25 +98,25 @@ function registerCheckForm(memberForm)
 {
 	// 아이디 검사
 	/*
-	if(memberForm.userid.value == "") {
+	if(memberForm.memberId.value == "") {
 		alert("아이디를 입력하세요.");
-		document.memberForm.userid.focus();
+		document.memberForm.memberId.focus();
 		return false;
 	}
-	if(isAlphaNumCheck(memberForm.userid.value) == false) {
+	if(isAlphaNumCheck(memberForm.memberId.value) == false) {
 		alert("아이디는 숫자와 영문자만 가능합니다.");
-		document.memberForm.userid.focus();
+		document.memberForm.memberId.focus();
 		return false;
 	}
-	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
+	if( (memberForm.memberId.value.length < 4) || (memberForm.memberId.value.length > 10)) {
 		alert("아이디는 4~10자리로만 가능합니다.");
-		memberForm.userid.focus();
+		memberForm.memberId.focus();
 		return false;
 	}
 	*/
 	if( memberForm.idCheck.value == 'N') {
 		alert("아이디 중복검사를 해주세요.");
-		document.memberForm.userid.focus();
+		document.memberForm.memberId.focus();
 		return false;
 	}
 	// 비밀번호 검사

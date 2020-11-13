@@ -28,7 +28,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2">아이디</label>
 				<div class="col-sm-3">
-					<input type="text" id="userid" name="userid" class="form-control" maxlength=16 placeholder="아이디를 입력하세요."/>					
+					<input type="text" id="memberId" name="memberId" class="form-control" maxlength=16 placeholder="아이디를 입력하세요."/>					
 				</div>				
 			</div>
 			<div class="form-group">
@@ -48,7 +48,7 @@
 			<!-- 정상적으로 로그인을 하여 세션값을 받아온 경우 -->
 			<c:if test="${member != null}">
 				<div >
-					<p><h2>${member.userid}님 환영합니다.</h2><p>
+					<p><h2>${member.memberId}님 환영합니다.</h2><p>
 					<button id="memberUpdateBtn" type="button">회원정보수정</button>
 					<button id="memberDeleteBtn" type="button">회원탈퇴</button>
 					<button id="logoutBtn" type="button">로그아웃</button>
@@ -76,9 +76,9 @@
 		$(document).ready(function () {
 			// 로그인 버튼을 눌렀을 경우
 			$("#submit").on("click", function() {
-				if($("#userid").val() == "") {
+				if($("#memberId").val() == "") {
 					alert("아이디를 입력하십시오.");
-					$("#userid").focus();
+					$("#memberId").focus();
 					return false;
 				}
 				if($("#passwd").val() == "") {
@@ -113,15 +113,3 @@
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

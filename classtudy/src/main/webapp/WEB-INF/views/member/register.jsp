@@ -22,7 +22,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">아이디</label>
 				<div class="col-sm-3">
-					<input type="text" id="userid" name="userid" class="form-control" maxlength=16 placeholder="아이디를 입력하세요."/>
+					<input type="text" id="memberId" name="memberId" class="form-control" maxlength=16 placeholder="아이디를 입력하세요."/>
 					<div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
 				</div>
 				<div class="col-sm-2">
@@ -51,7 +51,9 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
 				<div class="col-sm-4">
-					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" maxlength=10 placeholder="생년월일을 선택하세요."/>
+					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" 
+						min="1900-01-01" max="" value="1990-01-01" 
+						maxlength="10" placeholder="생년월일을 선택하세요."/>
 				</div>
 				<%-- 
 				<div class="col-sm-2">
@@ -144,6 +146,12 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="control-label col-sm-4">강의번호</label>
+				<div class="col-sm-4">
+					<input type="text" id="lectureId" name="lectureId" class="form-control" placeholder="강의번호를 입력하세요."/>
+				</div>
+			</div>
+			<div class="form-group">
 				<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
 					<button type="button" class="btn btn-success"
 						onclick="registerCheckForm(this.form)">회원가입</button>&nbsp;
@@ -166,9 +174,14 @@
 		});
 
 		// 아이디 입력란에 글자를 추가하면 idCheck 값을 변경
-		$("#userid").on("input", function() {
+		$("#memberId").on("input", function() {
 			document.getElementById("idCheck").value = 'N';
 		});
+
+		// 생년월일 입력란에 max 값을 오늘날짜로 설정
+		var today = new Date().toISOString().substring(0, 10);
+		document.getElementById("dateOfBirth")
+			.setAttribute("max", today);
 		
 	});
 

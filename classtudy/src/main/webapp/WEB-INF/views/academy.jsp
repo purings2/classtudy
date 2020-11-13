@@ -10,11 +10,14 @@
 	<%@ include file="include/topmenu.jsp" %>
 	
 	<div class="container">
+		<iframe width="100%" height="700px" src="https://m.hrd.go.kr/hrdm/ti/mtiao/MTIAO0100L.do"></iframe>
+		<!-- 
 		<div id="layer"
 			style="Z-INDEX: 1; TOP: -150px; LEFT: 0px; OVERFLOW: hidden; width: 100%; height: 100%; POSITION: absolute;">
 			<iframe width="100%" height="100%" src="https://m.hrd.go.kr/hrdm/ti/mtiao/MTIAO0100L.do"
 				name="list" style="position: relative;"></iframe>
 		</div>
+		 -->
 	</div>
 	
 	<%@ include file="include/footer.jsp" %>
