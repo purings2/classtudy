@@ -45,6 +45,46 @@ function isNameCheck(input)
 }
 
 //---------------------------------------------------------------------
+// 아이디 중복 검사
+// 입력한 아이디에 해당하는 정보가 있는지 검사하고, 결과값(정수)을 리턴받는다.
+//---------------------------------------------------------------------
+function dupCheck(memberForm) {
+	if(memberForm.userid.value == "") {
+		alert("아이디를 입력하세요.");
+		memberForm.userid.focus();
+		return false;
+	}
+	if(isAlphaNumCheck(memberForm.userid.value) == false) {
+		alert("아이디는 숫자와 영문자만 가능합니다.");
+		memberForm.userid.focus();
+		return false;
+	}
+	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
+		alert("아이디는 4~10자리로만 가능합니다.");
+		memberForm.userid.focus();
+		return false;
+	}
+	$.ajax({
+		url: "/member/idCheck",
+		type: "post",
+		dataType: "json",
+		data: {"userid" : memberForm.userid.value},	
+		success: function(data) {
+					if(data == 1) {
+						document.getElementById("checkMsg").innerHTML 
+							= '<p style="color:red">이미 사용중인 아이디입니다.<br>다른 아이디를 입력하세요.</p>';
+						memberForm.userid.setAttribute("value", "");
+						memberForm.userid.focus();
+					} else if(data == 0) {
+						document.getElementById("checkMsg").innerHTML 
+							= '<p style="color:blue">사용가능한 아이디입니다!</p>';
+						memberForm.idCheck.setAttribute("value", "Y");
+					}
+				}
+	});
+}
+
+//---------------------------------------------------------------------
 // 회원가입 검사
 //---------------------------------------------------------------------
 function registerCheckForm(memberForm)

@@ -26,7 +26,7 @@
 					<div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
 				</div>
 				<div class="col-sm-2">
-					<button class="idCheck form-control" type="button" id="idCheck" onclick="dupCheck()" value="N"
+					<button class="idCheck form-control" type="button" id="idCheck" onclick="dupCheck(this.form)" value="N"
 						style="background-color: #dddddd"><b>중복검사</b></button>
 				</div>
 			</div>
@@ -139,7 +139,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">이메일</label>
-				<div class="col-sm-3">
+				<div class="col-sm-4">
 					<input type="text" id="email" name="email" class="form-control" placeholder="이메일을 입력하세요."/>
 				</div>
 			</div>
@@ -166,32 +166,6 @@
 		});
 		
 	});
-	
-	// 아이디 중복 검사
-	// 입력한 아이디에 해당하는 정보가 있는지 검사하고, 결과값(정수)을 리턴받는다.
-	function dupCheck() {
-		if($("#userid").val() == "") {
-			alert("아이디를 입력하세요.");
-			$("#userid").focus();
-			return false;
-		}
-		$.ajax({
-			url: "/member/idCheck",
-			type: "post",
-			dataType: "json",
-			data: {"userid" : $("#userid").val()},	
-			success: function(data) {
-				         if(data == 1) {							     
-						     $('#checkMsg').html('<p style="color:red">이미 사용중인 ID 입니다. 다른 ID를 입력하세요.</p>');
-		                     $('#userid').val('');
-		                     $('#userid').focus();
-						 } else if(data == 0) {
-					         $("#idCheck").attr("value", "Y");
-					         $('#checkMsg').html('<p style="color:blue">사용가능한 ID 입니다!</p>');
-					     }
-					 }				 
-		});
-	}
 
 	// 우편번호 및 주소 검색 API
 	function daumZipCode() {
