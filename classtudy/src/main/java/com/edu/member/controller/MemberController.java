@@ -40,12 +40,14 @@ public class MemberController {
 	public String postRegister(MemberDTO memberDTO, HttpServletRequest request, Model model) throws Exception {
 		LOGGER.info("MemberController postRegister().....");
 		
+		/*
 		// 생년월일 XXXXXXXX 형식으로 변환
 		String birthYear = request.getParameter("birthYear");
 		String birthMonth = request.getParameter("birthMonth");
 		String birthDay = request.getParameter("birthDay");
 		String dateOfBirth = birthYear + birthMonth + birthDay;
 		memberDTO.setDateOfBirth(dateOfBirth);
+		*/
 		
 		// 전화번호 01X-XXXX-XXXX 형식으로 변환
 		String tel1 = request.getParameter("tel1");
@@ -117,7 +119,7 @@ public class MemberController {
 		//해당하는 회원의 정보가 있으면
 		session.setAttribute("member", login);
 		}
-		return "redirect:/member/login";
+		return "redirect:/";
 	}
 	
 	// 로그아웃

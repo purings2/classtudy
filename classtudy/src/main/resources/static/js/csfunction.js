@@ -50,17 +50,23 @@ function isNameCheck(input)
 //---------------------------------------------------------------------
 function dupCheck(memberForm) {
 	if(memberForm.userid.value == "") {
-		alert("아이디를 입력하세요.");
+		document.getElementById("checkMsg").innerHTML 
+			= '<p style="color:red">아이디를 입력하세요.</p>';
+		//alert("아이디를 입력하세요.");
 		memberForm.userid.focus();
 		return false;
 	}
 	if(isAlphaNumCheck(memberForm.userid.value) == false) {
-		alert("아이디는 숫자와 영문자만 가능합니다.");
+		document.getElementById("checkMsg").innerHTML 
+			= '<p style="color:red">아이디는 숫자와 영문자만 가능합니다.</p>';
+		//alert("아이디는 숫자와 영문자만 가능합니다.");
 		memberForm.userid.focus();
 		return false;
 	}
 	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
-		alert("아이디는 4~10자리로만 가능합니다.");
+		document.getElementById("checkMsg").innerHTML 
+			= '<p style="color:red">아이디는 4~10자리로만 가능합니다.</p>';
+		//alert("아이디는 4~10자리로만 가능합니다.");
 		memberForm.userid.focus();
 		return false;
 	}
@@ -73,6 +79,7 @@ function dupCheck(memberForm) {
 					if(data == 1) {
 						document.getElementById("checkMsg").innerHTML 
 							= '<p style="color:red">이미 사용중인 아이디입니다.<br>다른 아이디를 입력하세요.</p>';
+						memberForm.idCheck.setAttribute("value", "N");
 						memberForm.userid.setAttribute("value", "");
 						memberForm.userid.focus();
 					} else if(data == 0) {
@@ -90,6 +97,7 @@ function dupCheck(memberForm) {
 function registerCheckForm(memberForm)
 {
 	// 아이디 검사
+	/*
 	if(memberForm.userid.value == "") {
 		alert("아이디를 입력하세요.");
 		document.memberForm.userid.focus();
@@ -103,6 +111,12 @@ function registerCheckForm(memberForm)
 	if( (memberForm.userid.value.length < 4) || (memberForm.userid.value.length > 10)) {
 		alert("아이디는 4~10자리로만 가능합니다.");
 		memberForm.userid.focus();
+		return false;
+	}
+	*/
+	if( memberForm.idCheck.value == 'N') {
+		alert("아이디 중복검사를 해주세요.");
+		document.memberForm.userid.focus();
 		return false;
 	}
 	// 비밀번호 검사
@@ -143,6 +157,12 @@ function registerCheckForm(memberForm)
 		return false;
 	}
 	// 생년월일 검사
+	if(memberForm.dateOfBirth.value == "") {
+		alert("생년월일을 모두 선택하세요.");
+		memberForm.dateOfBirth.focus();
+		return false;
+	}	
+	/*
 	if(memberForm.birthYear.value == "" ||
 		memberForm.birthMonth.value == "" ||
 		memberForm.birthMonth.value == "") {
@@ -150,6 +170,7 @@ function registerCheckForm(memberForm)
 		memberForm.birthYear.focus();
 		return false;
 	}
+	*/
 	// 성별 검사
 	if(memberForm.gender.value == "") {
 		alert("성별을 선택하세요.");

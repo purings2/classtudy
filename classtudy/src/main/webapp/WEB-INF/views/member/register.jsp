@@ -50,11 +50,10 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
-				<!-- 
-				<div class="col-sm-3">
-					<input type="text" id="dateOfBirth" name="dateOfBirth" class="form-control" maxlength=16 placeholder="생년월일을 입력하세요."/>
+				<div class="col-sm-4">
+					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" maxlength=10 placeholder="생년월일을 선택하세요."/>
 				</div>
-				 -->
+				<%-- 
 				<div class="col-sm-2">
 					<div class="input-group">
 						<select class="form-control" name="birthYear" style="width: 100%;">
@@ -85,6 +84,7 @@
 						<span class="input-group-addon">일</span>
 					</div>
 				</div>
+				 --%>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">성  별</label>
@@ -163,6 +163,11 @@
 		// 취소 버튼을 눌렀을 경우
 		$(".cancel").on("click", function() {
 			location.href ="/member/login";
+		});
+
+		// 아이디 입력란에 글자를 추가하면 idCheck 값을 변경
+		$("#userid").on("input", function() {
+			document.getElementById("idCheck").value = 'N';
 		});
 		
 	});
