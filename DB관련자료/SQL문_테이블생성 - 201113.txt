@@ -1,0 +1,168 @@
+---------------------------------------------------
+-- 학원 관련 테이블
+---------------------------------------------------
+-- 관리자 테이블 생성
+CREATE TABLE admin (
+	adminId 	VARCHAR(16) PRIMARY KEY,
+	passwd 		VARCHAR(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 학원 테이블 생성
+CREATE TABLE academy (
+	acaId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	acaName VARCHAR(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 강의 테이블 생성
+CREATE TABLE lecture (
+	lecId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	lecName VARCHAR(60) NOT NULL,
+	acaId 	INT 		NOT NULL,
+	FOREIGN KEY (acaId) REFERENCES academy(acaId)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------
+-- 멤버 관련 테이블
+---------------------------------------------------
+-- 멤버 테이블 생성
+CREATE TABLE member (
+	memId 		VARCHAR(16) 	PRIMARY KEY,
+	passwd 		VARCHAR(16) 	NOT NULL,
+    name 		VARCHAR(16) 	NOT NULL,
+    dateOfBirth VARCHAR(10) 	NOT NULL,
+    gender 		VARCHAR(2) 		NOT NULL,
+    tel 		VARCHAR(16) 	NOT NULL,
+    zipcode 	VARCHAR(8) 		NOT NULL,
+    address 	VARCHAR(60) 	NOT NULL,
+    addressDetail VARCHAR(60) 	NOT NULL,
+    email 		VARCHAR(25) 	NOT NULL,
+    regDate 	TIMESTAMP 		NOT NULL,
+	lecId 		INT 			NOT NULL,
+	grade 		INT 			NOT NULL DEFAULT 0,
+	point 		INT 			NOT NULL DEFAULT 0,
+	reward 		INT 			NOT NULL DEFAULT 0,
+	FOREIGN KEY (lecId) REFERENCES lecture(lecId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 그룹 테이블 생성
+CREATE TABLE grouplist (
+	groupId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	groupName 	VARCHAR(30) NOT NULL,
+	leader 		VARCHAR(16) NOT NULL,	
+	members 	VARCHAR(200) NOT NULL,
+	FOREIGN KEY (leader) REFERENCES member(memId)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 알림 테이블
+CREATE TABLE noti (
+	notiId 		INT 			PRIMARY KEY AUTO_INCREMENT,
+	receiver 	VARCHAR(16) 	NOT NULL,
+	content 	VARCHAR(100) 	NOT NULL,
+	checked 	BOOLEAN 		NOT NULL DEFAULT false,
+	sendDate 	TIMESTAMP 		NOT NULL,
+	FOREIGN KEY (receiver) REFERENCES member(memId)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 포인트 테이블
+CREATE TABLE point (
+	pointId 	INT 			PRIMARY KEY AUTO_INCREMENT,
+	member 		VARCHAR(16) 	NOT NULL,
+	content 	VARCHAR(100) 	NOT NULL,
+	cgValue 	INT 			NOT NULL,
+	accrDate 	TIMESTAMP 		NOT NULL,
+	FOREIGN KEY (member) REFERENCES member(memId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 적립금 테이블
+CREATE TABLE reward (
+	rewardId 	INT 			PRIMARY KEY AUTO_INCREMENT,
+	member 		VARCHAR(16) 	NOT NULL,
+	content 	VARCHAR(100) 	NOT NULL,
+	cgValue 	INT 			NOT NULL,
+	accrDate 	TIMESTAMP 		NOT NULL,
+	FOREIGN KEY (member) REFERENCES member(memId)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------
+-- 게시판 테이블
+---------------------------------------------------
+-- 클래스게시판 테이블 생성
+CREATE TABLE classboard (
+	boardId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) NOT NULL,
+	title 		VARCHAR(50) NOT NULL,
+	content 	TEXT 		NOT NULL,
+	category 	SET('TIL', '질문', '클래스') NOT NULL,
+	views 		INT 		NOT NULL DEFAULT 0,
+	likes 		INT 		NOT NULL DEFAULT 0,
+	writeDate 	TIMESTAMP 	NOT NULL,
+	lecId 		INT 		NOT NULL,
+	FOREIGN KEY (writer) REFERENCES member(memId),
+	FOREIGN KEY (lecId) REFERENCES lecture(lecId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 자유게시판 테이블 생성
+CREATE TABLE freeboard (
+	boardId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) NOT NULL,
+	title 		VARCHAR(50) NOT NULL,
+	content 	TEXT 		NOT NULL,
+	category 	SET('공지사항', '질문', '정보', '이야기') NOT NULL,
+	views 		INT 		NOT NULL DEFAULT 0,
+	likes 		INT 		NOT NULL DEFAULT 0,
+	writeDate 	TIMESTAMP 	NOT NULL,
+	tags 		SET('Java', 'Python', 'JavaScript', 'Back-End', '웹 개발', '앱 개발', 'HTML/CSS', 'Front-End', '데이터베이스', '게임 개발', 'Android', 'Spring', 'Node.js', '알고리즘', 'React', '머신러닝', 'SQL', '인공지능', '정보보안', '블록체인', 'DevOps', '클라우드', 'Linux'),
+	FOREIGN KEY (writer) REFERENCES member(memId)	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 그룹게시판 테이블 생성
+CREATE TABLE groupboard (
+	boardId 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) NOT NULL,
+	title 		VARCHAR(50) NOT NULL,
+	content 	TEXT 		NOT NULL,
+	views 		INT 		NOT NULL DEFAULT 0,
+	likes 		INT 		NOT NULL DEFAULT 0,
+	writeDate 	TIMESTAMP 	NOT NULL,
+	groupId 	INT 		NOT NULL,
+	tags 		SET('Java', 'Python', 'JavaScript', 'Back-End', '웹 개발', '앱 개발', 'HTML/CSS', 'Front-End', '데이터베이스', '게임 개발', 'Android', 'Spring', 'Node.js', '알고리즘', 'React', '머신러닝', 'SQL', '인공지능', '정보보안', '블록체인', 'DevOps', '클라우드', 'Linux'),
+	FOREIGN KEY (writer) REFERENCES member(memId),
+	FOREIGN KEY (groupId) REFERENCES grouplist(groupId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------
+-- 댓글 테이블
+---------------------------------------------------
+-- 클래스게시판 댓글 테이블 생성
+CREATE TABLE cbcomment (
+	cmtId 		INT 			PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) 	NOT NULL,
+	content 	TEXT 			NOT NULL,
+	writeDate 	TIMESTAMP 		NOT NULL,
+	boardId 	INT 			NOT NULL,
+	FOREIGN KEY (writer) REFERENCES member(memId),
+	FOREIGN KEY (boardId) REFERENCES classboard(boardId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 자유게시판 댓글 테이블 생성
+CREATE TABLE fbcomment (
+	cmtId 		INT 			PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) 	NOT NULL,
+	content 	TEXT 			NOT NULL,
+	likes 		INT 			NOT NULL DEFAULT 0,
+	writeDate 	TIMESTAMP 		NOT NULL,
+	boardId 	INT 			NOT NULL,
+	FOREIGN KEY (writer) REFERENCES member(memId),
+	FOREIGN KEY (boardId) REFERENCES freeboard(boardId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 그룹게시판 댓글 테이블 생성
+CREATE TABLE gbcomment (
+	cmtId 		INT 			PRIMARY KEY AUTO_INCREMENT,
+	writer 		VARCHAR(16) 	NOT NULL,
+	content 	TEXT 			NOT NULL,
+	writeDate 	TIMESTAMP 		NOT NULL,
+	boardId 	INT 			NOT NULL,
+	FOREIGN KEY (writer) REFERENCES member(memId),
+	FOREIGN KEY (boardId) REFERENCES groupboard(boardId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
