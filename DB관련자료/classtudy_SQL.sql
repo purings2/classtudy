@@ -135,7 +135,7 @@ CREATE TABLE groupboard (
 	groupId 	INT 		NOT NULL,
 	tags 		SET('Java', 'Python', 'JavaScript', 'Back-End', '웹 개발', '앱 개발', 'HTML/CSS', 'Front-End', '데이터베이스', 
 			    '게임 개발', 'Android', 'Spring', 'Node.js', '알고리즘', 'React', '머신러닝', 'SQL', '인공지능', '정보보안', 
-			    '블록체인', 'DevOps', '클라우드', 'Linux', 'iOS', 'Swift' 'Spring Boot', 'Bootstrap', 'jQuery', 'Git', 
+			    '블록체인', 'DevOps', '클라우드', 'Linux', 'iOS', 'Swift', 'Spring Boot', 'Bootstrap', 'jQuery', 'Git', 
 			    'Django', 'UI/UX', '3D 모델링', 'Flask', 'After Effects', 'Premiere Pro', 'Photoshop', 'Illustrator', 
 			    'R', '편집 디자인', 'Unity', 'JSP', 'JDBC', 'JSTL', '해킹', 'InDesign'),
 	FOREIGN KEY (writer) REFERENCES member(memberId),
