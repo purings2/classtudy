@@ -170,7 +170,11 @@
 		
 		// 취소 버튼을 눌렀을 경우
 		$(".cancel").on("click", function() {
-			location.href ="/member/login";
+			if(confirm("정말 취소하시겠습니까?") == false){
+				return false;
+			} else {
+				location.href ="/member/login";
+			}
 		});
 
 		// 아이디 입력란에 글자를 추가하면 idCheck 값을 변경

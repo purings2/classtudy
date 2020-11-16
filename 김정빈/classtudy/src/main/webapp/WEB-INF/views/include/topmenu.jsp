@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.member.domain.MemberDTO" %>
+<%@ page import="com.edu.domain.MemberDTO" %>
 <%
 	// 로그인 여부 체크할 변수 선언
 	boolean isLogin = false;
@@ -34,6 +34,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
 								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
 						<li>
@@ -50,7 +51,8 @@
 						</li>
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								내정보 <span class="caret"></span>
+								<span class="glyphicon glyphicon-user"></span> <%=name%>님 <span class="caret"></span>
+								<!-- 내정보 <span class="caret"></span> -->
 							</a>
 							<ul class="dropdown-menu">
 								<li class="dropdown-submenu" style="position: relative;">
@@ -59,14 +61,14 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a href="${path}/mypage/myInfo">내정보확인</a></li>
-										<li><a href="${path}/mypage/updateInfo">정보 수정하기</a></li>
-										<li><a href="${path}/mypage/delete">탈퇴하기</a></li>
+										<li><a href="${path}/member/memberUpdate">정보 수정하기</a></li>
+										<li><a href="${path}/member/memberDelete">탈퇴하기</a></li>
 									</ul>
 								</li>
 								<li><a href="${path}/mypage/job">이력서&포폴</a></li>
 							</ul>
 						</li>
-						<li><a><span class="glyphicon glyphicon-user"></span> <%=name%>님, 환영합니다</a></li>
+						<!-- <li><a><span class="glyphicon glyphicon-user"></span> <%=name%>님</a></li>  -->
 						<li><a href="${path}/member/logout"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a></li>
 					</ul>
 				</div>
@@ -104,6 +106,7 @@ $(document).ready(function(){
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
 								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
 						<li>
