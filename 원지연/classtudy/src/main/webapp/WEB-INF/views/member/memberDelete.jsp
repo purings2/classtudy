@@ -12,10 +12,10 @@
 	<div class="container">
 		<form class="form-horizontal" action="/member/memberDelete" method="post">
 			<div class="form-group">
-				<div class="col-sm-2"></div>
-				<div class="col-sm-6">
-					<h2 align="left">회원탈퇴</h2>
-					<h5><span class="label label-warning">회원 탈퇴 진행을 위해 비밀번호를 다시 한 번 입력해주세요.</span></h5>
+				<div class="col-sm-0"></div>
+				<div class="col-sm-12">
+					<h2 align="center">회원탈퇴</h2>
+					<h5><span class="label label-warning">회원 탈퇴를 하시려면 비밀번호를 다시 한 번 입력해주세요.</span></h5>
 				</div>
 			</div>
 			<div class="form-group">

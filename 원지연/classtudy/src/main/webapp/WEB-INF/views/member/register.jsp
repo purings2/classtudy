@@ -184,8 +184,7 @@
 
 		// 생년월일 입력란에 max 값을 오늘날짜로 설정
 		var today = new Date().toISOString().substring(0, 10);
-		document.getElementById("dateOfBirth")
-			.setAttribute("max", today);
+		document.getElementById("dateOfBirth").setAttribute("max", today);
 		
 	});
 
