@@ -29,6 +29,7 @@ public class MemberService {
 		return result;
 	}	
 	
+	// 회원 가입
 	public int insertMember(MemberDTO memberDTO) throws Exception {
 		LOGGER.info("Service insertMember : " + memberDTO);
 		return memberMapper.memberInsert(memberDTO);
@@ -46,6 +47,7 @@ public class MemberService {
 		memberMapper.memberUpdate(memberDTO);		
 	}
 
+	// 회원 탈퇴
 	public void memberDelete(MemberDTO memberDTO) throws Exception {
 		LOGGER.info("MemberService memberDelete().....");
 		memberMapper.memberDelete(memberDTO);

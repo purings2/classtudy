@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class MemberDTO {
 
-	private	String 	memberId;
-	private	String 	passwd;
-	private	String 	name;
+	private String 	memberId;
+	private String 	passwd;
+	private String 	name;
 	private String 	dateOfBirth;
 	private String 	gender;
 	private String 	tel;
@@ -18,7 +18,7 @@ public class MemberDTO {
 	private String 	addressDetail;
 	private String 	email;
 	private Date 	regDate;
-	private int 	lectureId;
+	private int 	lectureNo;
 	private int 	grade;
 	private int 	point;
 	private int 	reward;
