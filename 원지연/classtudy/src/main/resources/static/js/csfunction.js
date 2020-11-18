@@ -365,3 +365,33 @@ function updateCheckForm(memberForm)
 	//memberForm.setAttribute("action", "/member/memberUpdate");
 	memberForm.submit();
 }
+
+//---------------------------------------------------------------------
+// TIL 작성 검사
+//---------------------------------------------------------------------
+function tilCheckForm(classboardForm)
+{
+	// 아이디와 강의번호 검사
+	if(classboardForm.writer.value == "" || classboardForm.lectureNo.value == "") {
+		alert("아이디와 강의번호를 받아올 수 없습니다.");
+		return false;
+	}
+	// 카테고리 검사
+	if(classboardForm.category.value == "") {
+		alert("인식할 수 없는 말머리 값입니다.");
+		return false;
+	}
+	// 제목 검사
+	if(classboardForm.title.value == "") {
+		alert("제목을 입력하세요.");
+		classboardForm.title.focus();
+		return false;
+	}
+	// 내용 검사
+	if(document.getElementById("content").value.length == 0) {
+		alert("내용을 입력하세요.");
+		memberForm.content.focus();
+		return false;
+	}
+	classboardForm.submit();
+}

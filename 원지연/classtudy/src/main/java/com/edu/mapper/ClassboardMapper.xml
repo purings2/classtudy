@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.mapper.ClassboardMapper">
+
+	<!-- TIL 작성 -->
+	<insert id="writeTIL">
+	INSERT INTO classboard 
+			(writer, title, content, category, writeDate, lectureNo)
+	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
+	</insert>
+	
+	<!-- 게시판 목록 보기 -->
+	<select id="boardList" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	ORDER BY boardNo DESC 
+	</select>
+	
+	<!-- 게시글 상세 보기 -->
+	<select id="boardDetail" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="addViews">
+	UPDATE 	classboard 
+	SET 	views = views + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+
+</mapper>

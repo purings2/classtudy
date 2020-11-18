@@ -85,11 +85,20 @@
             "undo", "redo", "|",
             "watch", "preview", "|",
             "help", "info"
+        ],
+        classtudy : [
+            "undo", "redo", "|", 
+            "bold", "del", "italic", "quote", "uppercase", "lowercase", "|", 
+            "h1", "h2", "h3", "h4", "h5", "h6", "|", 
+            "list-ul", "list-ol", "hr", "|",
+            "code", "code-block", "image", "html-entities", "datetime", "|",
+            "watch", "preview", "fullscreen", "|",
+            "help"
         ]
     };
     
     editormd.defaults     = {
-        mode                 : "gfm",          //gfm or markdown
+        mode                 : "gfm",          // gfm or markdown
         name                 : "",             // Form element name
         value                : "",             // value for CodeMirror, if mode not gfm/markdown
         theme                : "",             // Editor.md self themes, before v1.5.0 is CodeMirror theme, default empty
@@ -99,12 +108,12 @@
         appendMarkdown       : "",             // if in init textarea value not empty, append markdown to textarea
         width                : "100%",
         height               : "100%",
-        path                 : "./lib/",       // Dependents module file directory
-        pluginPath           : "",             // If this empty, default use settings.path + "../plugins/"
+        path                 : "/static/js/lib/",       // Dependents module file directory
+        pluginPath           : "/static/js/plugins/",             // If this empty, default use settings.path + "../plugins/"
         delay                : 300,            // Delay parse markdown to html, Uint : ms
         autoLoadModules      : true,           // Automatic load dependent module files
         watch                : true,
-        placeholder          : "오늘의 학습 내용을 기록하세요...",
+        placeholder          : "오늘의 학습 내용을 기록하세요.",
         gotoLine             : true,
         codeFold             : false,
         autoHeight           : false,
@@ -172,7 +181,7 @@
                 
         toolbar              : true,           // show/hide toolbar
         toolbarAutoFixed     : true,           // on window scroll auto fixed position
-        toolbarIcons         : "full",
+        toolbarIcons         : "classtudy",         // "full", "simple", "mini", "classtudy"(추가)
         toolbarTitles        : {},
         toolbarHandlers      : {
             ucwords : function() {
@@ -227,9 +236,9 @@
         toolbarIconTexts     : {},
         
         lang : {
-            name        : "zh-cn",
-            description : "开源在线Markdown编辑器<br/>Open source online Markdown editor.",
-            tocTitle    : "目录",
+            name        : "kr",
+            description : "Open source online Markdown editor.",
+            tocTitle    : "목차",
             toolbar     : {
                 undo             : "되돌리기（Ctrl+Z）",
                 redo             : "다시 실행（Ctrl+Y）",
@@ -251,18 +260,18 @@
                 hr               : "구분선",
                 link             : "链接",
                 "reference-link" : "引用链接",
-                image            : "添加图片",
+                image            : "이미지 추가",
                 code             : "인라인 코드",
                 "preformatted-text" : "预格式文本 / 代码块（缩进风格）",
-                "code-block"     : "代码块（多语言风格）",
+                "code-block"     : "코드 블록",
                 table            : "添加表格",
                 datetime         : "현재 일시",
                 emoji            : "Emoji表情",
-                "html-entities"  : "HTML实体字符",
+                "html-entities"  : "HTML 엔티티",
                 pagebreak        : "插入分页符",
                 "goto-line"      : "跳转到行",
-                watch            : "미리보기 켜기",
-                unwatch          : "미리보기 끄기",
+                watch            : "미리보기 끄기",
+                unwatch          : "미리보기 켜기",
                 preview          : "전체창에서 미리보기（돌아가려면 Shift + ESC）",
                 fullscreen       : "전체화면（돌아가려면 ESC）",
                 clear            : "전체 삭제", //javascript로 취소창 띄우기 추가할 것!
@@ -271,9 +280,9 @@
                 info             : "关于" + editormd.title
             },
             buttons : {
-                enter  : "确定",
-                cancel : "取消",
-                close  : "关闭"
+                enter  : "확인",
+                cancel : "취소",
+                close  : "닫기"
             },
             dialog : {
                 link : {
@@ -293,32 +302,32 @@
                     urlEmpty : "错误：请填写引用链接的URL地址。"
                 },
                 image : {
-                    title    : "添加图片",
-                    url      : "图片地址",
-                    link     : "图片链接",
-                    alt      : "图片描述",
-                    uploadButton     : "本地上传",
-                    imageURLEmpty    : "错误：图片地址不能为空。",
-                    uploadFileEmpty  : "错误：上传的图片不能为空。",
-                    formatNotAllowed : "错误：只允许上传图片文件，允许上传的图片文件格式有："
+                    title    : "이미지 추가 ",
+                    url      : "URL",
+                    link     : "링크",
+                    alt      : "설명",
+                    uploadButton     : "로컬 업로드",
+                    imageURLEmpty    : "이미지 URL은 비워 둘 수 없습니다.",
+                    uploadFileEmpty  : "업로드된 사진은 비워 둘 수 없습니다.",
+                    formatNotAllowed : "이미지 파일만 업로드 할 수 있습니다. 허용되는 이미지 파일 형식 : "
                 },
                 preformattedText : {
                     title             : "添加预格式文本或代码块", 
                     emptyAlert        : "错误：请填写预格式文本或代码的内容。"
                 },
                 codeBlock : {
-                    title             : "添加代码块",                    
-                    selectLabel       : "代码语言：",
-                    selectDefaultText : "请选择代码语言",
-                    otherLanguage     : "其他语言",
-                    unselectedLanguageAlert : "错误：请选择代码所属的语言类型。",
-                    codeEmptyAlert    : "错误：请填写代码内容。"
+                    title             : "코드 블록 추가",
+                    selectLabel       : "코드 종류：",
+                    selectDefaultText : "코드 종류를 선택하세요.",
+                    otherLanguage     : "기타 언어",
+                    unselectedLanguageAlert : "코드의 종류를 선택하십시오.",
+                    codeEmptyAlert    : "코드 내용을 입력하십시오."
                 },
                 htmlEntities : {
-                    title : "HTML 实体字符"
+                    title : "HTML 엔티티"
                 },
                 help : {
-                    title : "使用帮助"
+                    title : "도움말"
                 }
             }
         }
@@ -3125,7 +3134,18 @@
         },
 
         "code-block" : function() {
-            this.executePlugin("codeBlockDialog", "code-block-dialog/code-block-dialog");            
+        	/*
+            var cm        = this.cm;
+            var cursor    = cm.getCursor();
+            var selection = cm.getSelection();
+
+            cm.replaceSelection("```\n" + selection + "\n```");
+
+            if (selection === "") {
+                cm.setCursor(cursor.line, cursor.ch + 1);
+            }
+            */
+            this.executePlugin("codeBlockDialog", "code-block-dialog/code-block-dialog");
         },
 
         "preformatted-text" : function() {
@@ -3141,7 +3161,7 @@
             var selection = cm.getSelection();
             var date      = new Date();
             var langName  = this.settings.lang.name;
-            var datefmt   = editormd.dateFormat() + " " + editormd.dateFormat((langName === "zh-cn" || langName === "zh-tw") ? "cn-week-day" : "week-day");
+            var datefmt   = editormd.dateFormat() + " " + editormd.dateFormat((langName === "kr") ? "kr-week-day" : "week-day");
 
             cm.replaceSelection(datefmt);
         },
@@ -4536,7 +4556,13 @@
             case "month" :
             case "mm" :
                     datefmt = month;
-                break;                        
+                break;
+
+            case "kr-week-day" :
+            case "kr-wd" :
+                    var krWeekDays = ["일", "월", "화", "수", "목", "금", "토"];
+                    datefmt = krWeekDays[weekDay] + "요일";
+                break;
 
             case "cn-week-day" :
             case "cn-wd" :

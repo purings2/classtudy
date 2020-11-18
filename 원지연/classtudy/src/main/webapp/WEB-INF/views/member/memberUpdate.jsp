@@ -2,15 +2,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.edu.domain.MemberDTO" %>
 <%
-	// 세션에 있는 MemberDTO를 저장하기 위한 변수 선언 
-	MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
-	// member에 담긴 전화번호를 저장
-	String tel = memberDTO.getTel();
-	// 전화번호를 tel1, tel2, tel3로 나눠서 저장
-	String tel1 = tel.substring(0, 3); //첫 세자리 저장
-	tel = tel.substring(4); //뒷 번호들만 남기기
-	String tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
-	String tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
+	// MemberDTO를 저장하기 위한 변수 선언
+	MemberDTO memberDTO = null;
+	String tel = "", tel1 = "", tel2 = "", tel3 = "";
+	// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
+	if(session.getAttribute("member") != null) {
+		memberDTO = (MemberDTO)session.getAttribute("member");
+		// member에 담긴 전화번호를 저장
+		tel = memberDTO.getTel();
+		// 전화번호를 tel1, tel2, tel3로 나눠서 저장
+		tel1 = tel.substring(0, 3); //첫 세자리 저장
+		tel = tel.substring(4); //뒷 번호들만 남기기
+		tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
+		tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
+	} else {
+		response.sendRedirect("/member/login");
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -128,7 +135,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
 				<div class="col-sm-4">
-					<input type="text" id="lectureId" name="lectureId" class="form-control" value="${member.lectureId}" readonly/>
+					<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
 				</div>
 			</div>
 			<div class="form-group">

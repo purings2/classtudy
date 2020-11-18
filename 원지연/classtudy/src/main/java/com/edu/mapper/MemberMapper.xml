@@ -18,15 +18,15 @@
 	<insert id="memberInsert">
 		INSERT INTO member 
 				(memberId, passwd, name, dateOfBirth, gender, tel, 
-				zipcode, address, addressDetail, email, regDate, lectureId)
+				zipcode, address, addressDetail, email, regDate, lectureNo)
 		VALUES	(#{memberId}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, 
-				#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE(), #{lectureId})
+				#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE(), #{lectureNo})
 	</insert>
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="com.edu.domain.MemberDTO">
 		SELECT memberId, passwd, name, dateOfBirth, gender, tel, 
-		zipcode, address, addressDetail, email, regDate, lectureId
+		zipcode, address, addressDetail, email, regDate, lectureNo
 		FROM member
 		WHERE memberId = #{memberId}
 		AND passwd = #{passwd}

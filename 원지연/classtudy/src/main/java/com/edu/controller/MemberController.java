@@ -138,7 +138,7 @@ public class MemberController {
 	public String memberUpdateView() throws Exception {
 		LOGGER.info("MemberController memberUpdateView().....");
 		
-		return "/member/memberUpdate";				
+		return "/member/memberUpdate";
 	}
 	
 	// 회원정보 수정 POST
