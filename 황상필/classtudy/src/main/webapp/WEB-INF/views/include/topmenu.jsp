@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.edu.domain.MemberDTO" %>
+<style>
+	.navbar-default { 
+		background-color: #FFFFFF; 
+	}
+</style>
 <%
 	// 로그인 여부 체크할 변수 선언
 	boolean isLogin = false;
@@ -45,8 +50,8 @@
 								클래스 <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="${path}/class/TIL">TIL</a></li>
-								<li><a href="${path}/class/classRoom">클래스룸</a></li>
+								<li><a href="${path}/classboard/TIL">TIL작성</a></li>
+								<li><a href="${path}/classboard/classRoom">클래스룸</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -117,8 +122,8 @@ $(document).ready(function(){
 								클래스 <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="${path}/class/TIL">TIL</a></li>
-								<li><a href="${path}/class/classRoom">클래스룸</a></li>
+								<li><a href="${path}/classboard/TIL">TIL</a></li>
+								<li><a href="${path}/classboard/classRoom">클래스룸</a></li>
 							</ul>
 						</li>				
 						<li><a href="${path}/member/login"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
