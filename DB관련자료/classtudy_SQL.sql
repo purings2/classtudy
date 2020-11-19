@@ -43,7 +43,7 @@ CREATE TABLE member (
 	address 	VARCHAR(60) 	NOT NULL,
 	addressDetail 	VARCHAR(60) 	NOT NULL,
 	email 		VARCHAR(40) 	NOT NULL,
-	regDate 	TIMESTAMP 	NOT NULL,
+	regDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	lectureNo 	INT 		NOT NULL,
 	grade 		INT 		NOT NULL DEFAULT 0,
 	point 		INT 		NOT NULL DEFAULT 0,
@@ -63,7 +63,7 @@ CREATE TABLE noti (
 	receiver 	VARCHAR(16) 	NOT NULL,
 	content 	VARCHAR(100) 	NOT NULL,
 	checked 	BOOLEAN 	NOT NULL DEFAULT false,
-	sendDate 	TIMESTAMP 	NOT NULL,
+	sendDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (receiver) REFERENCES member(memberId)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -73,7 +73,7 @@ CREATE TABLE point (
 	member 		VARCHAR(16) 	NOT NULL,
 	content 	VARCHAR(100) 	NOT NULL,
 	changeVal 	INT 		NOT NULL,
-	accrDate 	TIMESTAMP 	NOT NULL,
+	accrDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (member) REFERENCES member(memberId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -83,7 +83,7 @@ CREATE TABLE reward (
 	member 		VARCHAR(16) 	NOT NULL,
 	content 	VARCHAR(100) 	NOT NULL,
 	changeVal 	INT 		NOT NULL,
-	accrDate 	TIMESTAMP 	NOT NULL,
+	accrDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (member) REFERENCES member(memberId)	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -99,7 +99,7 @@ CREATE TABLE classboard (
 	category 	SET('TIL', '질문', '클래스') NOT NULL,
 	views 		INT 		NOT NULL DEFAULT 0,
 	likes 		INT 		NOT NULL DEFAULT 0,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	lectureNo 	INT 		NOT NULL,
 	FOREIGN KEY (writer) REFERENCES member(memberId),
 	FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo)
@@ -114,7 +114,7 @@ CREATE TABLE freeboard (
 	category 	SET('공지사항', '질문', '정보', '이야기', '그룹홍보') NOT NULL,
 	views 		INT 		NOT NULL DEFAULT 0,
 	likes 		INT 		NOT NULL DEFAULT 0,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	tags 		SET('Java', 'Python', 'JavaScript', 'Back-End', '웹 개발', '앱 개발', 'HTML/CSS', 'Front-End', '데이터베이스', 
 			    '게임 개발', 'Android', 'Spring', 'Node.js', '알고리즘', 'React', '머신러닝', 'SQL', '인공지능', '정보보안', 
 			    '블록체인', 'DevOps', '클라우드', 'Linux', 'iOS', 'Swift', 'Spring Boot', 'Bootstrap', 'jQuery', 'Git', 
@@ -131,7 +131,7 @@ CREATE TABLE groupboard (
 	content 	TEXT 		NOT NULL,
 	views 		INT 		NOT NULL DEFAULT 0,
 	likes 		INT 		NOT NULL DEFAULT 0,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	groupNo 	INT 		NOT NULL,
 	tags 		SET('Java', 'Python', 'JavaScript', 'Back-End', '웹 개발', '앱 개발', 'HTML/CSS', 'Front-End', '데이터베이스', 
 			    '게임 개발', 'Android', 'Spring', 'Node.js', '알고리즘', 'React', '머신러닝', 'SQL', '인공지능', '정보보안', 
@@ -150,7 +150,7 @@ CREATE TABLE cbcomment (
 	commentNo 	INT 		PRIMARY KEY AUTO_INCREMENT,
 	writer 		VARCHAR(16) 	NOT NULL,
 	content 	TEXT 		NOT NULL,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 		NOT NULL,
 	FOREIGN KEY (writer) REFERENCES member(memberId),
 	FOREIGN KEY (boardNo) REFERENCES classboard(boardNo)
@@ -162,7 +162,7 @@ CREATE TABLE fbcomment (
 	writer 		VARCHAR(16) 	NOT NULL,
 	content 	TEXT 		NOT NULL,
 	likes 		INT 		NOT NULL DEFAULT 0,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 		NOT NULL,
 	FOREIGN KEY (writer) REFERENCES member(memberId),
 	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo)
@@ -173,7 +173,7 @@ CREATE TABLE gbcomment (
 	commentNo 	INT 		PRIMARY KEY AUTO_INCREMENT,
 	writer 		VARCHAR(16) 	NOT NULL,
 	content 	TEXT 		NOT NULL,
-	writeDate 	TIMESTAMP 	NOT NULL,
+	writeDate 	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 		NOT NULL,
 	FOREIGN KEY (writer) REFERENCES member(memberId),
 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo)
