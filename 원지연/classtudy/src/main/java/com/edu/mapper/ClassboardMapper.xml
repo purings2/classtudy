@@ -23,7 +23,7 @@
 	ORDER BY boardNo DESC 
 	</select>
 	
-	<!-- TIL 작성 -->
+	<!-- 게시글 작성 -->
 	<insert id="write">
 	INSERT INTO classboard 
 			(writer, title, content, category, writeDate, lectureNo)
@@ -51,5 +51,19 @@
 	SET 	views = views + 1 
 	WHERE 	boardNo = #{boardNo} 
 	</update>
+	
+	<!-- 게시글 수정 -->
+	<update id="update">
+	UPDATE 	classboard 
+	SET 	title = #{title}, content = #{content}, category = #{category} 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+	DELETE 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</delete>
 
 </mapper>

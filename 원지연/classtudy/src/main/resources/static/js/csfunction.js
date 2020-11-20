@@ -257,6 +257,8 @@ function registerCheckForm(memberForm)
 //---------------------------------------------------------------------
 function updateCheckForm(memberForm)
 {
+	//alert("회원정보 수정 검사 시작");
+	
 	// 비밀번호 검사
 	if(memberForm.passwd.value == "") {
 		alert("비밀번호를 입력하세요.");
@@ -377,7 +379,32 @@ function tilCheckForm(classboardForm)
 		return false;
 	}
 	// 카테고리 검사
-	if(classboardForm.category.value == "") {
+	if( !(classboardForm.category.value == "질문" || classboardForm.category.value == "클래스" || classboardForm.category.value == "TIL") ) {
+		alert("인식할 수 없는 말머리 값입니다.");
+		return false;
+	}
+	// 제목 검사
+	if(classboardForm.title.value == "") {
+		alert("제목을 입력하세요.");
+		classboardForm.title.focus();
+		return false;
+	}
+	// 내용 검사
+	if(document.getElementById("content").value.length == 0) {
+		alert("내용을 입력하세요.");
+		memberForm.content.focus();
+		return false;
+	}
+	classboardForm.submit();
+}
+
+//---------------------------------------------------------------------
+// 게시글 수정 검사
+//---------------------------------------------------------------------
+function classboardCheckForm(classboardForm)
+{
+	// 카테고리 검사
+	if( !(classboardForm.category.value == "질문" || classboardForm.category.value == "클래스" || classboardForm.category.value == "TIL") ) {
 		alert("인식할 수 없는 말머리 값입니다.");
 		return false;
 	}

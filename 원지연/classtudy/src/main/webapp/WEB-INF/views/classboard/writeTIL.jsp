@@ -23,10 +23,13 @@
 			<div class="col-sm-3">
 				<input type="text" id="name" name="name" class="form-control" value="${member.name}" readonly="readonly" maxlength=16/>
 			</div>
+			<label class="control-label col-sm-2">말머리</label>
+			<div class="col-sm-3">
+				<input type="text" id="category" name="category" class="form-control" value="TIL" readonly/>
+			</div>			
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
 			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}"/>
-			<input type="hidden" id="category" name="category" class="form-control" value="TIL"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">제목</label>

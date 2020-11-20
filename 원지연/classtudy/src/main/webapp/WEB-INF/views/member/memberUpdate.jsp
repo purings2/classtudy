@@ -1,7 +1,7 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.edu.domain.MemberDTO" %>
-<%
+<%--
 	// MemberDTO를 저장하기 위한 변수 선언
 	MemberDTO memberDTO = null;
 	String tel = "", tel1 = "", tel2 = "", tel3 = "";
@@ -18,7 +18,7 @@
 	} else {
 		response.sendRedirect("/member/login");
 	}
-%>
+--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,6 +84,53 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">전화번호</label>
 				<div class="col-sm-2">
+					<!-- tel1의 값에 맞게 selected 표시 -->
+					<c:if test="${tel1 == '010'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010" selected>010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '011'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011" selected>011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '017'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017" selected>017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '018'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018" selected>018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '019'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019" selected>019</option>
+						</select>
+					</c:if>
+					<!-- 
 					<select class="form-control" name="tel1" id="tel1">
 						<option value="010">010</option>
 						<option value="011">011</option>
@@ -91,12 +138,13 @@
 						<option value="018">018</option>
 						<option value="019">019</option>
 					</select>
+					 -->
 				</div>
 				<div class="col-sm-2">
-					<input type="text" class="form-control" name="tel2" id="tel2" value="<%=tel2%>" maxlength="4">
+					<input type="text" class="form-control" name="tel2" id="tel2" value="${tel2}" maxlength="4">
 				</div>
 				<div class="col-sm-2">
-					<input type="text" class="form-control" name="tel3" id="tel3" value="<%=tel3%>" maxlength="4">
+					<input type="text" class="form-control" name="tel3" id="tel3" value="${tel3}" maxlength="4">
 				</div>
 				<!-- 
 				<div class="col-sm-3">
@@ -140,6 +188,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-12" style="text-align: center;">
+					<!-- alert('회원정보 수정 버튼'); -->
 					<button type="button" class="btn btn-success" 
 						onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>

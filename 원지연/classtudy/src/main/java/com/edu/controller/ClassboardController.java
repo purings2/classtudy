@@ -46,7 +46,7 @@ public class ClassboardController {
 		if (session.getAttribute("member") != null) {
 			classboardService.writeTIL(cbDTO);
 		}
-		return "redirect:/";
+		return "redirect:/class/classroom";
 	}
 	
 	// TIL 목록 보기
@@ -90,7 +90,7 @@ public class ClassboardController {
 		if (session.getAttribute("member") != null) {
 			classboardService.write(cbDTO);
 		}
-		return "redirect:/";
+		return "redirect:/class/classroom";
 	}
 	
 	// 게시판 목록 보기(클래스룸)
@@ -116,11 +116,43 @@ public class ClassboardController {
 	@RequestMapping(value="/detail/{boardNo}")
 	public String detailBoard(@PathVariable int boardNo, Model model) throws Exception {
 		logger.info("ClassboardController detailBoard()....");
+		//logger.info("detailBoard() : " + classboardService.boardDetail(boardNo));
 		// boardNO에 해당하는 자료의 조회수를 1 증가 시킨다.
 		classboardService.addViews(boardNo);
 		// boardNO에 해당하는 자료를 model에 담는다.
 		model.addAttribute("detail", classboardService.boardDetail(boardNo));
 		return "/classboard/detail";
+	}
+	
+	// 게시글 수정 GET
+	@RequestMapping(value="/update/{boardNo}", method=RequestMethod.GET)
+	public String getUpdate(@PathVariable int boardNo, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
+		logger.info("ClassboardController getUpdate()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		//logger.info("BoardDTO : " + classboardService.boardDetail(boardNo));
+		model.addAttribute("detail", classboardService.boardDetail(boardNo));
+		return "/classboard/update";
+	}
+	
+	// 게시글 수정 POST
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String postUpdate(ClassboardDTO cbDTO, HttpSession session) throws Exception {
+		logger.info("ClassboardController postUpdate()....");
+		//logger.info("postUpdate() : " + cbDTO);
+		classboardService.update(cbDTO);
+		return "redirect:/class/classroom";
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value="/delete/{boardNo}")
+	public String delete(@PathVariable int boardNo) throws Exception {
+		logger.info("ClassboardController delete()....");
+		classboardService.delete(boardNo);
+		return "redirect:/class/classroom";
 	}
 	
 }

@@ -24,7 +24,7 @@ public class ClassboardService {
 	
 	// TIL 작성
 	public int writeTIL(ClassboardDTO cbDTO) throws Exception {
-		logger.info("Service writeTIL : " + cbDTO);
+		//logger.info("Service writeTIL : " + cbDTO);
 		return classboardMapper.writeTIL(cbDTO);
 	}
 	
@@ -35,7 +35,7 @@ public class ClassboardService {
 	
 	// 게시글 작성
 	public int write(ClassboardDTO cbDTO) throws Exception {
-		logger.info("Service write : " + cbDTO);
+		//logger.info("Service write : " + cbDTO);
 		return classboardMapper.write(cbDTO);
 	}
 	
@@ -52,6 +52,17 @@ public class ClassboardService {
 	// 게시글 조회수 증가
 	public int addViews(int boardNo) throws Exception {
 		return classboardMapper.addViews(boardNo);
+	}
+	
+	// 게시글 수정
+	public int update(ClassboardDTO cbDTO) throws Exception {
+		//logger.info("Service update : " + cbDTO);
+		return classboardMapper.update(cbDTO);
+	}
+	
+	// 게시글 삭제
+	public int delete(int boardNo) throws Exception {
+		return classboardMapper.delete(boardNo);
 	}
 	
 }

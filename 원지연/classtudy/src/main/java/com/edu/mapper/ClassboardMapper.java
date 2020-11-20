@@ -27,4 +27,10 @@ public interface ClassboardMapper {
 	// 게시글 조회수 증가
 	public int addViews(int boardNo) throws Exception;
 	
+	// 게시글 수정
+	public int update(ClassboardDTO cbDTO) throws Exception;
+	
+	// 게시글 삭제
+	public int delete(int boardNo) throws Exception;
+	
 }
