@@ -14,17 +14,16 @@
 
 <div class="container">
 	<header>
-		<h1>클래스룸</h1><br>
+		<h1>TIL 목록</h1><br>
 	</header>
 	<div class="col-sm-12" style="text-align: right; padding-bottom: 10px;">
 		<button class="btn btn-success" 
-			onclick="location.href='/class/write'">작성</button>
+			onclick="location.href='/class/writeTIL'">작성</button>
 	</div>
 	<table class="table table-hover table-bordered">
 		<thead>
 			<tr>
 				<th style="text-align: center;">글번호</th>
-				<th style="text-align: center;">말머리</th>
 				<th style="text-align: center;">제  목</th>
 				<th style="text-align: center;">작성자</th>
 				<th style="text-align: center;">작성일</th>
@@ -36,7 +35,6 @@
 			<c:forEach var="board" items="${list}">
 				<tr>
 					<td>${board.boardNo}</td>
-					<td>${board.category}</td>
 					<td><a href="/class/detail/${board.boardNo}">${board.title}</a></td>
 					<td>${board.writer}</td>
 					<td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>

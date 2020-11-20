@@ -11,6 +11,12 @@ public interface ClassboardMapper {
 
 	// TIL 작성
 	public int writeTIL(ClassboardDTO cbDTO) throws Exception;
+
+	// TIL 목록 보기
+	public List<ClassboardDTO> boardListTIL(int lectureNo, String memberId) throws Exception;
+	
+	// 게시글 작성
+	public int write(ClassboardDTO cbDTO) throws Exception;
 	
 	// 게시판 목록 보기
 	public List<ClassboardDTO> boardList(int lectureNo) throws Exception;

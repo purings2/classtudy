@@ -28,6 +28,17 @@ public class ClassboardService {
 		return classboardMapper.writeTIL(cbDTO);
 	}
 	
+	// TIL 목록 보기
+	public List<ClassboardDTO> boardListTIL(int lectureNo, String memberId) throws Exception {
+		return classboardMapper.boardListTIL(lectureNo, memberId);
+	}
+	
+	// 게시글 작성
+	public int write(ClassboardDTO cbDTO) throws Exception {
+		logger.info("Service write : " + cbDTO);
+		return classboardMapper.write(cbDTO);
+	}
+	
 	// 게시판 목록 보기
 	public List<ClassboardDTO> boardList(int lectureNo) throws Exception {
 		return classboardMapper.boardList(lectureNo);

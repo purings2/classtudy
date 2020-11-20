@@ -49,7 +49,7 @@
 								클래스 <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="${path}/class/writeTIL">TIL</a></li>
+								<li><a href="${path}/class/TIL">TIL</a></li>
 								<li><a href="${path}/class/classroom">클래스룸</a></li>
 							</ul>
 						</li>
@@ -78,16 +78,7 @@
 				</div>
 			</div>
 		</div>
-	</nav>
-<script>
-$(document).ready(function(){
-	$('.dropdown-submenu .test').on("click", function(e){
-		$(this).next('ul').toggle();
-		e.stopPropagation();
-		e.preventDefault();
-	});
-});
-</script>	
+	</nav>	
 <% } else { %>
 	<nav class="navbar navbar-default navbar-stikcy-top">
 		<div class="container-fluid">

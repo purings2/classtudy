@@ -31,7 +31,6 @@
 	<div class="container">
 		<form class="form-horizontal" action="/member/memberUpdate" method="post">
 			<div class="form-group">
-				<div class="col-sm-0"></div>
 				<div class="col-sm-12">
 					<h2 align="center">회원정보 수정</h2>
 				</div>
@@ -57,31 +56,31 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">이  름</label>
 				<div class="col-sm-3">
-					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 placeholder="이름을 입력하세요."/>
+					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 readonly/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" value="${member.dateOfBirth}" 
-						min="1900-01-01" max="" value="1990-01-01" maxlength=16 placeholder="생년월일을 선택하세요."/>
+						min="1900-01-01" max="" value="1990-01-01" maxlength=10 placeholder="생년월일을 선택하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">성  별</label>
 					<c:if test="${member.gender == 'M'}">
-						<div class="control-form col-sm-3">		   				
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/>남성</label>
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/>여성</label>
+						<div class="control-form col-sm-3" style="text-align: left;">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/> 남성</label>&nbsp;
+							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/> 여성</label>
 						</div>
 					</c:if>
 					<c:if test="${member.gender == 'F'}">
-						<div class="control-form col-sm-3">
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/>남성</label>
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/>여성</label>
+						<div class="control-form col-sm-3" style="text-align: left;">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/> 남성</label>&nbsp;
+							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/> 여성</label>
 						</div>
 					</c:if>
-			</div>			
+			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">전화번호</label>
 				<div class="col-sm-2">
@@ -111,13 +110,14 @@
 					<input type="text" class="form-control" name="zipcode" id="zipcode" value="${member.zipcode}" readonly/>
 				</div>
 				<div class="col-sm-3">
-					<input type="button" class="form-control" onclick="daumZipCode()" value="우편번호 찾기"/>
+					<button class="form-control" type="button" onclick="daumZipCode()" 
+						style="background-color: #dddddd"><b>우편번호 찾기</b></button>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">주  소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" value="${member.address}" name="address" id="address"/>
+					<input type="text" class="form-control" value="${member.address}" name="address" id="address" readonly/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -134,12 +134,12 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
+				<div class="col-sm-12" style="text-align: center;">
 					<button type="button" class="btn btn-success" 
 						onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>

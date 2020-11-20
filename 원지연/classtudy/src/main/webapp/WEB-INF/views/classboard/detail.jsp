@@ -24,12 +24,22 @@
 			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
 			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${detail.lectureNo}"/>
 		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2">말머리</label>
-			<div class="col-sm-3">
-				<input type="text" id="category" name="category" class="form-control" value="${detail.category}"/>
-			</div>		
-		</div>
+		<c:if test="${detail.category == 'TIL'}">
+			<div class="form-group">
+				<label class="control-label col-sm-2">말머리</label>
+				<div class="col-sm-3">
+					<input type="text" id="category" name="category" class="form-control" value="${detail.category}" readonly/>
+				</div>		
+			</div>
+		</c:if>
+		<c:if test="${detail.category != 'TIL'}">
+			<div class="form-group">
+				<label class="control-label col-sm-2">말머리</label>
+				<div class="col-sm-3">
+					<input type="text" id="category" name="category" class="form-control" value="${detail.category}"/>
+				</div>		
+			</div>
+		</c:if>
 		<div class="form-group">
 			<label class="control-label col-sm-2">작성자</label>
 			<div class="col-sm-3">
@@ -37,7 +47,7 @@
 			</div>
 			<label class="control-label col-sm-2">작성일</label>
 			<div class="col-sm-3">
-				<input type="text" id="writeDate" name="writeDate" class="form-control" value="<fmt:formatDate value="${detail.writeDate}" pattern="yyyy년 MM월 dd일"/>" readonly="readonly"/>
+				<input type="text" id="writeDate" name="writeDate" class="form-control" value="<fmt:formatDate value="${detail.writeDate}" pattern="yyyy-MM-dd hh:mm:ss"/>" readonly="readonly"/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -47,18 +57,16 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div id="test-editormd">
+			<div id="test-markdown-view" style="display: block; width: 85%; margin: 0px auto; padding: 0px;">
 				<textarea style="display:none;" id="content" name="content">${detail.content}</textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
-				<button type="button" class="btn btn-success" 
-					onclick="tilCheckForm(this.form)">수정</button>&nbsp;
-				<button type="button" class="btn btn-warning cancel">취소</button>&nbsp;
-				<!-- 
-				<button type="button" class="btn btn-info" id="previewBtn">preview</button>
-				 -->
+			<div class="col-sm-12" style="text-align: center; padding-bottom: 25px;">
+				<!-- <button type="button" class="btn btn-info" id="previewBtn">preview</button> -->
+				<button type="button" class="btn btn-success" onclick="location.href='/class/update/${detail.boardNo}'">수정</button>&nbsp;
+				<button type="button" class="btn btn-danger" onclick="location.href='/class/delete/${detail.boardNo}'">삭제</button>&nbsp;
+				<button type="button" class="btn btn-primary" onclick="location.href='/class/classroom'">목록</button>
 			</div>
 		</div>
 	</form>
@@ -68,16 +76,16 @@
 	<script>
 	$(document).ready(function() {
 
-		// 취소 버튼이 눌렸을 경우 => OK하면 메인으로 이동
-		$(".cancel").on("click", function() {
-			if(confirm("정말 취소하시겠습니까?") == false){
-				return false;
-			} else {
-				location.href ="/";
-			}
+		// Markdown View
+		var testView = editormd.markdownToHTML("test-markdown-view", {
+			//markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+			//htmlDecode : true,  // Enable / disable HTML tag encode.
+			//htmlDecode : "style,script,iframe"  // Note: If enabled, you should filter some dangerous HTML tags for website security.
 		});
 
+		/*
 		// Markdown Editor
+		var testEditor;
 		testEditor = editormd("test-editormd", {
 			width 		: "95%",
 			height 		: 640,
@@ -85,17 +93,14 @@
 			path 		: '/static/js/lib/',
 			readOnly 	: true
 		});
-		//alert("테스트1");
-		//testEditor.state.preview = true;
-		//testEditor.previewing();
-		//testEditer.state.CodeMirror = false;
-		//testEditer.codeMirror.hide();
-		
-		$("#previewBtn").click(function(){
+		// Preview 버튼이 눌렸을 때 실행
+		function hideCodeMirror(){
+			//testEditor.state.preview = true;
 			testEditor.codeMirror.hide();
-			//alert("테스트1");
+			//alert("preview 버튼이 눌렸습니다.");
 			//testEditor.previewing();
 		});
+		*/
 		
 	});
 	</script>

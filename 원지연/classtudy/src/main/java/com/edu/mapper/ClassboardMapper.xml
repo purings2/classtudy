@@ -12,6 +12,23 @@
 			(writer, title, content, category, writeDate, lectureNo)
 	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
 	</insert>
+
+	<!-- TIL 목록 보기 -->
+	<select id="boardListTIL" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	ORDER BY boardNo DESC 
+	</select>
+	
+	<!-- TIL 작성 -->
+	<insert id="write">
+	INSERT INTO classboard 
+			(writer, title, content, category, writeDate, lectureNo)
+	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
+	</insert>
 	
 	<!-- 게시판 목록 보기 -->
 	<select id="boardList" resultType="com.edu.domain.ClassboardDTO">

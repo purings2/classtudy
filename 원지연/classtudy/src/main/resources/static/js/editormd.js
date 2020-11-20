@@ -91,8 +91,8 @@
             "bold", "del", "italic", "quote", "uppercase", "lowercase", "|", 
             "h1", "h2", "h3", "h4", "h5", "h6", "|", 
             "list-ul", "list-ol", "hr", "|",
-            "code", "code-block", "image", "html-entities", "datetime", "|",
-            "watch", "preview", "fullscreen", "|",
+            "code", "code-block", "image", "html-entities", "|",
+            "watch", "preview", "|",
             "help"
         ]
     };
@@ -122,6 +122,7 @@
         searchReplace        : true,
         syncScrolling        : true,           // true | false | "single", default true
         readOnly             : false,
+        myPreview            : false,          // 내가 추가!!
         tabSize              : 4,
 		indentUnit           : 4,
         lineNumbers          : true,
@@ -494,6 +495,15 @@
             //시작할 때 previewCloseBtn을 숨기도록 한다.
             var previewCloseBtn  = editor.find("." + editormd.classPrefix + "preview-close-btn");
             previewCloseBtn.hide();
+            
+            //myPreview 값이 true이면 previewing 실행
+            if (settings.myPreview) {
+            	//alert("myPreview");
+            	//this.state.preview = true;
+				//this.$CodeMirror.codeMirror.hide();
+            	//editormd.previewing();
+            	//alert("previewing(); 끝");
+            }
 
             return this;
         },
@@ -2504,6 +2514,7 @@
             }
             
             codeMirror.toggle();
+            //alert("codeMirror.toggle()");
             
             var escHandle = function(event) {
                 if (event.shiftKey && event.keyCode === 27) {

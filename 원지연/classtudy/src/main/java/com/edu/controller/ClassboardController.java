@@ -26,6 +26,7 @@ public class ClassboardController {
 	@Inject
 	ClassboardService classboardService;
 	
+	// ------------------------ TIL ------------------------
 	// TIL 작성 GET
 	@RequestMapping(value="/writeTIL", method=RequestMethod.GET)
 	public String getWriteTIL(HttpSession session, RedirectAttributes rttr) throws Exception {
@@ -35,7 +36,7 @@ public class ClassboardController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/member/login";
 		}
-		return "/classboard/til";
+		return "/classboard/writeTIL";
 	}
 	
 	// TIL 작성 POST
@@ -48,7 +49,51 @@ public class ClassboardController {
 		return "redirect:/";
 	}
 	
-	// 클래스게시판 목록 보기(클래스룸)
+	// TIL 목록 보기
+	@RequestMapping(value="/TIL")
+	public String listTIL(HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController listTIL()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		// session에서 memberDTO를 저장한다.
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		// memberDTO에서 강의번호를 찾아 저장한다.
+		int lectureNo = member.getLectureNo();
+		// memberDTO에서 아이디를 찾아 저장한다.
+		String memberId = member.getMemberId();
+		logger.info("ClassboardController classroom() lectureNo : " + lectureNo + ", " + memberId);
+		// 클래스게시판 목록 보기 화면에 보여줄 데이터를 가져와서 담는다.
+		model.addAttribute("list", classboardService.boardListTIL(lectureNo, memberId));
+		return "/classboard/listTIL";
+	}
+	
+	// ------------------------ 클래스룸 ------------------------
+	// 게시글 작성 GET
+	@RequestMapping(value="/write", method=RequestMethod.GET)
+	public String getWrite(HttpSession session, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController getWrite()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		return "/classboard/write";
+	}
+	
+	// 게시글 작성 POST
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	public String postWrite(ClassboardDTO cbDTO, HttpSession session, Model model) throws Exception {
+		logger.info("ClassboardController postWrite()....");
+		if (session.getAttribute("member") != null) {
+			classboardService.write(cbDTO);
+		}
+		return "redirect:/";
+	}
+	
+	// 게시판 목록 보기(클래스룸)
 	@RequestMapping(value="/classroom")
 	public String classroom(HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
 		logger.info("ClassboardController classroom()....");
@@ -67,7 +112,7 @@ public class ClassboardController {
 		return "/classboard/list";
 	}
 	
-	// 클래스게시판 게시글 상세 정보
+	// 게시글 상세 정보
 	@RequestMapping(value="/detail/{boardNo}")
 	public String detailBoard(@PathVariable int boardNo, Model model) throws Exception {
 		logger.info("ClassboardController detailBoard()....");
