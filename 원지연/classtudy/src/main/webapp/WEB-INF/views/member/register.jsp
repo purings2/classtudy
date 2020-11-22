@@ -51,7 +51,7 @@
 				<label class="control-label col-sm-4">생년월일</label>
 				<div class="col-sm-3">
 					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" 
-						min="1900-01-01" max="" value="1990-01-01" maxlength="10" placeholder="생년월일을 선택하세요."/>
+						min="1900-01-01" max="" value="1990-01-01" maxlength="10" placeholder="생년월일을 1990-01-01 형식으로 입력해주세요."/>
 				</div>
 				<%-- 
 				<div class="col-sm-2">

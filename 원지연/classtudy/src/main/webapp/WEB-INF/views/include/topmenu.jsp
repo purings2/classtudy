@@ -26,7 +26,10 @@
 					<span class="icon-bar"></span>	
 					<span class="icon-bar"></span>	
 				</button>
-				<a class="navbar-brand" href="/${path}">클래스터디</a>
+				<a class="navbar-brand" href="/${path}">
+					<span class="glyphicon glyphicon-education"></span> 
+					<span style="font-size: 24px;"><strong>클래스터디</strong></span>
+				</a>
 			</div>
 			<div>
 				<div class="collapse navbar-collapse" id="myNavbar">
@@ -50,7 +53,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/class/TIL">TIL</a></li>
-								<li><a href="${path}/class/classroom">클래스룸</a></li>
+								<li><a href="${path}/class/classroom/all">클래스룸</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -89,7 +92,10 @@
 					<span class="icon-bar"></span>	
 					<span class="icon-bar"></span>	
 				</button>
-				<a class="navbar-brand" href="/${path}">클래스터디</a>
+				<a class="navbar-brand" href="/${path}">
+					<span class="glyphicon glyphicon-education"></span> 
+					<span style="font-size: 24px;"><strong>클래스터디</strong></span>
+				</a>
 			</div>
 			<div>
 				<div class="collapse navbar-collapse" id="myNavbar">
@@ -113,7 +119,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/class/writeTIL">TIL</a></li>
-								<li><a href="${path}/class/classroom">클래스룸</a></li>
+								<li><a href="${path}/class/classroom/all">클래스룸</a></li>
 							</ul>
 						</li>				
 						<li><a href="${path}/member/login"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>

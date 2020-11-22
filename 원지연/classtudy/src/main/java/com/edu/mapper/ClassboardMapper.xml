@@ -6,20 +6,50 @@
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
 <mapper namespace="com.edu.mapper.ClassboardMapper">
 
-	<!-- TIL 작성 -->
+	<!-- TIL 게시글 작성 -->
 	<insert id="writeTIL">
 	INSERT INTO classboard 
 			(writer, title, content, category, writeDate, lectureNo)
 	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
 	</insert>
 
-	<!-- TIL 목록 보기 -->
+	<!-- TIL 게시글 목록 보기 -->
 	<select id="boardListTIL" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	<![CDATA[boardNo < #{maxNo}]]>
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	ORDER BY boardNo DESC LIMIT 5 
+	</select>
+	
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 -->
+	<select id="getTILCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	</select>
+	
+	<!-- 마지막 TIL 게시글 번호 추출 -->
+	<select id="getNextTILNum" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	</select>
+	
+	<!-- TIL 게시글 검색 -->
+	<select id="searchTIL" resultType="com.edu.domain.ClassboardDTO">
 	SELECT 	* 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
+	AND 	title LIKE #{keyword} OR content LIKE #{keyword} 
 	ORDER BY boardNo DESC 
 	</select>
 	
@@ -32,17 +62,55 @@
 	
 	<!-- 게시판 목록 보기 -->
 	<select id="boardList" resultType="com.edu.domain.ClassboardDTO">
-	SELECT 	* 
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
+	ORDER BY boardNo DESC LIMIT 5 
+	</select>
+	<!-- 게시판 목록 보기2 -->
+	<select id="boardList2" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
+	AND 	c.category = #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT 5 
+	</select>
+	
+	<!-- 화면에 보여줄 게시글 개수 추출 -->
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
-	ORDER BY boardNo DESC 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출2 -->
+	<select id="getBoardCount2" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = #{viewCategory} 
+	</select>
+	
+	<!-- 마지막 게시글 번호 추출 -->
+	<select id="getNextNum" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	<!-- 마지막 게시글 번호 추출2 -->
+	<select id="getNextNum2" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = #{viewCategory} 
 	</select>
 	
 	<!-- 게시글 상세 보기 -->
 	<select id="boardDetail" resultType="com.edu.domain.ClassboardDTO">
-	SELECT 	* 
-	FROM 	classboard 
-	WHERE 	boardNo = #{boardNo} 
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.boardNo = #{boardNo} 
 	</select>
 	
 	<!-- 게시글 조회수 증가 -->
@@ -65,5 +133,31 @@
 	FROM 	classboard 
 	WHERE 	boardNo = #{boardNo} 
 	</delete>
-
+	
+	<!-- 게시글 좋아요수 증가 -->
+	<update id="addLikes">
+	UPDATE 	classboard 
+	SET 	likes = likes + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 검색 -->
+	<select id="search" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
+	ORDER BY boardNo DESC 
+	</select>
+	
+	<!-- 게시글 검색2 -->
+	<select id="search2" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	c.category = #{viewCategory} 
+	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
+	ORDER BY boardNo DESC 
+	</select>
+	
 </mapper>

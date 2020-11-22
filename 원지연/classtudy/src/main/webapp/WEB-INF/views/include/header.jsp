@@ -10,8 +10,12 @@
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+<!-- 
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+ -->
 <style>
 div {
 	font-family: 'Nanum Gothic', sans-serif;
@@ -19,6 +23,9 @@ div {
 	font-family: 'Noto Sans KR', sans-serif;
 	font-family: 'Noto Serif KR', serif;
 	--%>
+}
+.navbar-brand {
+	font-family: 'Poor Story', cursive;
 }
 
 .dropdown-submenu {

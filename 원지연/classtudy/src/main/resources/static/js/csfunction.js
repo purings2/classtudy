@@ -161,7 +161,18 @@ function registerCheckForm(memberForm)
 		alert("생년월일을 모두 선택하세요.");
 		memberForm.dateOfBirth.focus();
 		return false;
-	}	
+	}
+	// 입력 받은 생년월일 값이 정해진 양식과 일치하는지 검사
+	var birthSplit = (memberForm.dateOfBirth.value).split('-');
+	// 문자열을 숫자로 바꿔서 저장
+	var year 	= birthSplit[0] * 1; //년
+	var month 	= birthSplit[1] * 1; //월
+	var day 	= birthSplit[2] * 1; //일
+	if(birthSplit[0].length != 4 || birthSplit[1].length != 2 || birthSplit[2].length != 2 
+		|| year < 1900 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31) {
+		alert("생년월일을 지정된 형식으로 입력해주세요.\n<예시> 1990-01-01");
+		return false;
+	}
 	/*
 	if(memberForm.birthYear.value == "" ||
 		memberForm.birthMonth.value == "" ||
@@ -300,6 +311,17 @@ function updateCheckForm(memberForm)
 	if(memberForm.dateOfBirth.value == "") {
 		alert("생년월일을 모두 선택하세요.");
 		memberForm.dateOfBirth.focus();
+		return false;
+	}
+	// 입력 받은 생년월일 값이 정해진 양식과 일치하는지 검사
+	var birthSplit = (memberForm.dateOfBirth.value).split('-');
+	// 문자열을 숫자로 바꿔서 저장
+	var year 	= birthSplit[0] * 1; //년
+	var month 	= birthSplit[1] * 1; //월
+	var day 	= birthSplit[2] * 1; //일
+	if(birthSplit[0].length != 4 || birthSplit[1].length != 2 || birthSplit[2].length != 2 
+		|| year < 1900 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31) {
+		alert("생년월일을 지정된 형식으로 입력해주세요.\n<예시> 1990-01-01");
 		return false;
 	}
 	// 성별 검사

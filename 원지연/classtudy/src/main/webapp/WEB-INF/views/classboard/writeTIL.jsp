@@ -32,7 +32,7 @@
 			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}"/>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제목</label>
+			<label class="control-label col-sm-2">제  목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" maxlength=50/>
 			</div>

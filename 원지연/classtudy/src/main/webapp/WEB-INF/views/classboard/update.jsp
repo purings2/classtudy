@@ -56,7 +56,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2">작성자</label>
 			<div class="col-sm-3">
-				<input type="text" id="writer" name="writer" class="form-control" value="${detail.writer}" readonly="readonly" maxlength=16/>
+				<input type="text" id="writer" name="writer" class="form-control" value="${detail.writerName}" readonly="readonly" maxlength=16/>
 			</div>
 			<label class="control-label col-sm-2">작성일</label>
 			<div class="col-sm-3">
@@ -64,7 +64,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제목</label>
+			<label class="control-label col-sm-2">제  목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" maxlength=50 value="${detail.title}"/>
 			</div>
@@ -92,7 +92,7 @@
 			if(confirm("정말 취소하시겠습니까?") == false){
 				return false;
 			} else {
-				location.href ="/class/detail/${detail.boardNo}";
+				location.href="/class/detail/${detail.boardNo}";
 			}
 		});
 

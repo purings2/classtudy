@@ -17,6 +17,10 @@ public class ClassboardDTO {
 	private Date 	writeDate;
 	private int 	lectureNo;
 	
+	// Member Table에 있는 name 컬럼의 값
+	// writer = memberId일 때의 값을 JOIN으로 가져옴
+	private String 	writerName;
+	
 	public ClassboardDTO() {}
 	
 }
