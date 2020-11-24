@@ -133,18 +133,47 @@ public class MemberController {
 	}
 	
 	// 수정할 화면을 보여주세요. 라는 회원정보 수정 요청이 들어왔다.
-	// 회원정보수정 GET
+	// 회원정보 수정 GET
 	@RequestMapping(value="/memberUpdate", method=RequestMethod.GET)
-	public String memberUpdateView() throws Exception {
+	public String memberUpdateView(HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
 		LOGGER.info("MemberController memberUpdateView().....");
 		
-		return "/member/memberUpdate";				
+		// MemberDTO를 저장하기 위한 변수 선언
+		MemberDTO memberDTO = null;
+		String tel = "", tel1 = "", tel2 = "", tel3 = "";
+		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
+		if(session.getAttribute("member") != null) {
+			memberDTO = (MemberDTO)session.getAttribute("member");
+			// member에 담긴 전화번호를 저장
+			tel = memberDTO.getTel();
+			// 전화번호를 tel1, tel2, tel3로 나눠서 저장
+			tel1 = tel.substring(0, 3); //첫 세자리 저장
+			tel = tel.substring(4); //뒷 번호들만 남기기
+			tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
+			tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
+			// tel1, tel2, tel3를 model에 담아서 보낸다.
+			model.addAttribute("tel1", tel1);
+			model.addAttribute("tel2", tel2);
+			model.addAttribute("tel3", tel3);
+		} else {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		
+		return "/member/memberUpdate";
 	}
 	
-	// 회원정보수정 POST
-	@RequestMapping(value="memberUpdate", method=RequestMethod.POST)
-	public String memberUpdate(MemberDTO memberDTO, HttpSession session) throws Exception {
+	// 회원정보 수정 POST
+	@RequestMapping(value="/memberUpdate", method=RequestMethod.POST)
+	public String memberUpdate(MemberDTO memberDTO, HttpSession session, HttpServletRequest request) throws Exception {
 		LOGGER.info("MemberController memberUpdate().....");
+		
+		// 전화번호 01X-XXXX-XXXX 형식으로 변환
+		String tel1 = request.getParameter("tel1");
+		String tel2 = request.getParameter("tel2");
+		String tel3 = request.getParameter("tel3");
+		String tel = tel1 + "-" + tel2 + "-" + tel3;
+		memberDTO.setTel(tel);
 		
 		memberService.memberUpdate(memberDTO);
 		

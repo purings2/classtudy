@@ -6,53 +6,158 @@
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
 <mapper namespace="com.edu.mapper.ClassboardMapper">
 
-	<!-- TIL 작성 -->
-	<insert id="classboardInsert">
-		INSERT INTO classboard
-				(writer, title, content, category, writeDate, lectureNo)
-		VALUES	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
+	<!-- TIL 게시글 작성 -->
+	<insert id="writeTIL">
+	INSERT INTO classboard 
+			(writer, title, content, category, writeDate, lectureNo)
+	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
 	</insert>
-	<!--  아이디 중복 검사
-	<select id="idCheck" resultType="int">
-		SELECT COUNT(*)
-		FROM member
-		WHERE memberId = #{memberId}	
-	</select>
 
-	회원 가입
-	<insert id="memberInsert" parameterType="com.edu.domain.MemberDTO" >
-	<insert id="memberInsert">
-		INSERT INTO member 
-				(memberId, passwd, name, dateOfBirth, gender, tel, 
-				zipcode, address, addressDetail, email, regDate, lectureId)
-		VALUES	(#{memberId}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, 
-				#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE(), #{lectureId})
-	</insert>
-	
-	로그인
-	<select id="login" resultType="com.edu.domain.MemberDTO">
-		SELECT memberId, passwd, name, dateOfBirth, gender, tel, 
-		zipcode, address, addressDetail, email, regDate, lectureId
-		FROM member
-		WHERE memberId = #{memberId}
-		AND passwd = #{passwd}
+	<!-- TIL 게시글 목록 보기 -->
+	<select id="boardListTIL" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	<![CDATA[boardNo < #{maxNo}]]>
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	ORDER BY boardNo DESC LIMIT 5 
 	</select>
 	
-	회원 정보 수정
-	<update id="memberUpdate">
-		UPDATE 	member
-		SET 	memberId = #{memberId}, passwd = #{passwd}, name = #{name}, 
-				dateOfBirth = #{dateOfBirth}, gender = #{gender}, tel = #{tel}, 
-				zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail}, 
-				email = #{email}, lectureId = #{lectureId} 
-		WHERE 	memberId = #{memberId}
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 -->
+	<select id="getTILCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	</select>
+	
+	<!-- 마지막 TIL 게시글 번호 추출 -->
+	<select id="getNextTILNum" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	</select>
+	
+	<!-- TIL 게시글 검색 -->
+	<select id="searchTIL" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	* 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	title LIKE #{keyword} OR content LIKE #{keyword} 
+	ORDER BY boardNo DESC 
+	</select>
+	
+	<!-- 게시글 작성 -->
+	<insert id="write">
+	INSERT INTO classboard 
+			(writer, title, content, category, writeDate, lectureNo)
+	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
+	</insert>
+	
+	<!-- 게시판 목록 보기 -->
+	<select id="boardList" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
+	ORDER BY boardNo DESC LIMIT 5 
+	</select>
+	<!-- 게시판 목록 보기2 -->
+	<select id="boardList2" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
+	AND 	c.category = #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT 5 
+	</select>
+	
+	<!-- 화면에 보여줄 게시글 개수 추출 -->
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출2 -->
+	<select id="getBoardCount2" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = #{viewCategory} 
+	</select>
+	
+	<!-- 마지막 게시글 번호 추출 -->
+	<select id="getNextNum" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	<!-- 마지막 게시글 번호 추출2 -->
+	<select id="getNextNum2" resultType="Integer">
+	SELECT 	MAX(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = #{viewCategory} 
+	</select>
+	
+	<!-- 게시글 상세 보기 -->
+	<select id="boardDetail" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.boardNo = #{boardNo} 
+	</select>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="addViews">
+	UPDATE 	classboard 
+	SET 	views = views + 1 
+	WHERE 	boardNo = #{boardNo} 
 	</update>
-
-	회원 탈퇴
-	<delete id="memberDelete">
-		DELETE 
-		FROM member
-		WHERE memberId = #{memberId}
-		AND passwd = #{passwd}
-	</delete> -->
+	
+	<!-- 게시글 수정 -->
+	<update id="update">
+	UPDATE 	classboard 
+	SET 	title = #{title}, content = #{content}, category = #{category} 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+	DELETE 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</delete>
+	
+	<!-- 게시글 좋아요수 증가 -->
+	<update id="addLikes">
+	UPDATE 	classboard 
+	SET 	likes = likes + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 검색 -->
+	<select id="search" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
+	ORDER BY boardNo DESC 
+	</select>
+	
+	<!-- 게시글 검색2 -->
+	<select id="search2" resultType="com.edu.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	c.category = #{viewCategory} 
+	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
+	ORDER BY boardNo DESC 
+	</select>
+	
 </mapper>

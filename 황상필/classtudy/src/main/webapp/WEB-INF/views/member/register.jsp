@@ -14,7 +14,6 @@
 	<div class="container">
 		<form class="form-horizontal" action="/member/register" method="post">
 			<div class="form-group">
-				<div class="col-sm-0"></div>
 				<div class="col-sm-12">
 					<h2 align="center">회원가입</h2>
 				</div>
@@ -50,10 +49,9 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" 
-						min="1900-01-01" max="" value="1990-01-01" 
-						maxlength="10" placeholder="생년월일을 선택하세요."/>
+						min="1900-01-01" max="" value="1990-01-01" maxlength="10" placeholder="생년월일을 1990-01-01 형식으로 입력해주세요."/>
 				</div>
 				<%-- 
 				<div class="col-sm-2">
@@ -90,8 +88,8 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">성  별</label>
-					<div class="control-form col-sm-3">
-						<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked> 남성</label>
+					<div class="control-form col-sm-3" style="text-align: left;">
+						<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"> 남성</label>&nbsp;
 						<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"> 여성</label>
 					</div>
 			</div>
@@ -124,19 +122,20 @@
 					<input type="text" class="form-control" name="zipcode" id="zipcode" readonly="readonly"/>
 				</div>
 				<div class="col-sm-3">
-					<input type="button" class="form-control" onclick="daumZipCode()" value="우편번호 찾기"/>
+					<button class="form-control" type="button" onclick="daumZipCode()" 
+						style="background-color: #dddddd"><b>우편번호 찾기</b></button>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">주  소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" name="address" id="address"/>
+					<input type="text" class="form-control" name="address" id="address" placeholder="우편번호 찾기 버튼을 이용해주세요." readonly/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">상세 주소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" name="addressDetail" id="addressDetail"/>
+					<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -147,12 +146,12 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
-				<div class="col-sm-4">
-					<input type="text" id="lectureId" name="lectureId" class="form-control" placeholder="강의번호를 입력하세요."/>
+				<div class="col-sm-3">
+					<input type="text" id="lectureNo" name="lectureNo" class="form-control" placeholder="강의번호를 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
+				<div class="col-sm-12" style="text-align: center;">
 					<button type="button" class="btn btn-success"
 						onclick="registerCheckForm(this.form)">회원가입</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>
@@ -184,8 +183,7 @@
 
 		// 생년월일 입력란에 max 값을 오늘날짜로 설정
 		var today = new Date().toISOString().substring(0, 10);
-		document.getElementById("dateOfBirth")
-			.setAttribute("max", today);
+		document.getElementById("dateOfBirth").setAttribute("max", today);
 		
 	});
 

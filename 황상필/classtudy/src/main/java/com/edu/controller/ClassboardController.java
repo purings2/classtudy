@@ -1,212 +1,260 @@
 package com.edu.controller;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.domain.ClassboardDTO;
+import com.edu.domain.MemberDTO;
 import com.edu.service.ClassboardService;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
-@RequestMapping("/classboard/*") // MemberController에서 공통적으로 사용될 url mapping
+@RequestMapping("/class/*") // ClassboardController에서 공통적으로 사용될 url mapping
 public class ClassboardController {
-
-	//로깅을 위한 변수 logger를 선언한다.
-		private static final Logger LOGGER
-			= LoggerFactory.getLogger(MemberController.class);
 	
-		// 컨트롤러 => 서비스 => Mapper
-		//@Resource(name="com.edu.service.ClassboardService")
-		@Inject
-		ClassboardService classboardService;
-		
-		// 게시글쓰기 GET : 게시글쓰기 화면을 보려고 요청이 들어오면
-		// 웹 브라우저에서 http://localhost:8071/classboard/TIL로 호출한다.
-		@RequestMapping(value="/TIL", method=RequestMethod.GET)
-		public String getTIL() throws Exception {
-			LOGGER.info("ClassboardController getTIL().....");
-			return "/classboard/TIL"; // => WEB-INF/views/member/register.jsp
+	//로깅을 위한 변수 logger를 선언한다.
+	private static final Logger logger = LoggerFactory.getLogger(ClassboardController.class);
+	
+	@Inject
+	ClassboardService classboardService;
+	
+	// --------------------------------------------------------------
+	// 내가 쓴 TIL 
+	// --------------------------------------------------------------
+	// TIL 게시글 작성 GET
+	@RequestMapping(value="/writeTIL", method=RequestMethod.GET)
+	public String getWriteTIL(HttpSession session, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController getWriteTIL()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
 		}
-		
-		// 게시글쓰기 POST : 게시글쓰기에 필요한 자료를 가지고 게시글쓰기 요청이 들어오면 
-		// 웹 브라우저에서 http://localhost:8071/classboard/TIL로 호출한다.
-		@RequestMapping(value="/TIL", method=RequestMethod.POST)
-		public String postTIL(ClassboardDTO classboardDTO, HttpServletRequest request, Model model) throws Exception {
-			LOGGER.info("ClassboardController postTIL().....");
-			
-			classboardService.insertClassboard(classboardDTO);
-			
-			return "redirect:/classboard/classboardList"; // => WEB-INF/views/classboard/classboardList.jsp
+		return "/classboard/writeTIL";
+	}
+	
+	// TIL 게시글 작성 POST
+	@RequestMapping(value="/writeTIL", method=RequestMethod.POST)
+	public String postWriteTIL(ClassboardDTO cbDTO, HttpSession session, Model model) throws Exception {
+		logger.info("ClassboardController postWriteTIL()....");
+		if (session.getAttribute("member") != null) {
+			classboardService.writeTIL(cbDTO);
 		}
-//		
-//		// 회원가입 POST : 회원가입에 필요한 자료를 가지고 회원가입 요청이 들어오면
-//		@RequestMapping(value="/register", method=RequestMethod.POST)
-//		public String postRegister(MemberDTO memberDTO, HttpServletRequest request, Model model) throws Exception {
-//			LOGGER.info("MemberController postRegister().....");
-//			
-//			/*
-//			// 생년월일 XXXXXXXX 형식으로 변환
-//			String birthYear = request.getParameter("birthYear");
-//			String birthMonth = request.getParameter("birthMonth");
-//			String birthDay = request.getParameter("birthDay");
-//			String dateOfBirth = birthYear + birthMonth + birthDay;
-//			memberDTO.setDateOfBirth(dateOfBirth);
-//			*/
-//			
-//			// 전화번호 01X-XXXX-XXXX 형식으로 변환
-//			String tel1 = request.getParameter("tel1");
-//			String tel2 = request.getParameter("tel2");
-//			String tel3 = request.getParameter("tel3");
-//			String tel = tel1 + "-" + tel2 + "-" + tel3;
-//			memberDTO.setTel(tel);
-//			
-//			// 회원아이디가 존재하는지 검사한다.
-//			// 데이터가 존재하면 1을 리턴하고 아니면 0을 리턴하는 idCheck메서드를 MemberService에 만든다.
-//			int result = memberService.idCheck(memberDTO);
-//			LOGGER.info("MemberController Return Count[" + result + "].....");
-//			
-//			if(result >= 1) {
-//				return "/member/register";
-//			} else {
-//				memberService.insertMember(memberDTO);
-//			}
-//			
-//			return "redirect:/member/login";
-//		}	
-//		
-//		// 아이디 중복 검사
-//		@ResponseBody
-//		@RequestMapping(value="/idCheck", method=RequestMethod.POST)
-//		public int idCheck(MemberDTO memberDTO) throws Exception {
-//			LOGGER.info("MemberController : " + memberDTO);
-//			
-//			//아이디 중복 검사를 하기 위해서 memberDTO를 Service에게 넘겨준다.
-//			int result = memberService.idCheck(memberDTO);
-//			LOGGER.info("MemberController Return Value [" + result + "]");
-//			
-//			return result;
-//		}
-//		
-//		// 로그인 GET : 로그인 화면을 보려고 요청이 들어오면
-//		// 웹 브라우저에서 http://localhost:8071/member/login으로 호출한다.
-//		@RequestMapping(value="/login", method=RequestMethod.GET)
-//		public String getLogin() throws Exception {
-//			LOGGER.info("MemberController getLogin().....");
-//			return "/member/login"; // => WEB-INF/views/member/login.jsp
-//		}
-//		
-//		// 로그인 POST : 로그인에 필요한 자료를 가지고 로그인 요청이 들어오면
-//		// DB에 확인하여 정확한 정보이면 세션을 발급해주고, 아니라면 msg를 만들어서 보내준다.
-//		// RedirectAttributes를 사용하면 redirect로 보내지만 값을 같이 보낼 수 있다.
-//		@RequestMapping(value="/login", method=RequestMethod.POST)
-//		public String login(MemberDTO memberDTO, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
-//			LOGGER.info("MemberController login POST.....");
-//			
-//			HttpSession session = req.getSession();
-//			//LOGGER.info("MemberController login POST session : " + session);
-//			
-//			//넘겨받은 회원정보를 가지고 서비스에게 의뢰한다.
-//			MemberDTO login = memberService.login(memberDTO);
-//			LOGGER.info("MemberController Return Value : " + login);
-//			
-//			//////////////////////////////////////////////////////////
-//			// 해당하는 회원의 정보가 없으면
-//			if(login == null) {
-//				session.setAttribute("member", null);
-//				
-//				//rttr.addAttribute("msg", false)를 사용하면, 변수명과 값이 주소에 노출된다.
-//				//rttr.addAttribute("msg", false);
-//				
-//				//RedirectAttributes를 사용하여 변수명과 주소값을 노출시키지 않고 사용한다.
-//				rttr.addFlashAttribute("msg", false);
-//			} else {
-//				//해당하는 회원의 정보가 있으면
-//				session.setAttribute("member", login);
-//			}
-//			return "redirect:/member/login";
-//		}
-//		
-//		// 로그아웃
-//		@RequestMapping(value = "/logout", method = RequestMethod.GET)
-//		public String logout(HttpSession session) throws Exception {
-//			LOGGER.info("MemberController logout().....");
-//			
-//			// 로그아웃 버튼을 눌렀을 경우, 세션을 없애고 로그인화면으로 돌아가도록 한다.
-//			session.invalidate();
-//			return "redirect:/member/login";
-//		}
-//		
-//		// 수정할 화면을 보여주세요. 라는 회원정보 수정 요청이 들어왔다.
-//		// 회원정보수정 GET
-//		@RequestMapping(value="/memberUpdate", method=RequestMethod.GET)
-//		public String memberUpdateView() throws Exception {
-//			LOGGER.info("MemberController memberUpdateView().....");
-//			
-//			return "/member/memberUpdate";				
-//		}
-//		
-//		// 회원정보수정 POST
-//		@RequestMapping(value="memberUpdate", method=RequestMethod.POST)
-//		public String memberUpdate(MemberDTO memberDTO, HttpSession session) throws Exception {
-//			LOGGER.info("MemberController memberUpdate().....");
-//			
-//			memberService.memberUpdate(memberDTO);
-//			
-//			// 회원정보를 수정하면 다시 로그인하도록 세션을 만료시킨다.
-//			session.invalidate();
-//			
-//			return "/member/login";
-//		}
-//		
-//		// 회원 탈퇴 GET
-//		@RequestMapping(value="/memberDelete", method=RequestMethod.GET)
-//		public String memberDeleteView() throws Exception {
-//			LOGGER.info("MemberController memberDeleteView GET.....");
-//			return "/member/memberDelete";
-//		}
-//		
-//		// 회원 탈퇴 POST
-//		@RequestMapping(value="/memberDelete", method=RequestMethod.POST)
-//		public String memberDelete(MemberDTO memberDTO, HttpSession session, RedirectAttributes rttr) throws Exception {
-//			LOGGER.info("MemberController memberDelete POST.....");
-//			
-//			// 세션에 들어있는(=DB에 있는 정보) member정보를 가져와서 member변수에 저장한다.
-//			MemberDTO member = (MemberDTO)session.getAttribute("member");
-//			
-//			// 세션에 들어있는 비밀번호를 변수에 저장한다.		
-//			String sessionPasswd = member.getPasswd();
-//			
-//			// 사용자가 입력한 비밀번호가 매개변수로 들어오는 memberDTO에 들어있는 비밀번호이다.
-//			String memberDTOPasswd = memberDTO.getPasswd();
-//			
-//			// 세션의 비밀번호와 사용자가 입력한 비밀번호가 맞지 않으면		
-//			// 회원탈퇴화면으로 msg에 false를 담아서 이동한다. 
-//			if( !(sessionPasswd.equals(memberDTOPasswd)) ) {
-//				rttr.addFlashAttribute("msg", false);
-//				return "redirect:/member/memberDelete";
-//			} 
-//			
-//			// 세션의 비밀번호와 사용자가 입력한 비밀번호가 맞으면
-//			// 회원 탈퇴 작업 => Service에게 회원탈퇴작업을 시킨다.
-//			memberService.memberDelete(memberDTO);
-//			session.invalidate();
-//			
-//			return "redirect:/member/login";
-//		}
-//
-//		//게시글 삭제
-//		//삭제할 게시번호를 받아서 서비스한테 게시번호를 주고 삭제작업을 의뢰한다.
-////		@RequestMapping("/delete")
-////		public String delete(@RequestParam("b_no") int b_no) throws Exception {
-////			System.out.println("Controller delete Before");
-////			boardService.boardDelete(b_no);
-////			return "redirect:/board/list";
-////		}
+		return "redirect:/class/classroom/all";
+	}
+	
+	// TIL 게시글 목록 보기
+	@RequestMapping(value={"/TIL", "TIL/{pageNum}"})
+	public String listTIL(@PathVariable Optional<Integer> pageNum, HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController listTIL()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		// session에서 memberDTO를 저장한다.
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		// memberDTO에서 강의번호를 찾아 저장한다.
+		int lectureNo = member.getLectureNo();
+		// memberDTO에서 아이디를 찾아 저장한다.
+		String memberId = member.getMemberId();
+		logger.info("ClassboardController classroom() lectureNo : " + lectureNo + ", " + memberId);
 		
+		// 현재 페이지의 번호를 저장하는 변수
+		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
+		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
+		// 화면에 보여줄 전체 게시글 건수를 구하기. 
+		// 말머리가 있으면 해당하는 게시글만 카운트한다.
+		int totalCount = classboardService.getTILCount(lectureNo, memberId);
+		// 구한 값을 뷰 페이지로 보내준다.
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("totalCount", totalCount);
+		// 현재 게시글 번호를 이용해서 출력될 페이지의 최대 boardNo을 구한다.
+		int maxNo = classboardService.getNextTILNum(lectureNo, memberId) - (pageNumber-1) * 5;
+		// 클래스게시판 목록 보기 화면에 보여줄 데이터를 가져와서 담는다.
+		model.addAttribute("list", classboardService.boardListTIL(lectureNo, memberId, maxNo));
+		return "/classboard/listTIL";
+	}
+	
+	// TIL 게시글 검색
+	// 제목 또는 내용에 키워드가 들어간 글 찾기
+	@RequestMapping(value="/searchTIL/{keyword}")
+	public String searchTIL(@PathVariable String keyword, HttpSession session, Model model) throws Exception {
+		logger.info("ClassboardController search()....");
+		logger.info("ClassboardController search() : " + keyword);
+		// session에서 memberDTO를 저장한다.
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		// memberDTO에서 강의번호를 찾아 저장한다.
+		int lectureNo = member.getLectureNo();
+		// memberDTO에서 아이디를 찾아 저장한다.
+		String memberId = member.getMemberId();
+		logger.info("ClassboardController classroom() lectureNo : " + lectureNo + ", " + memberId);
+		// 현재 페이지의 번호를 저장하는 변수
+		int pageNumber = 1;
+		// 화면에 보여줄 전체 게시글 건수를 구하기. 
+		// 말머리가 있으면 해당하는 게시글만 카운트한다.
+		int totalCount = classboardService.getTILCount(lectureNo, memberId);
+		// 구한 값을 뷰 페이지로 보내준다.
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("totalCount", 0); //임시값. 내일 수정할 것!!!!!!!!!
+		// 클래스게시판 목록 화면에 보여줄 데이터를 검색해와서 담는다.
+		model.addAttribute("list", classboardService.searchTIL(lectureNo, memberId, "%" + keyword + "%"));
+		return "/classboard/listTIL";
+	}
+	
+	// --------------------------------------------------------------
+	// 클래스룸 
+	// --------------------------------------------------------------
+	// 게시글 작성 GET
+	@RequestMapping(value="/write", method=RequestMethod.GET)
+	public String getWrite(HttpSession session, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController getWrite()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		return "/classboard/write";
+	}
+	
+	// 게시글 작성 POST
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	public String postWrite(ClassboardDTO cbDTO, HttpSession session, Model model) throws Exception {
+		logger.info("ClassboardController postWrite()....");
+		if (session.getAttribute("member") != null) {
+			classboardService.write(cbDTO);
+		}
+		return "redirect:/class/classroom/all";
+	}
+	
+	// 게시판 목록 보기
+	@RequestMapping(value={"/classroom/{viewCategory}", "/classroom/{viewCategory}/{pageNum}"})
+	public String classroom(@PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum, 
+			HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController classroom()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		// session에서 memberDTO를 저장한다.
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		// memberDTO에서 강의번호를 찾아 저장한다.
+		int lectureNo = member.getLectureNo();
+		logger.info("ClassboardController classroom() lectureNo : " + lectureNo);
+		logger.info("ClassboardController classroom() viewCategory : " + viewCategory);
+		
+		// 현재 페이지의 번호를 저장하는 변수
+		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
+		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
+		// 화면에 보여줄 전체 게시글 건수를 구하기. 
+		// 말머리가 있으면 해당하는 게시글만 카운트한다.
+		int totalCount = viewCategory.equals("all") ? 
+				classboardService.getBoardCount(lectureNo) : classboardService.getBoardCount2(lectureNo, viewCategory);
+		// 구한 값을 뷰 페이지로 보내준다.
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("totalCount", totalCount);
+		// 클래스게시판 목록 보기 화면에 보여줄 데이터를 가져와서 담는다.
+		if (viewCategory.equals("all")) {
+			// 현재 게시글 번호를 이용해서 출력될 페이지의 최대 boardNo을 구한다.
+			int maxNo = classboardService.getNextNum(lectureNo) - (pageNumber-1) * 5;
+			model.addAttribute("list", classboardService.boardList(lectureNo, maxNo));
+		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 보여준다.
+			// 현재 게시글 번호를 이용해서 출력될 페이지의 최대 boardNo을 구한다.
+			int maxNo = classboardService.getNextNum2(lectureNo, viewCategory) - (pageNumber-1) * 10;
+			model.addAttribute("list", classboardService.boardList2(lectureNo, viewCategory, maxNo));
+		}
+		return "/classboard/list";
+	}
+	
+	// 게시글 상세 정보
+	@RequestMapping(value="/detail/{boardNo}")
+	public String detailBoard(@PathVariable int boardNo, Model model) throws Exception {
+		logger.info("ClassboardController detailBoard()....");
+		//logger.info("detailBoard() : " + classboardService.boardDetail(boardNo));
+		// boardNO에 해당하는 자료의 조회수를 1 증가 시킨다.
+		classboardService.addViews(boardNo);
+		// boardNO에 해당하는 자료를 model에 담는다.
+		model.addAttribute("detail", classboardService.boardDetail(boardNo));
+		return "/classboard/detail";
+	}
+	
+	// 게시글 수정 GET
+	@RequestMapping(value="/update/{boardNo}", method=RequestMethod.GET)
+	public String getUpdate(@PathVariable int boardNo, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
+		logger.info("ClassboardController getUpdate()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		//logger.info("BoardDTO : " + classboardService.boardDetail(boardNo));
+		model.addAttribute("detail", classboardService.boardDetail(boardNo));
+		return "/classboard/update";
+	}
+	
+	// 게시글 수정 POST
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String postUpdate(ClassboardDTO cbDTO, HttpSession session) throws Exception {
+		logger.info("ClassboardController postUpdate()....");
+		//logger.info("postUpdate() : " + cbDTO);
+		classboardService.update(cbDTO);
+		return "redirect:/class/detail/" + cbDTO.getBoardNo();
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value="/delete/{boardNo}")
+	public String delete(@PathVariable int boardNo) throws Exception {
+		logger.info("ClassboardController delete()....");
+		classboardService.delete(boardNo);
+		return "redirect:/class/classroom/all";
+	}
+	
+	// 게시글 좋아요
+	@RequestMapping(value="/like", method=RequestMethod.POST)
+	public int like(int boardNo) throws Exception {
+		logger.info("ClassboardController like()....");
+		// 게시글 좋아요를 하기 위해 게시글 번호를 Service에게 넘겨준다.
+		int result = classboardService.addLikes(boardNo);
+		return result;
+	}
+	
+	// 게시글 검색
+	// 제목 또는 내용에 키워드가 들어간 글 찾기
+	@RequestMapping(value="/search/{keyword}/{viewCategory}")
+	public String search(@PathVariable String keyword, @PathVariable String viewCategory, HttpSession session, Model model) throws Exception {
+		logger.info("ClassboardController search()....");
+		logger.info("ClassboardController search() : " + keyword);
+		// session에서 memberDTO를 저장한다.
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		// memberDTO에서 강의번호를 찾아 저장한다.
+		int lectureNo = member.getLectureNo();
+		// 현재 페이지의 번호를 저장하는 변수
+		int pageNumber = 1;
+		// 화면에 보여줄 전체 게시글 건수를 구하기. 
+		// 말머리가 있으면 해당하는 게시글만 카운트한다.
+		int totalCount = viewCategory.equals("all") ? 
+				classboardService.getBoardCount(lectureNo) : classboardService.getBoardCount2(lectureNo, viewCategory);
+		// 구한 값을 뷰 페이지로 보내준다.
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("totalCount", 0); //임시값. 내일 수정할 것!!!!!!!!!
+		// 클래스게시판 목록 화면에 보여줄 데이터를 검색해와서 담는다.
+		if (viewCategory.equals("all")) {
+			model.addAttribute("list", classboardService.search(lectureNo, "%" + keyword + "%"));
+		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 검색한다.
+			model.addAttribute("list", classboardService.search2(lectureNo, "%" + keyword + "%", viewCategory));
+		}
+		return "/classboard/list";
+	}
+	
 }
