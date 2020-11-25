@@ -45,7 +45,7 @@
 					        	<h4 class="modal-title">태그를 선택하세요</h4>
 					    	</div>
 					    	<div class="modal-body">
-					    		<p>선택한 태그</p><input name="tagInModal" id="tagInModal" value=""/><hr>
+					    		<p>선택한 태그</p><input type="text" style="display: none;" class="tags" name="tagInModal" id="tagInModal" value=""/><hr>
 					      		<button type="button" class="btn btn-primary btn-sm" id="javaTag" name="javaTag" >Java</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="springTag" name="springTag">Spring</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="springbootTag" name="springbootTag">Spring Boot</button>					      		
@@ -53,14 +53,14 @@
 					      		<button type="button" class="btn btn-primary btn-sm" id="jstlTag" name="jstlTag">JSTL</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="frontendTag" name="frontendTag">Front-End</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="backendTag" name="backendTag">Back-End</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="webTag" name="webTag">웹 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="appTag" name="appTag">앱 개발</button>
+					      		<button type="button" class="btn btn-primary btn-sm" id="webdevTag" name="webdevTag">웹 개발</button>
+					      		<button type="button" class="btn btn-primary btn-sm" id="appdevTag" name="appdevTag">앱 개발</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="htmlcssTag" name="htmlcssTag">HTML/CSS</button>					      		
-					      		<button type="button" class="btn btn-primary btn-sm" id="javascriptTag" name="javascriptTag">javascript</button>
+					      		<button type="button" class="tag btn btn-primary btn-sm" id="javascriptTag" name="javascriptTag">Javascript</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="jqueryTag" name="jqueryTag">jQuery</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="jspTag" name="jspTag">JSP</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="bootstrapTag" name="bootstrapTag">Bootstrap</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="pythonTag" name="pythonTag">python</button>
+					      		<button type="button" class="btn btn-primary btn-sm" id="pythonTag" name="pythonTag">Python</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="djangoTag" name="djangoTag">Django</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="flaskTag" name="flaskTag">Flask</button>
 					      		<button type="button" class="btn btn-primary btn-sm" id="gamedevTag" name="gamedevTag">게임 개발</button>
@@ -147,14 +147,19 @@
 		$('#tagInModal').tagsInput({
 			'defaultText' : ' ',
 			'height':'60px',
-			'width':'565px'	
-			/* onChange: function (elem, elem_tags) {
-	                var languages = ['Java', 'Spring', 'Python'];
-	                $('.tag', elem_tags).each(function () {
-	                    if ($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
-	                        $(this).css('background-color', 'lightyellow');
-	                });
-	            } */		
+			'width':'565px',	
+
+			//태그 선택 시 배경색을 원 태그와 같이 맞춰주는 메서드(미구현)
+			onChange: function (elem, elem_tags) {
+                    var languages = ['php', 'ruby', 'Javascript'];
+                    $('.tags', elem_tags).each(function () {
+                        if ($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
+                            $(this).css('background-color', 'lightyellow');
+                    });
+	        }
+	          
+
+			
 		});
 
 		$('#javaTag').on("click", function() {
@@ -165,34 +170,198 @@
 			$('#tagInModal').addTag('Spring')
 		});
 
+		$('#springbootTag').on("click", function() {
+			$('#tagInModal').addTag('Spring Boot')
+		});
+
+		$('#djangoTag').on("click", function() {
+			$('#tagInModal').addTag('Django')
+		});
+
+		$('#flaskTag').on("click", function() {
+			$('#tagInModal').addTag('Flask')
+		});
+
 		$('#jdbcTag').on("click", function() {
 			$('#tagInModal').addTag('JDBC')
 		});
 
-		$('#htmlTag').on("click", function() {
-			$('#tagInModal').addTag('HTML')
+		$('#jstlTag').on("click", function() {
+			$('#tagInModal').addTag('JSTL')
 		});
 
-		$('#cssTag').on("click", function() {
-			$('#tagInModal').addTag('CSS')
+		$('#htmlcssTag').on("click", function() {
+			$('#tagInModal').addTag('HTML/CSS')
 		});
-
+		
 		$('#javascriptTag').on("click", function() {
-			$('#tagInModal').addTag('javascript')
+			$('#tagInModal').addTag('Javascript')
+		});
+
+		$('#jqueryTag').on("click", function() {
+			$('#tagInModal').addTag('jQuery')
+		});
+
+		$('#jspTag').on("click", function() {
+			$('#tagInModal').addTag('JSP')
+		});
+
+		$('#backendTag').on("click", function() {
+			$('#tagInModal').addTag('Back-End')
+		});
+
+		$('#frontendTag').on("click", function() {
+			$('#tagInModal').addTag('Front-End')
+		});
+
+		$('#bootstrapTag').on("click", function() {
+			$('#tagInModal').addTag('Bootstrap')
+		});
+
+		$('#webdevTag').on("click", function() {
+			$('#tagInModal').addTag('웹 개발')
+		});
+
+		$('#appdevTag').on("click", function() {
+			$('#tagInModal').addTag('앱 개발')
 		});
 
 		$('#pythonTag').on("click", function() {
 			$('#tagInModal').addTag('Python')
 		});
-		
+
+		$('#databaseTag').on("click", function() {
+			$('#tagInModal').addTag('데이터베이스')
+		});
+
+		$('#gamedevTag').on("click", function() {
+			$('#tagInModal').addTag('게임 개발')
+		});
+
+		$('#unityTag').on("click", function() {
+			$('#tagInModal').addTag('Unity')
+		});
+
+		$('#androidTag').on("click", function() {
+			$('#tagInModal').addTag('Android')
+		});
+
+		$('#iosTag').on("click", function() {
+			$('#tagInModal').addTag('iOS')
+		});
+
+		$('#swiftTag').on("click", function() {
+			$('#tagInModal').addTag('Swift')
+		});
+
+		$('#nodejsTag').on("click", function() {
+			$('#tagInModal').addTag('Node.js')
+		});
+
+		$('#algorythmTag').on("click", function() {
+			$('#tagInModal').addTag('알고리즘')
+		});
+
+		$('#reactTag').on("click", function() {
+			$('#tagInModal').addTag('React')
+		});
+
+		$('#machinerunningTag').on("click", function() {
+			$('#tagInModal').addTag('머신러닝')
+		});
+
+		$('#sqlTag').on("click", function() {
+			$('#tagInModal').addTag('SQL')
+		});
+
+		$('#aiTag').on("click", function() {
+			$('#tagInModal').addTag('인공지능')
+		});
+
+		$('#infoguardTag').on("click", function() {
+			$('#tagInModal').addTag('정보보안')
+		});
+
+		$('#blockchainTag').on("click", function() {
+			$('#tagInModal').addTag('블록체인')
+		});
+
+		$('#devopsTag').on("click", function() {
+			$('#tagInModal').addTag('DevOps')
+		});
+
+		$('#cloudTag').on("click", function() {
+			$('#tagInModal').addTag('클라우드')
+		});
+
+		$('#linuxTag').on("click", function() {
+			$('#tagInModal').addTag('Linux')
+		});
+
+		$('#gitTag').on("click", function() {
+			$('#tagInModal').addTag('Git')
+		});
+
+		$('#uiuxTag').on("click", function() {
+			$('#tagInModal').addTag('UI/UX')
+		});
+
+		$('#3dmodelingTag').on("click", function() {
+			$('#tagInModal').addTag('3D 모델링')
+		});
+
+		$('#aftereffectsTag').on("click", function() {
+			$('#tagInModal').addTag('After Effects')
+		});
+
+		$('#premiereproTag').on("click", function() {
+			$('#tagInModal').addTag('Premiere Pro')
+		});
+
+		$('#photoshopTag').on("click", function() {
+			$('#tagInModal').addTag('Photoshop')
+		});
+
+		$('#illustratorTag').on("click", function() {
+			$('#tagInModal').addTag('Illustrator')
+		});
+
+		$('#rTag').on("click", function() {
+			$('#tagInModal').addTag('R')
+		});
+
+		$('#designeditorTag').on("click", function() {
+			$('#tagInModal').addTag('편집 디자인')
+		});
+
+		$('#hackingTag').on("click", function() {
+			$('#tagInModal').addTag('해킹')
+		});
+
+		$('#indesignTag').on("click", function() {
+			$('#tagInModal').addTag('InDesign')
+		});
+
+		//모달창에서 선택 완료 버튼을 눌렀을 때
 		$('#okBtnModal').on("click", function() {
 			var tag = $('#tagInModal').val()
-			var tagArray = tag.split(',')	
+			var tagArray = tag.split(',')
 			
-			for (var i = 0; i < tagArray.length; i++) { 
-				
-				$('#tags').addTag(tagArray[i])				
-			}			
+			//모달 -> 페이지로 태그옮길 시 중복값 제거메서드(미구현)
+			/* var check = true;
+			
+			for(var i = 0; i < tagArray.length; i++) {
+				check = true;
+
+				for(value in $('#tags').val()) {
+					if($('#tags').val()[value] == tagArray[i]) {
+						check = false;
+					}
+				}
+				if(check) {
+					$('#tags').addTag(tagArray[i]);
+				}				
+			}		 */					
 		});
 
 		// Markdown Editor
