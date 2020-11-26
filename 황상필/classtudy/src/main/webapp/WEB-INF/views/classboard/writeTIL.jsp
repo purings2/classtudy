@@ -46,54 +46,54 @@
 					    	</div>
 					    	<div class="modal-body">
 					    		<p>선택한 태그</p><input type="text" style="display: none;" class="tags" name="tagInModal" id="tagInModal" value=""/><hr>
-					      		<button type="button" class="btn btn-primary btn-sm" id="javaTag" name="javaTag" >Java</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="springTag" name="springTag">Spring</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="springbootTag" name="springbootTag">Spring Boot</button>					      		
-					      		<button type="button" class="btn btn-primary btn-sm" id="jdbcTag" name="jdbcTag">JDBC</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="jstlTag" name="jstlTag">JSTL</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="frontendTag" name="frontendTag">Front-End</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="backendTag" name="backendTag">Back-End</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="webdevTag" name="webdevTag">웹 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="appdevTag" name="appdevTag">앱 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="htmlcssTag" name="htmlcssTag">HTML/CSS</button>					      		
-					      		<button type="button" class="tag btn btn-primary btn-sm" id="javascriptTag" name="javascriptTag">Javascript</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="jqueryTag" name="jqueryTag">jQuery</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="jspTag" name="jspTag">JSP</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="bootstrapTag" name="bootstrapTag">Bootstrap</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="pythonTag" name="pythonTag">Python</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="djangoTag" name="djangoTag">Django</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="flaskTag" name="flaskTag">Flask</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="gamedevTag" name="gamedevTag">게임 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="unityTag" name="unityTag">Unity</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="androidTag" name="androidTag">Android</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="iosTag" name="iosTag">iOS</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="swiftTag" name="swiftTag">Swift</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="nodejsTag" name="nodejsTag">Nods.js</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="algorythmTag" name="algorythmTag">알고리즘</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="reactTag" name="reactTag">React</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="cloudTag" name="cloudTag">클라우드</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="linuxTag" name="linuxTag">Linux</button>
-					      		<button type="button" class="btn btn-primary btn-sm" id="gitTag" name="gitTag">Git</button><hr>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="javaTag" name="javaTag">Java</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="springTag" name="springTag">Spring</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="springbootTag" name="springbootTag">Spring Boot</button>					      		
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jdbcTag" name="jdbcTag">JDBC</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jstlTag" name="jstlTag">JSTL</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="frontendTag" name="frontendTag">Front-End</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="backendTag" name="backendTag">Back-End</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="webdevTag" name="webdevTag">웹 개발</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="appdevTag" name="appdevTag">앱 개발</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="htmlcssTag" name="htmlcssTag">HTML/CSS</button>					      		
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="javascriptTag" name="javascriptTag">Javascript</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jqueryTag" name="jqueryTag">jQuery</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jspTag" name="jspTag">JSP</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="bootstrapTag" name="bootstrapTag">Bootstrap</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="pythonTag" name="pythonTag">Python</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="djangoTag" name="djangoTag">Django</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="flaskTag" name="flaskTag">Flask</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="gamedevTag" name="gamedevTag">게임 개발</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="unityTag" name="unityTag">Unity</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="androidTag" name="androidTag">Android</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="iosTag" name="iosTag">iOS</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="swiftTag" name="swiftTag">Swift</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="nodejsTag" name="nodejsTag">Nods.js</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="algorythmTag" name="algorythmTag">알고리즘</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="reactTag" name="reactTag">React</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="cloudTag" name="cloudTag">클라우드</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="linuxTag" name="linuxTag">Linux</button>
+					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="gitTag" name="gitTag">Git</button><hr>
 					      		
-					      		<button type="button" class="btn btn-success btn-sm" id="infoguardTag" name="infoguardTag">정보보안</button>
-					      		<button type="button" class="btn btn-success btn-sm" id="blockchainTag" name="blockchainTag">블록체인</button>
-					      		<button type="button" class="btn btn-success btn-sm" id="devopsTag" name="devopsTag">DevOps</button>
-					      		<button type="button" class="btn btn-success btn-sm" id="hackingTag" name="hackingTag">해킹</button><hr>
+					      		<button type="button" class="btn btn-success btn-sm successTag" id="infoguardTag" name="infoguardTag" colortype="green">정보보안</button>
+					      		<button type="button" class="btn btn-success btn-sm successTag" id="blockchainTag" name="blockchainTag">블록체인</button>
+					      		<button type="button" class="btn btn-success btn-sm successTag" id="devopsTag" name="devopsTag">DevOps</button>
+					      		<button type="button" class="btn btn-success btn-sm successTag" id="hackingTag" name="hackingTag">해킹</button><hr>
 					      		
-					      		<button type="button" class="btn btn-warning btn-sm" id="databaseTag" name="databaseTag">데이터베이스</button>
-					      		<button type="button" class="btn btn-warning btn-sm" id="aiTag" name="aiTag">인공지능</button>
-					      		<button type="button" class="btn btn-warning btn-sm" id="sqlTag" name="sqlTag">SQL</button>
-					      		<button type="button" class="btn btn-warning btn-sm" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
-					      		<button type="button" class="btn btn-warning btn-sm" id="rTag" name="rTag">R</button><hr>
+					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="databaseTag" name="databaseTag" colortype="yello">데이터베이스</button>
+					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="aiTag" name="aiTag">인공지능</button>
+					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="sqlTag" name="sqlTag">SQL</button>
+					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
+					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="rTag" name="rTag">R</button><hr>
 					      		
-					      		<button type="button" class="btn btn-danger btn-sm" id="uiuxTag" name="uiuxTag">UI/UX</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="photoshopTag" name="photoshopTag">Photoshop</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="illustratorTag" name="illustratorTag">Illustrator</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="designeditorTag" name="designeditorTag">편집 디자인</button>
-					      		<button type="button" class="btn btn-danger btn-sm" id="indesignTag" name="indesignTag">InDesign</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="uiuxTag" name="uiuxTag" colortype="red">UI/UX</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="photoshopTag" name="photoshopTag">Photoshop</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="illustratorTag" name="illustratorTag">Illustrator</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="designeditorTag" name="designeditorTag">편집 디자인</button>
+					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="indesignTag" name="indesignTag">InDesign</button>
 					    	</div>
 					    	<div class="modal-footer">
 					    		<button type="button" class="btn btn-success" name="okBtnModal" id="okBtnModal" data-dismiss="modal">선택 완료</button>
@@ -147,23 +147,11 @@
 		$('#tagInModal').tagsInput({
 			'defaultText' : ' ',
 			'height':'60px',
-			'width':'565px',	
-
-			//태그 선택 시 배경색을 원 태그와 같이 맞춰주는 메서드(미구현)
-			onChange: function (elem, elem_tags) {
-                    var languages = ['php', 'ruby', 'Javascript'];
-                    $('.tags', elem_tags).each(function () {
-                        if ($(this).text().search(new RegExp('\\b(' + languages.join('|') + ')\\b')) >= 0)
-                            $(this).css('background-color', 'lightyellow');
-                    });
-	        }
-	          
-
-			
+			'width':'565px',		
 		});
 
 		$('#javaTag').on("click", function() {
-			$('#tagInModal').addTag('Java')
+			$('#tagInModal').addTag('Java') //여기 addTag 하잖아, 이때 같이 넘기던가 해서
 		});
 
 		$('#springTag').on("click", function() {
@@ -347,6 +335,10 @@
 			var tag = $('#tagInModal').val()
 			var tagArray = tag.split(',')
 			
+			for(var i = 0; i < tagArray.length; i++) {
+				//조건을 추가해서 modal창 내에서 색깔을 그대로 add할수 있도록 로직구현해야함(미구현)
+				$('#tags').addTag(tagArray[i]);
+			}
 			//모달 -> 페이지로 태그옮길 시 중복값 제거메서드(미구현)
 			/* var check = true;
 			

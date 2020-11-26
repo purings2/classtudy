@@ -1,23 +1,39 @@
 /*
-
 	jQuery Tags Input Plugin 1.3.3
-
 	Copyright (c) 2011 XOXCO, Inc
-
 	Documentation for this plugin lives here:
 	http://xoxco.com/clickable/jquery-tags-input
-
 	Licensed under the MIT license:
 	http://www.opensource.org/licenses/mit-license.php
-
 	ben@xoxco.com
-
 */
 
 (function($) {
 
+		
 	var delimiter = new Array();
 	var tags_callbacks = new Array();
+	
+	var clickedTagColor = '';
+	
+	$('.primaryTag').click(function() {
+		clickedTagColor = 'primaryTag';
+	});
+	
+	$('.successTag').click(function() {
+		clickedTagColor = 'successTag';
+	});
+	
+	$('.warningTag').click(function() {
+		clickedTagColor = 'warningTag';
+	});
+	
+	$('.dangerTag').click(function() {
+		clickedTagColor = 'dangerTag';
+	});
+	
+	
+	
 	$.fn.doAutosize = function(o){
 	    var minWidth = $(this).data('minwidth'),
 	        maxWidth = $(this).data('maxwidth'),
@@ -95,8 +111,15 @@
 					var skipTag = false;
 				}
 
+				//var clickedTagColor = '';
+				
+				$('.bluetag').click(function() {
+					clickedTagColor = 'bluetag';
+				});
+				
+				
 				if (value !='' && skipTag != true) {
-                    $('<span>').addClass('tag').append(
+                    $('<span>').addClass('tag').addClass(clickedTagColor).append(
                         $('<span>').text(value).append('&nbsp;&nbsp;'),
                         $('<a>', {
                             href  : '#',
@@ -388,4 +411,3 @@
       return found;
    }
 })(jQuery);
-
