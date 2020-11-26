@@ -178,3 +178,33 @@ CREATE TABLE gbcomment (
 	FOREIGN KEY (writer) REFERENCES member(memberId),
 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------
+-- 좋아요 테이블
+---------------------------------------------------
+-- 클래스게시판 좋아요 테이블 생성
+CREATE TABLE cblikes (
+	likesNo 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	memberId 	VARCHAR(16) 	NOT NULL,
+	boardNo 	INT 		NOT NULL,
+	FOREIGN KEY (memberId) REFERENCES member(memberId),
+	FOREIGN KEY (boardNo) REFERENCES classboard(boardNo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 자유게시판 좋아요 테이블 생성
+CREATE TABLE fblikes (
+	likesNo 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	memberId 	VARCHAR(16) 	NOT NULL,
+	boardNo 	INT 		NOT NULL,
+	FOREIGN KEY (memberId) REFERENCES member(memberId),
+	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 그룹게시판 좋아요 테이블 생성
+CREATE TABLE gblikes (
+	likesNo 	INT 		PRIMARY KEY AUTO_INCREMENT,
+	memberId 	VARCHAR(16) 	NOT NULL,
+	boardNo 	INT 		NOT NULL,
+	FOREIGN KEY (memberId) REFERENCES member(memberId),
+	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
