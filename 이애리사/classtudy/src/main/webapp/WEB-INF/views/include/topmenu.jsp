@@ -6,10 +6,14 @@
 	// 세션에 MemberDTO가 있는지 확인하고
 	// 있으면 member의 name을 String으로 저장한다.
 	String name = "";
+	int lectureNo = 0;
 	if(session.getAttribute("member") != null) {
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 		name = member.getName();
+		lectureNo = member.getLectureNo();
 		isLogin = true;
+	} else {
+		isLogin = false;
 	}
 %>
 <% if (isLogin) { %>
@@ -22,7 +26,9 @@
 					<span class="icon-bar"></span>	
 					<span class="icon-bar"></span>	
 				</button>
-				<a class="navbar-brand" href="/${path}">클래스터디</a>
+				<a class="navbar-brand" href="/${path}">
+				<img src="/static/images/classtudy_logo2.png" alt="classtydy_logo2" width="110" height="40">
+				</a>
 			</div>
 			<div>
 				<div class="collapse navbar-collapse" id="myNavbar">
@@ -33,7 +39,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
-								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
 								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
@@ -46,7 +52,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/class/TIL">TIL</a></li>
-								<li><a href="${path}/class/classRoom">클래스룸</a></li>
+								<li><a href="${path}/class/classroom/all">클래스룸</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
@@ -74,16 +80,7 @@
 				</div>
 			</div>
 		</div>
-	</nav>
-<script>
-$(document).ready(function(){
-	$('.dropdown-submenu .test').on("click", function(e){
-		$(this).next('ul').toggle();
-		e.stopPropagation();
-		e.preventDefault();
-	});
-});
-</script>	
+	</nav>	
 <% } else { %>
 	<nav class="navbar navbar-default navbar-stikcy-top">
 		<div class="container-fluid">
@@ -94,7 +91,9 @@ $(document).ready(function(){
 					<span class="icon-bar"></span>	
 					<span class="icon-bar"></span>	
 				</button>
-				<a class="navbar-brand" href="/${path}">클래스터디</a>
+				<a class="navbar-brand" href="/${path}">
+				<img src="/static/images/classtudy_logo2.png" alt="classtydy_logo2" width="110" height="40">
+				</a>
 			</div>
 			<div>
 				<div class="collapse navbar-collapse" id="myNavbar">
@@ -105,7 +104,7 @@ $(document).ready(function(){
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
-								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
 								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
@@ -117,8 +116,8 @@ $(document).ready(function(){
 								클래스 <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="${path}/class/TIL">TIL</a></li>
-								<li><a href="${path}/class/classRoom">클래스룸</a></li>
+								<li><a href="${path}/class/writeTIL">TIL</a></li>
+								<li><a href="${path}/class/classroom/all">클래스룸</a></li>
 							</ul>
 						</li>				
 						<li><a href="${path}/member/login"><span class="glyphicon glyphicon-log-in"></span> 로그인</a></li>
