@@ -8,8 +8,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TIL 작성</title>
-	<%@ include file="../include/header.jsp" %>
-	<link rel="stylesheet" type="text/css" href="/static/css/jquery.tagsinput.css"/>
+	<%@ include file="../include/header.jsp" %>	
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
 	
 	
 </head>
@@ -30,78 +30,78 @@
 			<div class="col-sm-3">
 				<input type="text" id="category" name="category" class="form-control" value="TIL" readonly/>				
 			</div>	
-			<div class="col-sm-3">
 			<label class="control-label col-sm-2">태그</label>
-				<input name="tags" id="tags" value=""/>
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#tagModal">Open Tag</button>			
-				<!-- Modal -->
-				<div id="tagModal" class="modal fade" role="dialog">
-					<div class="modal-dialog">
-				
-					    <!-- Modal content-->
-					    <div class="modal-content">
-					    	<div class="modal-header">
-					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-					        	<h4 class="modal-title">태그를 선택하세요</h4>
-					    	</div>
-					    	<div class="modal-body">
-					    		<p>선택한 태그</p><input type="text" style="display: none;" class="tags" name="tagInModal" id="tagInModal" value=""/><hr>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="javaTag" name="javaTag">Java</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="springTag" name="springTag">Spring</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="springbootTag" name="springbootTag">Spring Boot</button>					      		
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jdbcTag" name="jdbcTag">JDBC</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jstlTag" name="jstlTag">JSTL</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="frontendTag" name="frontendTag">Front-End</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="backendTag" name="backendTag">Back-End</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="webdevTag" name="webdevTag">웹 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="appdevTag" name="appdevTag">앱 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="htmlcssTag" name="htmlcssTag">HTML/CSS</button>					      		
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="javascriptTag" name="javascriptTag">Javascript</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jqueryTag" name="jqueryTag">jQuery</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="jspTag" name="jspTag">JSP</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="bootstrapTag" name="bootstrapTag">Bootstrap</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="pythonTag" name="pythonTag">Python</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="djangoTag" name="djangoTag">Django</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="flaskTag" name="flaskTag">Flask</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="gamedevTag" name="gamedevTag">게임 개발</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="unityTag" name="unityTag">Unity</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="androidTag" name="androidTag">Android</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="iosTag" name="iosTag">iOS</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="swiftTag" name="swiftTag">Swift</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="nodejsTag" name="nodejsTag">Nods.js</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="algorythmTag" name="algorythmTag">알고리즘</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="reactTag" name="reactTag">React</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="cloudTag" name="cloudTag">클라우드</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="linuxTag" name="linuxTag">Linux</button>
-					      		<button type="button" class="btn btn-primary btn-sm primaryTag" id="gitTag" name="gitTag">Git</button><hr>
-					      		
-					      		<button type="button" class="btn btn-success btn-sm successTag" id="infoguardTag" name="infoguardTag" colortype="green">정보보안</button>
-					      		<button type="button" class="btn btn-success btn-sm successTag" id="blockchainTag" name="blockchainTag">블록체인</button>
-					      		<button type="button" class="btn btn-success btn-sm successTag" id="devopsTag" name="devopsTag">DevOps</button>
-					      		<button type="button" class="btn btn-success btn-sm successTag" id="hackingTag" name="hackingTag">해킹</button><hr>
-					      		
-					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="databaseTag" name="databaseTag" colortype="yello">데이터베이스</button>
-					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="aiTag" name="aiTag">인공지능</button>
-					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="sqlTag" name="sqlTag">SQL</button>
-					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
-					      		<button type="button" class="btn btn-warning btn-sm warningTag" id="rTag" name="rTag">R</button><hr>
-					      		
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="uiuxTag" name="uiuxTag" colortype="red">UI/UX</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="photoshopTag" name="photoshopTag">Photoshop</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="illustratorTag" name="illustratorTag">Illustrator</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="designeditorTag" name="designeditorTag">편집 디자인</button>
-					      		<button type="button" class="btn btn-danger btn-sm dangerTag" id="indesignTag" name="indesignTag">InDesign</button>
-					    	</div>
-					    	<div class="modal-footer">
-					    		<button type="button" class="btn btn-success" name="okBtnModal" id="okBtnModal" data-dismiss="modal">선택 완료</button>
-					        	<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					    	</div>
-					    </div>				
+			<div class="col-sm-3">						
+				<select multiple id="tagsinput" data-role="tagsinput"></select>
+					<div id="tagNavbar">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a class="dropdown" data-toggle="dropdown" href="#"> 태그 선택<span class="caret"></span></a>
+									<ul class="dropdown-menu dropdown-menu-left dropdown-tag">
+										<li>
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="javaTag" name="javaTag">Java</button> 
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="springTag" name="springTag">Spring</button> 
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="springbootTag" name="springbootTag">Spring Boot</button>
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="jdbcTag" name="jdbcTag">JDBC</button>
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="jstlTag" name="jstlTag">JSTL</button>
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="frontendTag" name="frontendTag">Front-End</button>
+											<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="backendTag" name="backendTag">Back-End</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="webdevTag" name="webdevTag">웹 개발</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="appdevTag" name="appdevTag">앱 개발</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="htmlcssTag" name="htmlcssTag">HTML/CSS</button>					      		
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="javascriptTag" name="javascriptTag">Javascript</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="jqueryTag" name="jqueryTag">jQuery</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="jspTag" name="jspTag">JSP</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="bootstrapTag" name="bootstrapTag">Bootstrap</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="pythonTag" name="pythonTag">Python</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="djangoTag" name="djangoTag">Django</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="flaskTag" name="flaskTag">Flask</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="gamedevTag" name="gamedevTag">게임 개발</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="unityTag" name="unityTag">Unity</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="androidTag" name="androidTag">Android</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="iosTag" name="iosTag">iOS</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="swiftTag" name="swiftTag">Swift</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="nodejsTag" name="nodejsTag">Nods.js</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="algorythmTag" name="algorythmTag">알고리즘</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="reactTag" name="reactTag">React</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="cloudTag" name="cloudTag">클라우드</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="linuxTag" name="linuxTag">Linux</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="gitTag" name="gitTag">Git</button><hr>											
+										</li>
+										<li>
+											<button type="button" class="btn btn-sm btn-success guardTag" id="infoguardTag" name="infoguardTag">정보보안</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTag" id="blockchainTag" name="blockchainTag">블록체인</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTag" id="devopsTag" name="devopsTag">DevOps</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTag" id="hackingTag" name="hackingTag">해킹</button><hr>
+										</li>
+										<li>
+											<button type="button" class="btn btn-sm btn-warning dataTag" id="databaseTag" name="databaseTag">데이터베이스</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="aiTag" name="aiTag">인공지능</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="sqlTag" name="sqlTag">SQL</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="rTag" name="rTag">R</button><hr>
+										</li>
+										<li>
+											<button type="button" class="btn btn-sm btn-danger designTag" id="uiuxTag" name="uiuxTag">UI/UX</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="photoshopTag" name="photoshopTag">Photoshop</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="illustratorTag" name="illustratorTag">Illustrator</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="designeditorTag" name="designeditorTag">편집 디자인</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTag" id="indesignTag" name="indesignTag">InDesign</button>
+										</li>
+									</ul>																
+							
+						</ul>
 					</div>
-				</div>							
+				
+				 
+				
+
+
+				  
+															
 			</div>			
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
@@ -126,9 +126,14 @@
 		</div>
 	</form>
 </div>	
-	<%@ include file="../include/footer.jsp" %>
-	<script src="/static/js/jquery.tagsinput.js"></script>	
 	
+
+	<%@ include file="../include/footer.jsp" %>	
+	
+	
+		
+	<script src="/static/js/bootstrap-tagsinput.js"></script>	
+		
 	<script>
 	$(document).ready(function() {
 		// 취소 버튼이 눌렸을 경우 => OK하면 메인으로 이동
@@ -140,222 +145,192 @@
 			}
 		});
 
-		$('#tags').tagsInput({
-			'defaultText' : ' '
+		$('select').tagsinput({
+			  maxTags: 5
 		});
 
-		$('#tagInModal').tagsInput({
-			'defaultText' : ' ',
-			'height':'60px',
-			'width':'565px',		
+		
+		
+		$('#javaTag').on("click", function () {
+			$('select').tagsinput('add', 'Java', $(this).css("background-color", 'blue'));
 		});
 
-		$('#javaTag').on("click", function() {
-			$('#tagInModal').addTag('Java') //여기 addTag 하잖아, 이때 같이 넘기던가 해서
+		$('#springTag').on("click", function () {
+			$('select').tagsinput('add', 'Spring');
 		});
 
-		$('#springTag').on("click", function() {
-			$('#tagInModal').addTag('Spring')
+		$('#springbootTag').on("click", function () {
+			$('select').tagsinput('add', 'Spring Boot');
 		});
 
-		$('#springbootTag').on("click", function() {
-			$('#tagInModal').addTag('Spring Boot')
+		$('#jdbcTag').on("click", function () {
+			$('select').tagsinput('add', 'JDBC');
 		});
 
-		$('#djangoTag').on("click", function() {
-			$('#tagInModal').addTag('Django')
+		$('#jstlTag').on("click", function () {
+			$('select').tagsinput('add', 'JSTL');
 		});
 
-		$('#flaskTag').on("click", function() {
-			$('#tagInModal').addTag('Flask')
+		$('#frontendTag').on("click", function () {
+			$('select').tagsinput('add', 'Front-End');
 		});
 
-		$('#jdbcTag').on("click", function() {
-			$('#tagInModal').addTag('JDBC')
+		$('#backendTag').on("click", function () {
+			$('select').tagsinput('add', 'Back-End');
 		});
 
-		$('#jstlTag').on("click", function() {
-			$('#tagInModal').addTag('JSTL')
+		$('#webdevTag').on("click", function () {
+			$('select').tagsinput('add', '웹 개발');
 		});
 
-		$('#htmlcssTag').on("click", function() {
-			$('#tagInModal').addTag('HTML/CSS')
+		$('#appdevTag').on("click", function () {
+			$('select').tagsinput('add', '앱 개발');
+		});
+
+		$('#htmlcssTag').on("click", function () {
+			$('select').tagsinput('add', 'HTML/CSS');
+		});
+
+		$('#javascriptTag').on("click", function () {
+			$('select').tagsinput('add', 'Javascript');
+		});
+
+		$('#jqueryTag').on("click", function () {
+			$('select').tagsinput('add', 'jQuery');
+		});
+
+		$('#jspTag').on("click", function () {
+			$('select').tagsinput('add', 'JSP');
+		});
+
+		$('#bootstrapTag').on("click", function () {
+			$('select').tagsinput('add', 'Bootstrap');
+		});
+
+		$('#pythonTag').on("click", function () {
+			$('select').tagsinput('add', 'Python');
+		});
+
+		$('#djangoTag').on("click", function () {
+			$('select').tagsinput('add', 'Django');
+		});
+
+		$('#flaskTag').on("click", function () {
+			$('select').tagsinput('add', 'Flask');
+		});
+
+		$('#gamedevTag').on("click", function () {
+			$('select').tagsinput('add', '게임 개발');
+		});
+
+		$('#unityTag').on("click", function () {
+			$('select').tagsinput('add', 'Unity');
+		});
+
+		$('#androidTag').on("click", function () {
+			$('select').tagsinput('add', 'Android');
+		});
+
+		$('#iosTag').on("click", function () {
+			$('select').tagsinput('add', 'iOS');
+		});
+
+		$('#swiftTag').on("click", function () {
+			$('select').tagsinput('add', 'Swift');
+		});
+
+		$('#nodejsTag').on("click", function () {
+			$('select').tagsinput('add', 'Node.js');
+		});
+
+		$('#algorythmTag').on("click", function () {
+			$('select').tagsinput('add', '알고리즘');
+		});
+
+		$('#reactTag').on("click", function () {
+			$('select').tagsinput('add', 'React');
+		});
+
+		$('#cloudTag').on("click", function () {
+			$('select').tagsinput('add', '클라우드');
+		});
+
+		$('#linuxTag').on("click", function () {
+			$('select').tagsinput('add', 'Linux');
+		});
+
+		$('#gitTag').on("click", function () {
+			$('select').tagsinput('add', 'Git');
+		});
+
+		$('#infoguardTag').on("click", function () {
+			$('select').tagsinput('add', '정보보안');
+		});
+
+		$('#blockchainTag').on("click", function () {
+			$('select').tagsinput('add', '블록체인');
+		});
+
+		$('#devopsTag').on("click", function () {
+			$('select').tagsinput('add', 'DevOps');
+		});
+
+		$('#hackingTag').on("click", function () {
+			$('select').tagsinput('add', '해킹');
+		});
+
+		$('#databaseTag').on("click", function () {
+			$('select').tagsinput('add', '데이터베이스');
+		});
+
+		$('#aiTag').on("click", function () {
+			$('select').tagsinput('add', '인공지능');
+		});
+
+		$('#sqlTag').on("click", function () {
+			$('select').tagsinput('add', 'SQL');
+		});
+
+		$('#machinerunningTag').on("click", function () {
+			$('select').tagsinput('add', '머신러닝');
+		});
+
+		$('#rTag').on("click", function () {
+			$('select').tagsinput('add', 'R');
+		});
+
+		$('#uiuxTag').on("click", function () {
+			$('select').tagsinput('add', 'UI/UX');
+		});
+
+		$('#3dmodelingTag').on("click", function () {
+			$('select').tagsinput('add', '3D 모델링');
+		});
+
+		$('#aftereffectsTag').on("click", function () {
+			$('select').tagsinput('add', 'After Effects');
+		});
+
+		$('#premiereproTag').on("click", function () {
+			$('select').tagsinput('add', 'Premiere Pro');
+		});
+
+		$('#phothshopTag').on("click", function () {
+			$('select').tagsinput('add', 'Photoshop');
+		});
+
+		$('#illustratorTag').on("click", function () {
+			$('select').tagsinput('add', 'Illustrator');
+		});
+
+		$('#designeditorTag').on("click", function () {
+			$('select').tagsinput('add', '편집 디자인');
+		});
+
+		$('#indesignTag').on("click", function () {
+			$('select').tagsinput('add', 'InDesign');
 		});
 		
-		$('#javascriptTag').on("click", function() {
-			$('#tagInModal').addTag('Javascript')
-		});
-
-		$('#jqueryTag').on("click", function() {
-			$('#tagInModal').addTag('jQuery')
-		});
-
-		$('#jspTag').on("click", function() {
-			$('#tagInModal').addTag('JSP')
-		});
-
-		$('#backendTag').on("click", function() {
-			$('#tagInModal').addTag('Back-End')
-		});
-
-		$('#frontendTag').on("click", function() {
-			$('#tagInModal').addTag('Front-End')
-		});
-
-		$('#bootstrapTag').on("click", function() {
-			$('#tagInModal').addTag('Bootstrap')
-		});
-
-		$('#webdevTag').on("click", function() {
-			$('#tagInModal').addTag('웹 개발')
-		});
-
-		$('#appdevTag').on("click", function() {
-			$('#tagInModal').addTag('앱 개발')
-		});
-
-		$('#pythonTag').on("click", function() {
-			$('#tagInModal').addTag('Python')
-		});
-
-		$('#databaseTag').on("click", function() {
-			$('#tagInModal').addTag('데이터베이스')
-		});
-
-		$('#gamedevTag').on("click", function() {
-			$('#tagInModal').addTag('게임 개발')
-		});
-
-		$('#unityTag').on("click", function() {
-			$('#tagInModal').addTag('Unity')
-		});
-
-		$('#androidTag').on("click", function() {
-			$('#tagInModal').addTag('Android')
-		});
-
-		$('#iosTag').on("click", function() {
-			$('#tagInModal').addTag('iOS')
-		});
-
-		$('#swiftTag').on("click", function() {
-			$('#tagInModal').addTag('Swift')
-		});
-
-		$('#nodejsTag').on("click", function() {
-			$('#tagInModal').addTag('Node.js')
-		});
-
-		$('#algorythmTag').on("click", function() {
-			$('#tagInModal').addTag('알고리즘')
-		});
-
-		$('#reactTag').on("click", function() {
-			$('#tagInModal').addTag('React')
-		});
-
-		$('#machinerunningTag').on("click", function() {
-			$('#tagInModal').addTag('머신러닝')
-		});
-
-		$('#sqlTag').on("click", function() {
-			$('#tagInModal').addTag('SQL')
-		});
-
-		$('#aiTag').on("click", function() {
-			$('#tagInModal').addTag('인공지능')
-		});
-
-		$('#infoguardTag').on("click", function() {
-			$('#tagInModal').addTag('정보보안')
-		});
-
-		$('#blockchainTag').on("click", function() {
-			$('#tagInModal').addTag('블록체인')
-		});
-
-		$('#devopsTag').on("click", function() {
-			$('#tagInModal').addTag('DevOps')
-		});
-
-		$('#cloudTag').on("click", function() {
-			$('#tagInModal').addTag('클라우드')
-		});
-
-		$('#linuxTag').on("click", function() {
-			$('#tagInModal').addTag('Linux')
-		});
-
-		$('#gitTag').on("click", function() {
-			$('#tagInModal').addTag('Git')
-		});
-
-		$('#uiuxTag').on("click", function() {
-			$('#tagInModal').addTag('UI/UX')
-		});
-
-		$('#3dmodelingTag').on("click", function() {
-			$('#tagInModal').addTag('3D 모델링')
-		});
-
-		$('#aftereffectsTag').on("click", function() {
-			$('#tagInModal').addTag('After Effects')
-		});
-
-		$('#premiereproTag').on("click", function() {
-			$('#tagInModal').addTag('Premiere Pro')
-		});
-
-		$('#photoshopTag').on("click", function() {
-			$('#tagInModal').addTag('Photoshop')
-		});
-
-		$('#illustratorTag').on("click", function() {
-			$('#tagInModal').addTag('Illustrator')
-		});
-
-		$('#rTag').on("click", function() {
-			$('#tagInModal').addTag('R')
-		});
-
-		$('#designeditorTag').on("click", function() {
-			$('#tagInModal').addTag('편집 디자인')
-		});
-
-		$('#hackingTag').on("click", function() {
-			$('#tagInModal').addTag('해킹')
-		});
-
-		$('#indesignTag').on("click", function() {
-			$('#tagInModal').addTag('InDesign')
-		});
-
-		//모달창에서 선택 완료 버튼을 눌렀을 때
-		$('#okBtnModal').on("click", function() {
-			var tag = $('#tagInModal').val()
-			var tagArray = tag.split(',')
-			
-			for(var i = 0; i < tagArray.length; i++) {
-				//조건을 추가해서 modal창 내에서 색깔을 그대로 add할수 있도록 로직구현해야함(미구현)
-				$('#tags').addTag(tagArray[i]);
-			}
-			//모달 -> 페이지로 태그옮길 시 중복값 제거메서드(미구현)
-			/* var check = true;
-			
-			for(var i = 0; i < tagArray.length; i++) {
-				check = true;
-
-				for(value in $('#tags').val()) {
-					if($('#tags').val()[value] == tagArray[i]) {
-						check = false;
-					}
-				}
-				if(check) {
-					$('#tags').addTag(tagArray[i]);
-				}				
-			}		 */					
-		});
-
 		// Markdown Editor
 		var testEditor;
 		$(function() {
@@ -366,8 +341,7 @@
 				path 		: "/static/js/lib/",
 				readOnly 	: false
 			});
-		});
-		
+		});		
 	});
 	
 	</script>
