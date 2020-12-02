@@ -133,18 +133,25 @@ public class MemberController {
 	}
 	
 	// 수정할 화면을 보여주세요. 라는 회원정보 수정 요청이 들어왔다.
-	// 회원정보수정 GET
+	// 회원정보 수정 GET
 	@RequestMapping(value="/memberUpdate", method=RequestMethod.GET)
 	public String memberUpdateView() throws Exception {
 		LOGGER.info("MemberController memberUpdateView().....");
 		
-		return "/member/memberUpdate";				
+		return "/member/memberUpdate";
 	}
 	
-	// 회원정보수정 POST
-	@RequestMapping(value="memberUpdate", method=RequestMethod.POST)
-	public String memberUpdate(MemberDTO memberDTO, HttpSession session) throws Exception {
+	// 회원정보 수정 POST
+	@RequestMapping(value="/memberUpdate", method=RequestMethod.POST)
+	public String memberUpdate(MemberDTO memberDTO, HttpSession session, HttpServletRequest request) throws Exception {
 		LOGGER.info("MemberController memberUpdate().....");
+		
+		// 전화번호 01X-XXXX-XXXX 형식으로 변환
+		String tel1 = request.getParameter("tel1");
+		String tel2 = request.getParameter("tel2");
+		String tel3 = request.getParameter("tel3");
+		String tel = tel1 + "-" + tel2 + "-" + tel3;
+		memberDTO.setTel(tel);		
 		
 		memberService.memberUpdate(memberDTO);
 		
