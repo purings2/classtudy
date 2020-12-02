@@ -76,6 +76,15 @@
 				</div>
 				 -->
 			</c:if>
+			<c:if test="${msgLogin == false}">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<h3 align="center"><span class="label label-warning">
+							회원만 이용할 수 있는 서비스입니다. 로그인을 하시고 다시 시도하십시오.
+						</span></h3>
+					</div>
+				</div>
+			</c:if>
 		</form>
 	</div>	
 	<%@ include file="../include/footer.jsp" %>
