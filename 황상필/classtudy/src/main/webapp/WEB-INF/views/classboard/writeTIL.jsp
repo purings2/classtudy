@@ -61,7 +61,7 @@
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="androidTag" name="androidTag">Android</button>
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="iosTag" name="iosTag">iOS</button>
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="swiftTag" name="swiftTag">Swift</button>
-								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="nodejsTag" name="nodejsTag">Nods.js</button>
+								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="nodejsTag" name="nodejsTag">Node.js</button>
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="algorythmTag" name="algorythmTag">알고리즘</button>
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="reactTag" name="reactTag">React</button>
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="cloudTag" name="cloudTag">클라우드</button>
@@ -69,39 +69,32 @@
 								      		<button type="button" class="btn btn-sm btn-primary programmingTagBtn" id="gitTag" name="gitTag">Git</button><hr>											
 										</li>
 										<li>
-											<button type="button" class="btn btn-sm btn-success guardTag" id="infoguardTag" name="infoguardTag">정보보안</button>
-								      		<button type="button" class="btn btn-sm btn-success guardTag" id="blockchainTag" name="blockchainTag">블록체인</button>
-								      		<button type="button" class="btn btn-sm btn-success guardTag" id="devopsTag" name="devopsTag">DevOps</button>
-								      		<button type="button" class="btn btn-sm btn-success guardTag" id="hackingTag" name="hackingTag">해킹</button><hr>
+											<button type="button" class="btn btn-sm btn-success guardTagBtn" id="infoguardTag" name="infoguardTag">정보보안</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTagBtn" id="blockchainTag" name="blockchainTag">블록체인</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTagBtn" id="devopsTag" name="devopsTag">DevOps</button>
+								      		<button type="button" class="btn btn-sm btn-success guardTagBtn" id="hackingTag" name="hackingTag">해킹</button><hr>
 										</li>
 										<li>
-											<button type="button" class="btn btn-sm btn-warning dataTag" id="databaseTag" name="databaseTag">데이터베이스</button>
-								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="aiTag" name="aiTag">인공지능</button>
-								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="sqlTag" name="sqlTag">SQL</button>
-								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
-								      		<button type="button" class="btn btn-sm btn-warning dataTag" id="rTag" name="rTag">R</button><hr>
+											<button type="button" class="btn btn-sm btn-warning dataTagBtn" id="databaseTag" name="databaseTag">데이터베이스</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTagBtn" id="aiTag" name="aiTag">인공지능</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTagBtn" id="sqlTag" name="sqlTag">SQL</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTagBtn" id="machinerunningTag" name="machinerunningTag">머신러닝</button>
+								      		<button type="button" class="btn btn-sm btn-warning dataTagBtn" id="rTag" name="rTag">R</button><hr>
 										</li>
 										<li>
-											<button type="button" class="btn btn-sm btn-danger designTag" id="uiuxTag" name="uiuxTag">UI/UX</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="photoshopTag" name="photoshopTag">Photoshop</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="illustratorTag" name="illustratorTag">Illustrator</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="designeditorTag" name="designeditorTag">편집 디자인</button>
-								      		<button type="button" class="btn btn-sm btn-danger designTag" id="indesignTag" name="indesignTag">InDesign</button>
+											<button type="button" class="btn btn-sm btn-danger designTagBtn" id="uiuxTag" name="uiuxTag">UI/UX</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="3dmodelingTag" name="3dmodelingTag">3D 모델링</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="aftereffectsTag" name="aftereffectsTag">After Effects</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="premiereproTag" name="premiereproTag">Premiere Pro</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="photoshopTag" name="photoshopTag">Photoshop</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="illustratorTag" name="illustratorTag">Illustrator</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="designeditorTag" name="designeditorTag">편집 디자인</button>
+								      		<button type="button" class="btn btn-sm btn-danger designTagBtn" id="indesignTag" name="indesignTag">InDesign</button>
 										</li>
 									</ul>																
 							
 						</ul>
-					</div>
-				
-				 
-				
-
-
-				  
-															
+					</div>															
 			</div>			
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
@@ -145,11 +138,10 @@
 			}
 		});
 
-		$('select').tagsinput({
-			  maxTags: 5
-		});
-
-		
+		// tag dropdown메뉴에서 버튼을 클릭해도 dropdown창이 닫히지 않게 하는 메서드
+		$('.dropdown-tag').on('click', function(event){		  
+		    event.stopPropagation();
+		});		
 		
 		$('#javaTag').on("click", function () {
 			$('select').tagsinput('add', 'Java', $(this).css("background-color", 'blue'));
