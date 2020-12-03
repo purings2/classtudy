@@ -1,6 +1,6 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <%--
 	// MemberDTO를 저장하기 위한 변수 선언
 	MemberDTO memberDTO = null;

@@ -1,4 +1,4 @@
-package com.edu.domain;
+package com.edu.member.domain;
 
 import java.util.Date;
 

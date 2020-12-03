@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.classboard.controller;
 
 import java.util.Optional;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.edu.domain.ClassboardDTO;
-import com.edu.domain.MemberDTO;
-import com.edu.service.ClassboardService;
+import com.edu.classboard.domain.ClassboardDTO;
+import com.edu.classboard.service.ClassboardService;
+import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/class/*") // ClassboardController에서 공통적으로 사용될 url mapping

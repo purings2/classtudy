@@ -16,6 +16,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
  -->
+<!-- Tags -->
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
 <style>
 div {
 	font-family: 'Nanum Gothic', sans-serif;

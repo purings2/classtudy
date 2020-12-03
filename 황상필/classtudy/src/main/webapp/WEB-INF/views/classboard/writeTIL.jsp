@@ -1,17 +1,14 @@
 <%@page import="java.util.Date"%>
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
-<%@ page import="com.edu.domain.ClassboardDTO" %>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
+<%@ page import="com.edu.classboard.domain.ClassboardDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>TIL 작성</title>
-	<%@ include file="../include/header.jsp" %>	
-	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
-	
-	
+	<%@ include file="../include/header.jsp" %>		
 </head>
 <body>
 	<%@ include file="../include/topmenu.jsp" %>
@@ -30,7 +27,7 @@
 			<div class="col-sm-3">
 				<input type="text" id="category" name="category" class="form-control" value="TIL" readonly/>				
 			</div>	
-			<label class="control-label col-sm-2">태그</label>
+			<!-- <label class="control-label col-sm-2">태그</label>
 			<div class="col-sm-3">						
 				<select multiple id="tagsinput" data-role="tagsinput"></select>
 					<div id="tagNavbar">
@@ -95,7 +92,7 @@
 							
 						</ul>
 					</div>															
-			</div>			
+			</div>			 -->
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
 			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}"/>
@@ -123,10 +120,8 @@
 
 	<%@ include file="../include/footer.jsp" %>	
 	
-	
-		
-	<script src="/static/js/bootstrap-tagsinput.js"></script>	
-		
+	<script src="/static/js/tags.js"></script>
+			
 	<script>
 	$(document).ready(function() {
 		// 취소 버튼이 눌렸을 경우 => OK하면 메인으로 이동
@@ -136,192 +131,7 @@
 			} else {
 				location.href ="/";
 			}
-		});
-
-		// tag dropdown메뉴에서 버튼을 클릭해도 dropdown창이 닫히지 않게 하는 메서드
-		$('.dropdown-tag').on('click', function(event){		  
-		    event.stopPropagation();
-		});		
-		
-		$('#javaTag').on("click", function () {
-			$('select').tagsinput('add', 'Java', $(this).css("background-color", 'blue'));
-		});
-
-		$('#springTag').on("click", function () {
-			$('select').tagsinput('add', 'Spring');
-		});
-
-		$('#springbootTag').on("click", function () {
-			$('select').tagsinput('add', 'Spring Boot');
-		});
-
-		$('#jdbcTag').on("click", function () {
-			$('select').tagsinput('add', 'JDBC');
-		});
-
-		$('#jstlTag').on("click", function () {
-			$('select').tagsinput('add', 'JSTL');
-		});
-
-		$('#frontendTag').on("click", function () {
-			$('select').tagsinput('add', 'Front-End');
-		});
-
-		$('#backendTag').on("click", function () {
-			$('select').tagsinput('add', 'Back-End');
-		});
-
-		$('#webdevTag').on("click", function () {
-			$('select').tagsinput('add', '웹 개발');
-		});
-
-		$('#appdevTag').on("click", function () {
-			$('select').tagsinput('add', '앱 개발');
-		});
-
-		$('#htmlcssTag').on("click", function () {
-			$('select').tagsinput('add', 'HTML/CSS');
-		});
-
-		$('#javascriptTag').on("click", function () {
-			$('select').tagsinput('add', 'Javascript');
-		});
-
-		$('#jqueryTag').on("click", function () {
-			$('select').tagsinput('add', 'jQuery');
-		});
-
-		$('#jspTag').on("click", function () {
-			$('select').tagsinput('add', 'JSP');
-		});
-
-		$('#bootstrapTag').on("click", function () {
-			$('select').tagsinput('add', 'Bootstrap');
-		});
-
-		$('#pythonTag').on("click", function () {
-			$('select').tagsinput('add', 'Python');
-		});
-
-		$('#djangoTag').on("click", function () {
-			$('select').tagsinput('add', 'Django');
-		});
-
-		$('#flaskTag').on("click", function () {
-			$('select').tagsinput('add', 'Flask');
-		});
-
-		$('#gamedevTag').on("click", function () {
-			$('select').tagsinput('add', '게임 개발');
-		});
-
-		$('#unityTag').on("click", function () {
-			$('select').tagsinput('add', 'Unity');
-		});
-
-		$('#androidTag').on("click", function () {
-			$('select').tagsinput('add', 'Android');
-		});
-
-		$('#iosTag').on("click", function () {
-			$('select').tagsinput('add', 'iOS');
-		});
-
-		$('#swiftTag').on("click", function () {
-			$('select').tagsinput('add', 'Swift');
-		});
-
-		$('#nodejsTag').on("click", function () {
-			$('select').tagsinput('add', 'Node.js');
-		});
-
-		$('#algorythmTag').on("click", function () {
-			$('select').tagsinput('add', '알고리즘');
-		});
-
-		$('#reactTag').on("click", function () {
-			$('select').tagsinput('add', 'React');
-		});
-
-		$('#cloudTag').on("click", function () {
-			$('select').tagsinput('add', '클라우드');
-		});
-
-		$('#linuxTag').on("click", function () {
-			$('select').tagsinput('add', 'Linux');
-		});
-
-		$('#gitTag').on("click", function () {
-			$('select').tagsinput('add', 'Git');
-		});
-
-		$('#infoguardTag').on("click", function () {
-			$('select').tagsinput('add', '정보보안');
-		});
-
-		$('#blockchainTag').on("click", function () {
-			$('select').tagsinput('add', '블록체인');
-		});
-
-		$('#devopsTag').on("click", function () {
-			$('select').tagsinput('add', 'DevOps');
-		});
-
-		$('#hackingTag').on("click", function () {
-			$('select').tagsinput('add', '해킹');
-		});
-
-		$('#databaseTag').on("click", function () {
-			$('select').tagsinput('add', '데이터베이스');
-		});
-
-		$('#aiTag').on("click", function () {
-			$('select').tagsinput('add', '인공지능');
-		});
-
-		$('#sqlTag').on("click", function () {
-			$('select').tagsinput('add', 'SQL');
-		});
-
-		$('#machinerunningTag').on("click", function () {
-			$('select').tagsinput('add', '머신러닝');
-		});
-
-		$('#rTag').on("click", function () {
-			$('select').tagsinput('add', 'R');
-		});
-
-		$('#uiuxTag').on("click", function () {
-			$('select').tagsinput('add', 'UI/UX');
-		});
-
-		$('#3dmodelingTag').on("click", function () {
-			$('select').tagsinput('add', '3D 모델링');
-		});
-
-		$('#aftereffectsTag').on("click", function () {
-			$('select').tagsinput('add', 'After Effects');
-		});
-
-		$('#premiereproTag').on("click", function () {
-			$('select').tagsinput('add', 'Premiere Pro');
-		});
-
-		$('#phothshopTag').on("click", function () {
-			$('select').tagsinput('add', 'Photoshop');
-		});
-
-		$('#illustratorTag').on("click", function () {
-			$('select').tagsinput('add', 'Illustrator');
-		});
-
-		$('#designeditorTag').on("click", function () {
-			$('select').tagsinput('add', '편집 디자인');
-		});
-
-		$('#indesignTag').on("click", function () {
-			$('select').tagsinput('add', 'InDesign');
-		});
+		});	
 		
 		// Markdown Editor
 		var testEditor;
@@ -334,8 +144,7 @@
 				readOnly 	: false
 			});
 		});		
-	});
-	
+	});	
 	</script>
 		
 </body>

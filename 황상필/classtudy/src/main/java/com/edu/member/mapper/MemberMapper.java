@@ -1,10 +1,10 @@
-package com.edu.mapper;
+package com.edu.member.mapper;
 
 import org.springframework.stereotype.*;
 
-import com.edu.domain.MemberDTO;
+import com.edu.member.domain.MemberDTO;
 
-@Repository("com.edu.mapper.MemberMapper")
+@Repository("com.edu.member.mapper.MemberMapper")
 public interface MemberMapper {
 	
 	// 아이디 중복 체크

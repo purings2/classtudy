@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.freeboard.mapper.FbcommentMapper">
+
+	<!-- 댓글 작성 -->
+	<insert id="commentInsert">
+	INSERT INTO fbcomment 
+			(writer,	 content, 	boardNo, 	writeDate)
+	VALUES 	(#{writer}, #{content}, #{boardNo}, SYSDATE())
+	</insert>	
+	<!-- 댓글 목록 보기 -->
+	<select id="commentList" resultType="com.edu.freeboard.domain.FbcommentDTO">
+	SELECT 	f.*, m.name writerName 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	boardNo = #{boardNo} 
+	ORDER BY commentNo 
+	</select>
+	<!-- 댓글 수정 -->
+	<update id="commentUpdate">
+	UPDATE 	fbcomment 
+	SET 	content = #{content} 
+	WHERE 	commentNo = #{commentNo} 
+	</update>
+	<!-- 댓글 삭제 -->
+	<delete id="commentDelete">
+	DELETE 	
+	FROM 	fbcomment 
+	WHERE 	commentNo = #{commentNo} 
+	</delete>
+</mapper>

@@ -4,7 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
-<mapper namespace="com.edu.mapper.ClassboardMapper">
+<mapper namespace="com.edu.classboard.mapper.ClassboardMapper">
 
 	<!-- TIL 게시글 작성 -->
 	<insert id="writeTIL">
@@ -14,7 +14,7 @@
 	</insert>
 
 	<!-- TIL 게시글 목록 보기 -->
-	<select id="boardListTIL" resultType="com.edu.domain.ClassboardDTO">
+	<select id="boardListTIL" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	* 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
@@ -43,7 +43,7 @@
 	</select>
 	
 	<!-- TIL 게시글 검색 -->
-	<select id="searchTIL" resultType="com.edu.domain.ClassboardDTO">
+	<select id="searchTIL" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	* 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
@@ -61,7 +61,7 @@
 	</insert>
 	
 	<!-- 게시판 목록 보기 -->
-	<select id="boardList" resultType="com.edu.domain.ClassboardDTO">
+	<select id="boardList" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
@@ -69,7 +69,7 @@
 	ORDER BY boardNo DESC LIMIT 5 
 	</select>
 	<!-- 게시판 목록 보기2 -->
-	<select id="boardList2" resultType="com.edu.domain.ClassboardDTO">
+	<select id="boardList2" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
@@ -107,7 +107,7 @@
 	</select>
 	
 	<!-- 게시글 상세 보기 -->
-	<select id="boardDetail" resultType="com.edu.domain.ClassboardDTO">
+	<select id="boardDetail" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.boardNo = #{boardNo} 
@@ -142,7 +142,7 @@
 	</update>
 	
 	<!-- 게시글 검색 -->
-	<select id="search" resultType="com.edu.domain.ClassboardDTO">
+	<select id="search" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
@@ -151,7 +151,7 @@
 	</select>
 	
 	<!-- 게시글 검색2 -->
-	<select id="search2" resultType="com.edu.domain.ClassboardDTO">
+	<select id="search2" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 

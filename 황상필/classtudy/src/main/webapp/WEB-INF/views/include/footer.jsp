@@ -9,6 +9,9 @@
 <script src="/static/js/editormd.js"></script>
 <script src="/static/js/lib/marked.min.js"></script>
 <script src="/static/js/lib/prettify.min.js"></script>
+<!-- Tags -->
+<script src="/static/js/bootstrap-tagsinput.js"></script>
+<script src="/static/js/tags.js"></script>
 <!-- Multi Dropdown Menu -->
 <script>
 $(document).ready(function(){

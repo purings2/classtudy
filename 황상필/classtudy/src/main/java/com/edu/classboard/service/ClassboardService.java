@@ -1,4 +1,4 @@
-package com.edu.service;
+package com.edu.classboard.service;
 
 import java.util.List;
 
@@ -8,18 +8,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.edu.controller.MemberController;
-import com.edu.domain.ClassboardDTO;
-import com.edu.mapper.ClassboardMapper;
+import com.edu.classboard.domain.ClassboardDTO;
+import com.edu.classboard.mapper.ClassboardMapper;
+import com.edu.member.controller.MemberController;
 
-@Service("com.edu.service.ClassboardService")
+@Service("com.edu.classboard.service.ClassboardService")
 public class ClassboardService {
 	
 	// 로깅을 위한 변수 LOGGER를 선언한다.
 	private static final Logger logger
 		= LoggerFactory.getLogger(MemberController.class);
 	
-	@Resource(name="com.edu.mapper.ClassboardMapper")
+	@Resource(name="com.edu.classboard.mapper.ClassboardMapper")
 	ClassboardMapper classboardMapper;
 	
 	// TIL 게시글 작성

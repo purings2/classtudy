@@ -1,12 +1,12 @@
-package com.edu.mapper;
+package com.edu.classboard.mapper;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.edu.domain.ClassboardDTO;
+import com.edu.classboard.domain.ClassboardDTO;
 
-@Repository("com.edu.mapper.ClassboardMapper")
+@Repository("com.edu.classboard.mapper.ClassboardMapper")
 public interface ClassboardMapper {
 
 	// TIL 게시글 작성

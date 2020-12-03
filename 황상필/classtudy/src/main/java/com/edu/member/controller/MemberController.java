@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.member.controller;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +11,8 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.edu.domain.MemberDTO;
-import com.edu.service.MemberService;
+import com.edu.member.domain.MemberDTO;
+import com.edu.member.service.MemberService;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/member/*") // MemberController에서 공통적으로 사용될 url mapping

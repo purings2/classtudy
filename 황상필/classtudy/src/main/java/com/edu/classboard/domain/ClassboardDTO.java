@@ -1,4 +1,4 @@
-package com.edu.domain;
+package com.edu.classboard.domain;
 
 import java.util.Date;
 

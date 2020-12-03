@@ -1,4 +1,4 @@
-package com.edu.service;
+package com.edu.member.service;
 
 import javax.annotation.*;
 
@@ -6,18 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 
-import com.edu.controller.MemberController;
-import com.edu.domain.MemberDTO;
-import com.edu.mapper.MemberMapper;
+import com.edu.member.controller.MemberController;
+import com.edu.member.domain.MemberDTO;
+import com.edu.member.mapper.MemberMapper;
 
-@Service("com.edu.service.MemberService")
+@Service("com.edu.member.service.MemberService")
 public class MemberService {
 	
 	// 로깅을 위한 변수 LOGGER를 선언한다.
 	private static final Logger LOGGER
 		= LoggerFactory.getLogger(MemberController.class);
 
-	@Resource(name="com.edu.mapper.MemberMapper")
+	@Resource(name="com.edu.member.mapper.MemberMapper")
 	MemberMapper memberMapper;
 	
 	// 아이디 중복 검사

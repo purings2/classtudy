@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.common;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.edu.domain.MemberDTO;
+import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 public class MainController {

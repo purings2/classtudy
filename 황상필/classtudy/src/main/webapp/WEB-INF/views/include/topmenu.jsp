@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <%
 	// 로그인 여부 체크할 변수 선언
 	boolean isLogin = false;
@@ -40,7 +40,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
-								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
 								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
@@ -106,7 +106,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li><a href="${path}/community/group">그룹</a></li>
-								<li><a href="${path}/community/board">자유게시판</a></li>
+								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
 								<li><a href="${path}/community/incruit">채용공고</a></li>
 							</ul>
 						</li>
