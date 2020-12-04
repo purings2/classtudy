@@ -200,6 +200,15 @@ CREATE TABLE fblikes (
 	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 자유게시판 댓글 좋아요 테이블 생성
+CREATE TABLE fbcommentlikes (
+	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
+	memberId 	VARCHAR(16) 	NOT NULL,
+	commentNo 	INT 			NOT NULL,
+	CONSTRAINT memberId_fk 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT commentNo_fk FOREIGN KEY (commentNo) REFERENCES fbcomment(commentNo) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- 그룹게시판 좋아요 테이블 생성
 CREATE TABLE gblikes (
 	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
