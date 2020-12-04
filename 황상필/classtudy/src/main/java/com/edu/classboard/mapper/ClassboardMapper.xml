@@ -15,13 +15,12 @@
 
 	<!-- TIL 게시글 목록 보기 -->
 	<select id="boardListTIL" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	* 
-	FROM 	classboard 
+	SELECT 	c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
 	WHERE 	lectureNo = #{lectureNo} 
-	AND 	<![CDATA[boardNo < #{maxNo}]]>
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
-	ORDER BY boardNo DESC LIMIT 5 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
 	<!-- 화면에 보여줄 TIL 게시글 개수 추출 -->
@@ -32,14 +31,14 @@
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
 	</select>
-	
-	<!-- 마지막 TIL 게시글 번호 추출 -->
-	<select id="getNextTILNum" resultType="Integer">
-	SELECT 	MAX(boardNo) 
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 (검색시) -->
+	<select id="getTILSearchCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
 	</select>
 	
 	<!-- TIL 게시글 검색 -->
@@ -49,8 +48,8 @@
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
-	AND 	title LIKE #{keyword} OR content LIKE #{keyword} 
-	ORDER BY boardNo DESC 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
 	<!-- 게시글 작성 -->
@@ -62,20 +61,20 @@
 	
 	<!-- 게시판 목록 보기 -->
 	<select id="boardList" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	c.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
-	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
-	ORDER BY boardNo DESC LIMIT 5 
+	ORDER BY c.boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	<!-- 게시판 목록 보기2 -->
 	<select id="boardList2" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	c.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
-	AND 	<![CDATA[c.boardNo < #{maxNo}]]>
 	AND 	c.category = #{viewCategory} 
-	ORDER BY boardNo DESC LIMIT 5 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
 	<!-- 화면에 보여줄 게시글 개수 추출 -->
@@ -91,19 +90,20 @@
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = #{viewCategory} 
 	</select>
-	
-	<!-- 마지막 게시글 번호 추출 -->
-	<select id="getNextNum" resultType="Integer">
-	SELECT 	MAX(boardNo) 
+	<!-- 화면에 보여줄 게시글 개수 추출 (검색시) -->
+	<select id="getSearchCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
 	</select>
-	<!-- 마지막 게시글 번호 추출2 -->
-	<select id="getNextNum2" resultType="Integer">
-	SELECT 	MAX(boardNo) 
+	<!-- 화면에 보여줄 게시글 개수 추출2 (검색시) -->
+	<select id="getSearchCount2" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
 	FROM 	classboard 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = #{viewCategory} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
 	</select>
 	
 	<!-- 게시글 상세 보기 -->
@@ -140,14 +140,48 @@
 	SET 	likes = likes + 1 
 	WHERE 	boardNo = #{boardNo} 
 	</update>
+	<!-- 좋아요 내용 기록 -->
+	<insert id="writeLikes">
+	INSERT INTO cblikes 
+			(memberId, boardNo) 
+	VALUES 	(#{memberId}, #{boardNo})
+	</insert>
+	
+	<!-- 게시글 좋아요수 가져오기 -->
+	<select id="getLikes" resultType="int">
+	SELECT 	likes 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	<!-- 게시글 좋아요 여부 검사 -->
+	<select id="likeCheck" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	cblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</select>
+	
+	<!-- 게시글 좋아요수 감소 -->
+	<update id="subtractLikes">
+	UPDATE 	classboard 
+	SET 	likes = likes - 1 
+	WHERE 	boardNo = #{boardNo}
+	</update>
+	<!-- 좋아요 내용 삭제 -->
+	<delete id="deleteLikes">
+	DELETE 
+	FROM 	cblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</delete>
 	
 	<!-- 게시글 검색 -->
 	<select id="search" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
-	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
-	ORDER BY boardNo DESC 
+	AND 	(c.title LIKE #{keyword} OR c.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
 	<!-- 게시글 검색2 -->
@@ -156,8 +190,8 @@
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
 	AND 	c.category = #{viewCategory} 
-	WHERE 	c.title LIKE #{keyword} OR c.content LIKE #{keyword} 
-	ORDER BY boardNo DESC 
+	AND 	(c.title LIKE #{keyword} OR c.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
 </mapper>

@@ -4,10 +4,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>클래스터디</title>
-	<%@ include file="include/header.jsp" %>
+	<%@ include file="../include/header.jsp" %>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-	<%@ include file="include/topmenu.jsp" %>
+	<%@ include file="../include/topmenu.jsp" %>
 	
 	<div class="container">
 		<iframe width="100%" height="700px" src="https://m.hrd.go.kr/hrdm/ti/mtiao/MTIAO0100L.do"></iframe>
@@ -20,7 +20,7 @@
 		 -->
 	</div>
 	
-	<%@ include file="include/footer.jsp" %>
+	<%@ include file="../include/footer.jsp" %>
 
 </body>
 </html>

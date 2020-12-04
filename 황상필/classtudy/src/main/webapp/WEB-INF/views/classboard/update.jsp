@@ -24,7 +24,6 @@
 			<input type="hidden" id="views" name="views" class="form-control" value="${detail.views}"/>
 			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
 			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${detail.lectureNo}"/>
-			<input type="hidden" id="memberId" name="memberId" class="form-control" value="${member.memberId}" maxlength="16"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>

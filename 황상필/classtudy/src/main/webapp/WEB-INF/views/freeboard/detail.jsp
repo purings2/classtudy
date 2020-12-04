@@ -26,6 +26,7 @@
 			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${detail.writer}" maxlength=16/>
 			<input type="hidden" id="memberId" name="memberId" class="form-control" value="${member.memberId}" maxlength="16"/>
+			<input type="hidden" id="tags" name="tags" class="form-control" value="${detail.tags}"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>
@@ -42,6 +43,12 @@
 			<label class="control-label col-sm-2">작성일</label>
 			<div class="col-sm-3">
 				<input type="text" id="writeDate" name="writeDate" class="form-control" value="<fmt:formatDate value="${detail.writeDate}" pattern="yyyy-MM-dd hh:mm"/>" readonly/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">태  그</label>
+			<div class="col-sm-8">
+				<input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" value="${detail.tags}" readonly/>
 			</div>
 		</div>
 		<div class="form-group">

@@ -48,4 +48,12 @@
 		WHERE memberId = #{memberId}
 		AND passwd = #{passwd}
 	</delete>
+	
+	<!-- 강의 번호에 해당하는 회원 찾기 -->
+	<select id="getLectureMembers" resultType="String">
+		SELECT 	memberId 
+		FROM 	member 
+		WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	
 </mapper>

@@ -21,7 +21,9 @@ import org.springframework.context.annotation.Bean;
  */
 
 @SpringBootApplication(scanBasePackages = {"com.edu"})
-@MapperScan(value = {"com.edu.classboard.mapper", "com.edu.common.mapper", "com.edu.freeboard.mapper", "com.edu.groupboard.mapper", "com.edu.member.mapper", "com.edu.admin.mapper"})
+@MapperScan(value = {"com.edu.classboard.mapper", "com.edu.common.mapper", 
+		"com.edu.freeboard.mapper", "com.edu.groupboard.mapper", "com.edu.member.mapper", 
+		"com.edu.admin.mapper"})
 public class ClasstudyApplication {
 
 	public static void main(String[] args) {

@@ -18,8 +18,12 @@ public class ClassboardDTO {
 	private int 	lectureNo;
 	
 	// Member Table에 있는 name 컬럼의 값
-	// writer = memberId일 때의 값을 JOIN으로 가져옴
+	// writer = memberId일 때의 값을 가져온다.
 	private String 	writerName;
+	
+	// Cbcomment Table에 있는 댓글의 개수
+	// 게시글 번호(boardNo)에 해당하는 값을 가져온다.
+	private int 	commentNum;
 	
 	public ClassboardDTO() {}
 	

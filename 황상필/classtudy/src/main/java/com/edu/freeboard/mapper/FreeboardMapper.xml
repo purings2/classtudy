@@ -8,8 +8,8 @@
 	<!-- 게시글 작성 -->
 	<insert id="write" parameterType="com.edu.freeboard.domain.FreeboardDTO">
 	INSERT	INTO freeboard
-			(WRITER, TITLE, CONTENT, writeDate, category) 
-	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category} )
+			(WRITER, TITLE, CONTENT, writeDate, category, tags) 
+	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category}, #{tags} )
 	</insert>
 	<!-- 게시글 상세 보기 -->
 	<select id="boardDetail" resultType="com.edu.freeboard.domain.FreeboardDTO">

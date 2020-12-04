@@ -38,7 +38,7 @@
 		<div class="form-group">		
 			<label class="control-label col-sm-2">태&nbsp;&nbsp;&nbsp;그</label>
 			<div class="col-sm-8">
-				<select multiple id="tags" name="tags" data-role="tagsinput" class="form-control"></select>
+				<input type="text" id="tags" name="tags" data-role="tagsinput" class="form-control"/>
 					<ul class="nav navbar-right">
 						<li class="dropdown">
 							<a class="dropdown" data-toggle="dropdown" href="#"> 태그 선택<span class="caret"></span></a>

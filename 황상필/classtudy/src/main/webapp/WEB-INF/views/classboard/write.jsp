@@ -47,12 +47,12 @@
 				<textarea style="display:none;" id="content" name="content"></textarea>
 			</div>
 		</div>
-		<div class="form-group">
+		<footer>
 			<div class="col-sm-12" style="text-align: center;">
-				<button type="button" class="btn btn-success" onclick="tilCheckForm(this.form)">등록</button>&nbsp;
+				<button type="button" class="btn btn-success" onclick="checkClassboardForm(this.form)">등록</button>&nbsp;
 				<button type="button" class="btn btn-warning cancel">취소</button>
 			</div>
-		</div>
+		</footer>
 	</form>
 </div>
 	

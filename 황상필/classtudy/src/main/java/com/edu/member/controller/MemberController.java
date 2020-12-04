@@ -11,6 +11,7 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.common.CommonUtils;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.service.MemberService;
 
@@ -26,6 +27,10 @@ public class MemberController {
 	//@Resource(name="com.edu.service.MemberService")
 	@Inject
 	MemberService memberService;
+	
+	// 공통으로 사용하는 메서드가 들어있는 클래스
+	@Inject
+	CommonUtils commonUtils;
 	
 	// 회원가입 GET : 회원가입 화면을 보려고 요청이 들어오면
 	// 웹 브라우저에서 http://localhost:8071/member/register으로 호출한다.
@@ -55,6 +60,14 @@ public class MemberController {
 		String tel3 = request.getParameter("tel3");
 		String tel = tel1 + "-" + tel2 + "-" + tel3;
 		memberDTO.setTel(tel);
+		
+		// 상세주소에 특수문자 치환
+		memberDTO.setAddressDetail(commonUtils.htmlConverter(memberDTO.getAddressDetail()));
+		
+		// 입력한 강의번호는 확인 테이블에 보내기
+		memberService.LectureCheck(memberDTO.getMemberId(), memberDTO.getLectureNo());
+		// 강의번호가 확인되기 전까지 기본값인 1로 저장
+		memberDTO.setLectureNo(1);
 		
 		// 회원아이디가 존재하는지 검사한다.
 		// 데이터가 존재하면 1을 리턴하고 아니면 0을 리턴하는 idCheck메서드를 MemberService에 만든다.
@@ -175,6 +188,9 @@ public class MemberController {
 		String tel = tel1 + "-" + tel2 + "-" + tel3;
 		memberDTO.setTel(tel);
 		
+		// 상세주소에 특수문자 치환
+		memberDTO.setAddressDetail(commonUtils.htmlConverter(memberDTO.getAddressDetail()));
+		
 		memberService.memberUpdate(memberDTO);
 		
 		// 회원정보를 수정하면 다시 로그인하도록 세션을 만료시킨다.
@@ -218,14 +234,5 @@ public class MemberController {
 		
 		return "redirect:/member/login";
 	}
-
-	//게시글 삭제
-	//삭제할 게시번호를 받아서 서비스한테 게시번호를 주고 삭제작업을 의뢰한다.
-//	@RequestMapping("/delete")
-//	public String delete(@RequestParam("b_no") int b_no) throws Exception {
-//		System.out.println("Controller delete Before");
-//		boardService.boardDelete(b_no);
-//		return "redirect:/board/list";
-//	}
-
-} // End - public class BoardController
+	
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.common.mapper.NotiMapper">
+
+	<!-- 알림 개수 읽어오기 -->
+	<select id="notiLoad" resultType="int">
+	SELECT 	COUNT(notiNo) 
+	FROM 	noti 
+	WHERE 	receiver = #{memberId} 
+	AND 	checked = false 
+	</select>
+	
+	<!-- 알림 목록 보기 -->
+	<select id="notiList" resultType="com.edu.common.domain.NotiDTO">
+	SELECT 	* 
+	FROM 	noti 
+	WHERE 	receiver = #{memberId} 
+	AND 	checked = false 
+	ORDER BY notiNo DESC 
+	</select>
+	
+	<!-- 같은 내용의 알림 찾기 -->
+	<select id="notiSearch" resultType="int">
+	SELECT 	IFNULL(MAX(notiNo), 0) notiNo 
+	FROM 	noti 
+	WHERE 	content = #{content} 
+	AND 	checked = false 
+	AND 	receiver = #{receiver} 
+	</select>
+	
+	<!-- 알림 추가 -->
+	<insert id="notiInsert">
+	INSERT INTO noti 
+			(receiver, content, checked, sendDate) 
+	VALUES 	(#{receiver}, #{content}, #{checked}, SYSDATE()) 
+	</insert>
+	
+	<!-- 알림 확인 -->
+	<update id="notiCheck">
+	UPDATE 	noti 
+	SET 	checked = true 
+	WHERE 	notiNo = #{notiNo} 
+	</update>
+	
+	<!-- 알림 모두 확인 -->
+	<update id="notiCheckAll">
+	UPDATE 	noti 
+	SET 	checked = true 
+	WHERE 	receiver = #{memberId} 
+	</update>
+
+</mapper>

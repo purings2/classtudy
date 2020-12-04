@@ -1,4 +1,4 @@
-package com.edu.common;
+package com.edu.common.controller;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class MainController {
 	@RequestMapping(value="/academy", method=RequestMethod.GET)
 	public String academy(Model model, HttpSession session) throws Exception {
 		LOGGER.info("MainController academy().....");
-		return "/academy"; // => WEB-INF/views/academy.jsp
+		return "/common/academy"; // => WEB-INF/views/academy.jsp
 	}
 	
 }
