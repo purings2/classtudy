@@ -217,3 +217,16 @@ CREATE TABLE gblikes (
 	CONSTRAINT gblikesMemberId 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
 	CONSTRAINT gblikesBoardNo 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------
+-- 관리자 전용 테이블
+---------------------------------------------------
+-- 강의번호 신청 확인 테이블
+CREATE TABLE registerlist (
+	listNo 		INT 			PRIMARY KEY AUTO_INCREMENT,
+	member 		VARCHAR(16) 	NOT NULL,
+	lectureNo 	INT 			NOT NULL,
+	checked 	BOOLEAN 		NOT NULL DEFAULT false,
+	CONSTRAINT registerMemberId FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT registerLectureNo FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
