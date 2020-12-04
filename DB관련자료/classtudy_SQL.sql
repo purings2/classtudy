@@ -18,7 +18,7 @@ CREATE TABLE lecture (
 	lectureNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
 	lectureName VARCHAR(60) 	NOT NULL,
 	academyNo 	INT 			NOT NULL,
-	CONSTRAINT academyNo_fk FOREIGN KEY (academyNo) REFERENCES academy(academyNo) ON DELETE CASCADE
+	CONSTRAINT lectureAcademyNo FOREIGN KEY (academyNo) REFERENCES academy(academyNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ---------------------------------------------------
@@ -44,17 +44,17 @@ CREATE TABLE member (
 	addressDetail VARCHAR(60) 	NOT NULL,
 	email 		VARCHAR(40) 	NOT NULL,
 	regDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	lectureNo 	INT 			NOT NULL,
+	lectureNo 	INT 			DEFAULT 1,
 	grade 		INT 			NOT NULL DEFAULT 0,
 	point 		INT 			NOT NULL DEFAULT 0,
 	reward 		INT 			NOT NULL DEFAULT 0,
-	group1 		INT 			NOT NULL DEFAULT 1,
-	group2 		INT 			NOT NULL DEFAULT 1,
-	group3 		INT 			NOT NULL DEFAULT 1,	
-	CONSTRAINT lectureNo_fk FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE SET DEFAULT 1,
-	CONSTRAINT groupNo1 	FOREIGN KEY (group1) REFERENCES grouplist(groupNo) ON DELETE SET DEFAULT 1,
-	CONSTRAINT groupNo2 	FOREIGN KEY (group2) REFERENCES grouplist(groupNo) ON DELETE SET DEFAULT 1,
-	CONSTRAINT groupNo3 	FOREIGN KEY (group3) REFERENCES grouplist(groupNo) ON DELETE SET DEFAULT 1
+	group1 		INT 			DEFAULT 1,
+	group2 		INT 			DEFAULT 1,
+	group3 		INT 			DEFAULT 1,	
+	CONSTRAINT memberLectureNo 	FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE SET NULL,
+	CONSTRAINT memberGroupNo1 	FOREIGN KEY (group1) REFERENCES grouplist(groupNo) ON DELETE SET NULL,
+	CONSTRAINT memberGroupNo2 	FOREIGN KEY (group2) REFERENCES grouplist(groupNo) ON DELETE SET NULL,
+	CONSTRAINT memberGroupNo3 	FOREIGN KEY (group3) REFERENCES grouplist(groupNo) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 알림 테이블
@@ -64,7 +64,7 @@ CREATE TABLE noti (
 	content 	VARCHAR(100) 	NOT NULL,
 	checked 	BOOLEAN 		NOT NULL DEFAULT false,
 	sendDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT receiverId FOREIGN KEY (receiver) REFERENCES member(memberId) ON DELETE CASCADE	
+	CONSTRAINT notiReceiver FOREIGN KEY (receiver) REFERENCES member(memberId) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 포인트 테이블
@@ -74,7 +74,7 @@ CREATE TABLE point (
 	content 	VARCHAR(100) 	NOT NULL,
 	changeVal 	INT 			NOT NULL,
 	accrDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT memberId FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE
+	CONSTRAINT pointReceiver FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 적립금 테이블
@@ -84,7 +84,7 @@ CREATE TABLE reward (
 	content 	VARCHAR(100) 	NOT NULL,
 	changeVal 	INT 			NOT NULL,
 	accrDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT memberId FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE	
+	CONSTRAINT rewardReceiver FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ---------------------------------------------------
@@ -101,8 +101,8 @@ CREATE TABLE classboard (
 	likes 		INT 			NOT NULL DEFAULT 0,
 	writeDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	lectureNo 	INT 			NOT NULL,
-	CONSTRAINT writerId 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT lectureNo_fk FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE CASCADE
+	CONSTRAINT classboardWriter 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT classboardLectureNo 	FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 자유게시판 테이블 생성
@@ -120,7 +120,7 @@ CREATE TABLE freeboard (
 			    '블록체인', 'DevOps', '클라우드', 'Linux', 'iOS', 'Swift', 'Spring Boot', 'Bootstrap', 'jQuery', 'Git', 
 			    'Django', 'UI/UX', '3D 모델링', 'Flask', 'After Effects', 'Premiere Pro', 'Photoshop', 'Illustrator', 
 			    'R', '편집 디자인', 'Unity', 'JSP', 'JDBC', 'JSTL', '해킹', 'InDesign'),
-	CONSTRAINT writerId FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE	
+	CONSTRAINT freeboardWriter FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 그룹게시판 테이블 생성
@@ -138,8 +138,8 @@ CREATE TABLE groupboard (
 			    '블록체인', 'DevOps', '클라우드', 'Linux', 'iOS', 'Swift', 'Spring Boot', 'Bootstrap', 'jQuery', 'Git', 
 			    'Django', 'UI/UX', '3D 모델링', 'Flask', 'After Effects', 'Premiere Pro', 'Photoshop', 'Illustrator', 
 			    'R', '편집 디자인', 'Unity', 'JSP', 'JDBC', 'JSTL', '해킹', 'InDesign'),
-	CONSTRAINT writerId 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT groupNo_fk 	FOREIGN KEY (groupNo) REFERENCES grouplist(groupNo) ON DELETE CASCADE
+	CONSTRAINT groupboardWriter 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT groupboardGroupNo 	FOREIGN KEY (groupNo) REFERENCES grouplist(groupNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ---------------------------------------------------
@@ -152,8 +152,8 @@ CREATE TABLE cbcomment (
 	content 	TEXT 			NOT NULL,
 	writeDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT writerId 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES classboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT cbcommentWriter 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT cbcommentBoardNo FOREIGN KEY (boardNo) REFERENCES classboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 자유게시판 댓글 테이블 생성
@@ -164,8 +164,8 @@ CREATE TABLE fbcomment (
 	likes 		INT 			NOT NULL DEFAULT 0,
 	writeDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT writerId 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT fbcommentWriter 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT fbcommentBoardNo FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 그룹게시판 댓글 테이블 생성
@@ -175,8 +175,8 @@ CREATE TABLE gbcomment (
 	content 	TEXT 			NOT NULL,
 	writeDate 	TIMESTAMP 		NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT writerId 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT gbcommentWriter 	FOREIGN KEY (writer) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT gbcommentBoardNo FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ---------------------------------------------------
@@ -187,8 +187,8 @@ CREATE TABLE cblikes (
 	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
 	memberId 	VARCHAR(16) 	NOT NULL,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT memberId_fk 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES classboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT cblikesMemberId 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT cblikesBoardNo 	FOREIGN KEY (boardNo) REFERENCES classboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 자유게시판 좋아요 테이블 생성
@@ -196,8 +196,8 @@ CREATE TABLE fblikes (
 	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
 	memberId 	VARCHAR(16) 	NOT NULL,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT memberId_fk 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT fblikesMemberId 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT fblikesBoardNo 	FOREIGN KEY (boardNo) REFERENCES freeboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 자유게시판 댓글 좋아요 테이블 생성
@@ -205,8 +205,8 @@ CREATE TABLE fbcommentlikes (
 	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
 	memberId 	VARCHAR(16) 	NOT NULL,
 	commentNo 	INT 			NOT NULL,
-	CONSTRAINT memberId_fk 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT commentNo_fk FOREIGN KEY (commentNo) REFERENCES fbcomment(commentNo) ON DELETE CASCADE
+	CONSTRAINT fbcommentlikesMemberId 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT fbcommentlikesCommentNo 	FOREIGN KEY (commentNo) REFERENCES fbcomment(commentNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 그룹게시판 좋아요 테이블 생성
@@ -214,6 +214,6 @@ CREATE TABLE gblikes (
 	likesNo 	INT 			PRIMARY KEY AUTO_INCREMENT,
 	memberId 	VARCHAR(16) 	NOT NULL,
 	boardNo 	INT 			NOT NULL,
-	CONSTRAINT memberId_fk 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
-	CONSTRAINT boardNo_fk 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo) ON DELETE CASCADE
+	CONSTRAINT gblikesMemberId 	FOREIGN KEY (memberId) REFERENCES member(memberId) ON DELETE CASCADE,
+	CONSTRAINT gblikesBoardNo 	FOREIGN KEY (boardNo) REFERENCES groupboard(boardNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
