@@ -148,7 +148,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
 				<div class="col-sm-4">
-					<input type="text" id="lectureId" name="lectureId" class="form-control" placeholder="강의번호를 입력하세요."/>
+					<input type="text" id="lectureNo" name="lectureNo" class="form-control" placeholder="강의번호를 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
