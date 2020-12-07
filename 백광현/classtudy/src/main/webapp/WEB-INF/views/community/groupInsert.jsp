@@ -71,7 +71,15 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
+	var startStudy = $("[name=startStudy]").val();
+	
+	if(startStudy.value == "") {
+		alert("날짜를 선택해주세요");
+		$("#startStudy").focus();
+		return false;
+	}
 
+	alert("날짜를 선택해주세요");
     $("#startStudy").datepicker({
       buttonText: "Select date",
       showAnim: "slideDown",

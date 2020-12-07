@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.groupboard.controller;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,19 +11,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.edu.domain.BoardDTO;
 import com.edu.domain.MemberDTO;
-import com.edu.service.BoardService;
+import com.edu.groupboard.domain.GroupboardDTO;
+import com.edu.groupboard.service.GroupboardService;
 
 @Controller
 @RequestMapping("/community/*")
-public class CommunityController {
+public class GroupboardController {
 	
 	@Inject
-	private BoardService service;
+	private GroupboardService service;
 	
 	private static final Logger LOGGER
-		= LoggerFactory.getLogger(CommunityController.class);
+		= LoggerFactory.getLogger(GroupboardController.class);
 	
 	@RequestMapping(value="/group", method=RequestMethod.GET)
 	public String getGroupBoardList(HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
@@ -41,7 +41,7 @@ public class CommunityController {
 		String memberId = member.getMemberId();
 		LOGGER.info("ClassboardController classroom() lectureNo : " + lectureNo + ", " + memberId);
 			
-		List<BoardDTO> groupList = null;
+		List<GroupboardDTO> groupList = null;
 		groupList = service.groupList();
 		model.addAttribute("groupList",groupList);
 		return "/community/group";
@@ -54,7 +54,7 @@ public class CommunityController {
 	}
 	//게시물 작성 POST
 	@RequestMapping(value="/groupInsert", method = RequestMethod.POST)
-	public String groupInsertProc(BoardDTO boardDTO)throws Exception{
+	public String groupInsertProc(GroupboardDTO boardDTO)throws Exception{
 		LOGGER.info("CommunityController POSTInsertProc().....");
 		
 		service.groupInsert(boardDTO);

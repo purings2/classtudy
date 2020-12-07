@@ -1,4 +1,4 @@
-package com.edu.service;
+package com.edu.groupboard.service;
 
 import java.util.List;
 import javax.annotation.*;
@@ -7,35 +7,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 
-import com.edu.controller.GroupCommentController;
-import com.edu.domain.GroupCommentDTO;
-import com.edu.mapper.GroupCommentMapper;
+import com.edu.groupboard.controller.GbCommentController;
+import com.edu.groupboard.domain.GbCommentDTO;
+import com.edu.groupboard.mapper.GbCommentMapper;
 
-@Service("com.edu.service.GroupCommentService")
-public class GroupCommentService {
+@Service("com.edu.groupboard.service.GbCommentService")
+public class GbCommentService {
  
-    @Resource(name="com.edu.mapper.GroupCommentMapper")
-    GroupCommentMapper gbCommentMapper;
+    @Resource(name="com.edu.groupboard.mapper.GbCommentMapper")
+    GbCommentMapper gbCommentMapper;
  
     	
 	//로깅을 위한 변수 logger를 선언한다.
 	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GroupCommentController.class);
+		= LoggerFactory.getLogger(GbCommentController.class);
 	
     
     //댓글 목록
-    public List<GroupCommentDTO> commentListService(int boardNo) throws Exception{
+    public List<GbCommentDTO> commentListService(int boardNo) throws Exception{
     	LOGGER.info("댓글목록 서비스 Start()....");
     	return gbCommentMapper.gbcommentList(boardNo);
     }
     //댓글 작성
-    public int commentInsertService(GroupCommentDTO gbcomment) throws Exception{
+    public int commentInsertService(GbCommentDTO gbcomment) throws Exception{
     	LOGGER.info("댓글작성 서비스 Start()....");
     	return gbCommentMapper.gbcommentInsert(gbcomment);
     }
     
     //댓글 수정
-    public int commentUpdateService(GroupCommentDTO content) throws Exception{
+    public int commentUpdateService(GbCommentDTO content) throws Exception{
     	LOGGER.info("댓글수정 서비스 Start()....");
         return gbCommentMapper.gbcommentUpdate(content);
     }

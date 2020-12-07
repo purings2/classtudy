@@ -1,11 +1,11 @@
-package com.edu.domain;
+package com.edu.groupboard.domain;
 
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class GroupCommentDTO {
+public class GbCommentDTO {
 	
 	private int commentNo; //댓글 번호
 	private int boardNo; //게시판 번호
@@ -13,5 +13,5 @@ public class GroupCommentDTO {
 	private String content; //댓글내용
 	private Date writeDate; //댓글 작성 시간
 	
-	public GroupCommentDTO() {}
+	public GbCommentDTO() {}
 }

@@ -1,11 +1,11 @@
-package com.edu.domain;
+package com.edu.groupboard.domain;
 
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class BoardDTO {
+public class GroupboardDTO {
 
 	private	int 	boardNo;
 	private	String 	writer;
@@ -19,6 +19,6 @@ public class BoardDTO {
 	private Date	startStudy;
 	
 
-	public BoardDTO() {}	
+	public GroupboardDTO() {}	
 	
 }

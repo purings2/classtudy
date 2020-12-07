@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.edu.mapper.GroupCommentMapper">
+<mapper namespace="com.edu.groupboard.mapper.GbCommentMapper">
 	
 	<!-- 댓글의 개수를 구한다. -->
 	<select id="gbcommentCount" resultType="int">
@@ -8,20 +8,20 @@
 	</select>
 	
 	<!-- 댓글 리스트-->
-	<select id="gbcommentList" resultType="com.edu.domain.GroupCommentDTO">	
+	<select id="gbcommentList" resultType="com.edu.groupboard.domain.GbCommentDTO">	
 		SELECT * 
 		FROM gbcomment WHERE boardNo = #{boardNo}
 	</select>
 	
 	<!-- 댓글 입력 -->
-	<insert id="gbcommentInsert" parameterType="com.edu.domain.GroupCommentDTO">
+	<insert id="gbcommentInsert" parameterType="com.edu.groupboard.domain.GbCommentDTO">
 		INSERT INTO 
 		gbcomment (commentNo, boardNo, writer, content, writeDate)
 		VALUES(#{commentNo},#{boardNo},#{writer},#{content},SYSDATE())
 	</insert>
 	
  	<!-- 댓글 수정 -->
-	<update id="gbcommentUpdate" parameterType="com.edu.domain.GroupCommentDTO">
+	<update id="gbcommentUpdate" parameterType="com.edu.groupboard.domain.GbCommentDTO">
         UPDATE gbcomment
             SET
             content = #{content}
