@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.admin.mapper.AdminMapper">
+
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM admin
+		WHERE adminId = #{adminId}	
+	</select>
+
+	<!-- 게시판 자료 등록 -->
+	<!-- <insert id="adminInsert" parameterType="com.edu.admin.domain.AdminDTO" > -->
+	<insert id="adminInsert">
+		INSERT INTO admin 
+				(adminId, passwd)
+		VALUES	(#{adminId}, #{passwd})
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.admin.domain.AdminDTO">
+		SELECT adminId, passwd
+		FROM admin
+		WHERE adminId = #{adminId}
+		AND passwd = #{passwd}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="adminUpdate">
+		UPDATE	admin
+		SET		adminId = #{adminId}, passwd = #{passwd}
+		WHERE	adminId = #{adminId}
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<delete id="adminDelete">
+		DELETE 
+		FROM admin
+		WHERE adminId = #{adminId}
+		AND passwd = #{passwd}
+	</delete>
+	
+	<!-- 여성 회원 조회 -->
+	<select id = "getWomenCount" resultType="String">
+	select count(*) from member where gender = "F";
+	</select>
+	
+	<!-- 남성 회원 조회 -->
+	<select id = "getMenCount" resultType="String">
+	select count(*) from member where gender = "M";
+	</select>
+	
+	<insert id="adminWrite">
+		INSERT INTO adminwrite 
+				(adminId, passwd)
+		VALUES	(#{adminId}, #{passwd})
+	</insert>
+	
+</mapper>
