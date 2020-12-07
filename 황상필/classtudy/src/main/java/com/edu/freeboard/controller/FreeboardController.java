@@ -44,7 +44,7 @@ public class FreeboardController {
 		LOGGER.info("FreeboardController write POST....." + boardDTO);
 		if (session.getAttribute("member") != null) {
 			freeboardService.write(boardDTO);
-		}		
+		}			
 		model.addAttribute("게시글 등록이 완료되었습니다.");	
 				
 		return "redirect:/community/freeboard/all";		

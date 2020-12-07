@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.groupboard.mapper.GroupboardMapper">
+	
+	<!-- 게시글 목록 보기 -->
+	<select id="groupList" resultType="com.edu.groupboard.domain.GroupboardDTO">
+ 		SELECT  title, writer, content, tags, writeDate, startStudy, boardNo
+ 		FROM groupboard
+ 		ORDER BY  boardNo  DESC
+	</select>
+	
+	<!-- 게시글 쓰기 -->
+	<insert id="groupInsert" >	
+		INSERT INTO groupboard 
+				(writer, title, content, writeDate, startStudy)
+		VALUES 	(#{writer}, #{title}, #{content}, SYSDATE(), #{startStudy})
+	</insert>
+
+		<!-- boardNo에 해당하는 자료를 삭제한다. -->
+	<delete id="groupboardDelete" parameterType="int">
+	DELETE
+	FROM	groupboard
+	WHERE	boardNo		= #{boardNo}
+	</delete>
+</mapper>
+

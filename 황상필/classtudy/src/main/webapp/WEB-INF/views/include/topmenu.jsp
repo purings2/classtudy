@@ -48,7 +48,7 @@
 										그룹 <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href="${path}/community/groupSearch">그룹찾기</a></li>
+										<li><a href="${path}/group/groupsearch">그룹찾기</a></li>
 										<li><a href="${path}/community/group/all">그룹게시판</a></li>
 									</ul>
 								</li>
@@ -125,7 +125,7 @@
 										그룹 <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href="${path}/community/groupSearch">그룹찾기</a></li>
+										<li><a href="${path}/group/groupsearch">그룹찾기</a></li>
 										<li><a href="${path}/community/group/all">그룹게시판</a></li>
 									</ul>
 								</li>
