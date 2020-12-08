@@ -11,8 +11,6 @@
 	
 	<div class="container">
 		<h1>${name}님 환영합니다!!!</h1><br>
-		<button type="button" class="btn btn-default btn-lg" 
-			onclick="location.href='/class/classroom/all'">클래스룸으로 가기</button>
 	</div>
 	
 	<%@ include file="include/footer.jsp" %>

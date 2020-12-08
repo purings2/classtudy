@@ -273,7 +273,7 @@
                 "goto-line"      : "跳转到行",
                 watch            : "미리보기 끄기",
                 unwatch          : "미리보기 켜기",
-                preview          : "전체창에서 미리보기（돌아가려면 Shift + ESC）",
+                preview          : "전체창에서 미리보기",
                 fullscreen       : "전체화면（돌아가려면 ESC）",
                 clear            : "전체 삭제", //javascript로 취소창 띄우기 추가할 것!
                 search           : "검색",

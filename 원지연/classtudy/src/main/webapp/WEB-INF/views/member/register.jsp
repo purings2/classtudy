@@ -147,7 +147,11 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
 				<div class="col-sm-3">
-					<input type="text" id="lectureNo" name="lectureNo" class="form-control" placeholder="강의번호를 입력하세요."/>
+					<input type="text" id="lectureNo" name="lectureNo" class="form-control" placeholder="검색 버튼을 이용해주세요." readonly/>
+				</div>
+				<div class="col-sm-2">
+					<button class="form-control" type="button" onclick="searchLectureNo()" 
+						style="background-color: #dddddd"><b>검색</b></button>
 				</div>
 			</div>
 			<div class="form-group">

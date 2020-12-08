@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.member.mapper.MemberMapper">
+
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="int">
+	SELECT COUNT(*)
+	FROM member
+	WHERE memberId = #{memberId}	
+	</select>
+
+	<!-- 회원 가입 -->
+	<!-- <insert id="memberInsert" parameterType="com.edu.domain.MemberDTO" > -->
+	<insert id="memberInsert">
+	INSERT INTO member 
+			(memberId, passwd, name, dateOfBirth, gender, tel, 
+			zipcode, address, addressDetail, email, regDate)
+	VALUES	(#{memberId}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, 
+			#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE())
+	</insert>
+	
+	<!-- 강의번호 확인 신청 -->
+	<insert id="registerLecture">
+	INSERT INTO registerlist 
+			(member, lectureNo) 
+	VALUES	(#{memberId}, #{lectureNo}) 
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.member.domain.MemberDTO">
+	SELECT memberId, passwd, name, dateOfBirth, gender, tel, 
+	zipcode, address, addressDetail, email, regDate, lectureNo, group1, group2, group3 
+	FROM member
+	WHERE memberId = #{memberId}
+	AND passwd = #{passwd}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="memberUpdate">
+		UPDATE 	member
+		SET 	passwd = #{passwd}, name = #{name}, email = #{email}, 
+				dateOfBirth = #{dateOfBirth}, gender = #{gender}, tel = #{tel}, 
+				zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail} 
+		WHERE 	memberId = #{memberId}
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<delete id="memberDelete">
+		DELETE 
+		FROM member
+		WHERE memberId = #{memberId}
+		AND passwd = #{passwd}
+	</delete>
+	
+	<!-- 강의 번호에 해당하는 회원 찾기 -->
+	<select id="getLectureMembers" resultType="String">
+		SELECT 	memberId 
+		FROM 	member 
+		WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	
+</mapper>

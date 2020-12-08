@@ -1,24 +1,6 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
-<%--
-	// MemberDTO를 저장하기 위한 변수 선언
-	MemberDTO memberDTO = null;
-	String tel = "", tel1 = "", tel2 = "", tel3 = "";
-	// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
-	if(session.getAttribute("member") != null) {
-		memberDTO = (MemberDTO)session.getAttribute("member");
-		// member에 담긴 전화번호를 저장
-		tel = memberDTO.getTel();
-		// 전화번호를 tel1, tel2, tel3로 나눠서 저장
-		tel1 = tel.substring(0, 3); //첫 세자리 저장
-		tel = tel.substring(4); //뒷 번호들만 남기기
-		tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
-		tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
-	} else {
-		response.sendRedirect("/member/login");
-	}
---%>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +9,7 @@
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
-<%@ include file="../include/topmenu.jsp" %>
+	<%@ include file="../include/topmenu.jsp" %>
 	<div class="container">
 		<form class="form-horizontal" action="/member/memberUpdate" method="post">
 			<div class="form-group">
@@ -183,14 +165,26 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의번호</label>
 				<div class="col-sm-3">
-					<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					<!-- 강의번호가 DEFAULT 값일 때 -->
+					<c:if test="${member.lectureNo == '1'}">
+						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" value="강의번호 확인 중입니다" readonly/>
+						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					</c:if>
+					<!-- 강의번호가 NULL일 때(int형이라 0으로 비교) -->
+					<c:if test="${member.lectureNo == '0'}">
+						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="강의가 종료되었습니다" readonly/>
+						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					</c:if>
+					<!-- 강의번호가 있을 때 -->
+					<c:if test="${member.lectureNo != '1' && member.lectureNo != '0'}">
+						<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					</c:if>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-12" style="text-align: center;">
 					<!-- alert('회원정보 수정 버튼'); -->
-					<button type="button" class="btn btn-success" 
-						onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
+					<button type="button" class="btn btn-success" onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>
 				</div>
 			</div>

@@ -1,8 +1,8 @@
 <%@page import="java.util.Date"%>
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
-<%@ page import="com.edu.domain.ClassboardDTO" %>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
+<%@ page import="com.edu.classboard.domain.ClassboardDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +14,7 @@
 	<%@ include file="../include/topmenu.jsp" %>
 
 <div class="container" style="padding-bottom: 30px">
-	<form class="form-horizontal" action="/class/write" method="post">
+	<form class="form-horizontal" action="/class/classboard/write" method="post">
 		<header>
 			<h1>게시글 작성</h1><br>
 		</header>
@@ -25,12 +25,16 @@
 			</div>
 			<label class="control-label col-sm-2">말머리</label>
 			<div class="col-sm-3">
-				<!-- <input type="text" id="category" name="category" class="form-control" value="선택"/> -->
+				<c:if test="${class == 'yes'}">
 					<select id="category" name="category" class="form-control">
 						<option value="TIL">TIL</option>
 						<option value="클래스">클래스</option>
 						<option value="질문">질문</option>
 					</select>
+				</c:if>
+				<c:if test="${til == 'yes'}">
+					<input type="text" id="category" name="category" class="form-control" value="TIL" readonly/>
+				</c:if>
 			</div>
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
@@ -47,12 +51,12 @@
 				<textarea style="display:none;" id="content" name="content"></textarea>
 			</div>
 		</div>
-		<div class="form-group">
+		<footer>
 			<div class="col-sm-12" style="text-align: center;">
-				<button type="button" class="btn btn-success" onclick="tilCheckForm(this.form)">등록</button>&nbsp;
+				<button type="button" class="btn btn-success" onclick="checkClassboardForm(this.form)">등록</button>&nbsp;
 				<button type="button" class="btn btn-warning cancel">취소</button>
 			</div>
-		</div>
+		</footer>
 	</form>
 </div>
 	
@@ -65,7 +69,7 @@
 			if(confirm("정말 취소하시겠습니까?") == false){
 				return false;
 			} else {
-				location.href ="/class/classroom";
+				location.href ="/class/classboard/all";
 			}
 		});
 

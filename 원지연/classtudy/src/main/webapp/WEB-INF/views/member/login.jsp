@@ -22,7 +22,7 @@
 			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-4">
 					<h5 align="center">아직 회원이 아니신가요?<br>
-					<a href="/member/register">회원가입</a>을 진행해주세요!</h5>
+					<a href="${path}/member/register">회원가입</a>을 진행해주세요!</h5>
 				</div>
 			</div>
 			<div class="form-group">
@@ -50,7 +50,7 @@
 				<div align="center">
 					<p>로그인이 완료되었습니다.</p>
 					<button id="mainBtn" type="button" class="btn btn-primary btn-lg"
-						onclick="location.href='/'">메인으로</button>
+						onclick="location.href='${path}/'">메인으로</button>
 					<!-- 
 					<button id="memberUpdateBtn" type="button">회원정보수정</button>
 					<button id="memberDeleteBtn" type="button">회원탈퇴</button>
