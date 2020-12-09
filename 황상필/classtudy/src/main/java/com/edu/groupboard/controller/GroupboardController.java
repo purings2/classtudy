@@ -2,6 +2,7 @@ package com.edu.groupboard.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.member.domain.MemberDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.groupboard.service.GroupboardService;
 
 @Controller
@@ -52,17 +54,24 @@ public class GroupboardController {
 	public String getGroupInsert() throws Exception{
 		LOGGER.info("CommunityController getInsert().....");
 		
-		return "redirect:/groupboard/groupInsert";
+		return "groupboard/groupInsert";
 		
 	}
 	//게시물 작성 POST
 	@RequestMapping(value="/groupInsert", method = RequestMethod.POST)
-	public String groupInsertProc(GroupboardDTO boardDTO)throws Exception{
+	public String groupInsertProc(GroupboardDTO boardDTO, HttpServletRequest request, GrouplistDTO grouplistDTO)throws Exception{
 		LOGGER.info("CommunityController POSTInsertProc().....");
+		
+		String groupName = request.getParameter("groupName");
+		grouplistDTO.setGroupNo(0);
+		grouplistDTO.setGroupName(groupName);
+		
+		service.groupListInsert(grouplistDTO);
+		boardDTO.setGroupNo(grouplistDTO.getGroupNo());
 		
 		service.groupInsert(boardDTO);
 		
-	return "redirect:/groupboard/groupsearch";
+	return "/groupboard/groupsearch";
 	}
 
 	//글 번호에 해당하는 자료를 삭제한다.

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 import com.edu.member.controller.MemberController;
 import com.edu.groupboard.domain.GroupboardDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.groupboard.mapper.GroupboardMapper;
 
 @Service("com.edu.groupboard.service.GroupboardService")
@@ -40,5 +41,10 @@ public class GroupboardService {
 	//게시글 삭제
 	public int groupboardDeleteService(int boardNo) throws Exception {
 		return boardMapper.groupboardDelete(boardNo);
+	}
+
+	public int groupListInsert(GrouplistDTO grouplistDTO) {
+		return boardMapper.groupListInsert(grouplistDTO);
+		
 	}
 }

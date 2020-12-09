@@ -12,8 +12,8 @@
 	<!-- 게시글 쓰기 -->
 	<insert id="groupInsert" >	
 		INSERT INTO groupboard 
-				(writer, title, content, writeDate, startStudy)
-		VALUES 	(#{writer}, #{title}, #{content}, SYSDATE(), #{startStudy})
+				(writer, title, content, writeDate, startStudy, groupNo)
+		VALUES 	(#{writer}, #{title}, #{content}, SYSDATE(), #{startStudy}, #{groupNo})
 	</insert>
 
 		<!-- boardNo에 해당하는 자료를 삭제한다. -->
@@ -22,5 +22,15 @@
 	FROM	groupboard
 	WHERE	boardNo		= #{boardNo}
 	</delete>
+	
+	<insert id="groupListInsert" parameterType="com.edu.groupboard.domain.GrouplistDTO" >	
+		INSERT INTO grouplist(groupNo, groupName)
+		VALUES (null, #{groupName})
+		<selectKey resultType="int" keyProperty="groupNo" order="AFTER">
+        SELECT LAST_INSERT_ID()
+    	</selectKey>      
+	</insert>
+	
+	
 </mapper>
 

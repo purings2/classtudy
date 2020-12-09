@@ -24,6 +24,10 @@
 				<label for="title">제목</label>
 				<input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요.">
 			</div>
+			<div class="form-group">
+				<label for="groupName">그룹명</label>
+				<input type="text" class="form-control" id="groupName" name="groupName" placeholder="그룹명을 입력하세요.">
+			</div>
 			
 			<div class="tags">
 				<div>Tags</div>
