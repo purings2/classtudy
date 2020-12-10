@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 
+import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.mapper.MemberMapper;
 
@@ -26,6 +27,11 @@ public class MemberService {
 		LOGGER.info("MemberService idCheck().....");
 		int result = memberMapper.idCheck(memberDTO);
 		return result;
+	}
+	
+	// 강의번호 검색
+	public List<LectureDTO> search(String keyword) throws Exception {
+		return memberMapper.search(keyword);
 	}
 	
 	// 회원 가입

@@ -1,5 +1,7 @@
 package com.edu.member.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.common.CommonUtils;
+import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.service.MemberService;
 
@@ -35,14 +38,14 @@ public class MemberController {
 	// 회원가입 GET : 회원가입 화면을 보려고 요청이 들어오면
 	// 웹 브라우저에서 http://localhost:8071/member/register으로 호출한다.
 	@RequestMapping(value="/register", method=RequestMethod.GET)
-	public String getRegister() throws Exception {
+	private String getRegister() throws Exception {
 		LOGGER.info("MemberController getRegister().....");
 		return "/member/register"; // => WEB-INF/views/member/register.jsp
 	}
 	
 	// 회원가입 POST : 회원가입에 필요한 자료를 가지고 회원가입 요청이 들어오면
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String postRegister(MemberDTO memberDTO, HttpServletRequest request, Model model) throws Exception {
+	private String postRegister(MemberDTO memberDTO, HttpServletRequest request, Model model) throws Exception {
 		LOGGER.info("MemberController postRegister().....");
 		
 		/*
@@ -84,7 +87,7 @@ public class MemberController {
 	// 아이디 중복 검사
 	@ResponseBody
 	@RequestMapping(value="/idCheck", method=RequestMethod.POST)
-	public int idCheck(MemberDTO memberDTO) throws Exception {
+	private int idCheck(MemberDTO memberDTO) throws Exception {
 		LOGGER.info("MemberController : " + memberDTO);
 		
 		//아이디 중복 검사를 하기 위해서 memberDTO를 Service에게 넘겨준다.
@@ -94,10 +97,28 @@ public class MemberController {
 		return result;
 	}
 	
+	// 강의번호 검색 팝업창 띄우기
+	@RequestMapping(value="/openLecturePopup")
+	private String openLecturePopup() throws Exception {
+		LOGGER.info("MemberController openLecturePopup().....");
+		return "/member/lectureList";
+	}
+	
+	// 강의번호 검색
+	@ResponseBody
+	@RequestMapping(value="/search/{keyword}")
+	private List<LectureDTO> search(@PathVariable String keyword, Model model) throws Exception {
+		LOGGER.info("MemberController search() : " + keyword);
+		// 키워드에 특수문자가 있으면 치환
+		keyword = commonUtils.htmlConverter(keyword);
+		// 화면에 보여줄 데이터를 검색해와서 담는다.
+		return memberService.search("%" + keyword + "%");
+	}
+	
 	// 로그인 GET : 로그인 화면을 보려고 요청이 들어오면
 	// 웹 브라우저에서 http://localhost:8071/member/login으로 호출한다.
 	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String getLogin() throws Exception {
+	private String getLogin() throws Exception {
 		LOGGER.info("MemberController getLogin().....");
 		return "/member/login"; // => WEB-INF/views/member/login.jsp
 	}
@@ -106,7 +127,7 @@ public class MemberController {
 	// DB에 확인하여 정확한 정보이면 세션을 발급해주고, 아니라면 msg를 만들어서 보내준다.
 	// RedirectAttributes를 사용하면 redirect로 보내지만 값을 같이 보낼 수 있다.
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(MemberDTO memberDTO, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
+	private String login(MemberDTO memberDTO, HttpServletRequest req, RedirectAttributes rttr) throws Exception {
 		LOGGER.info("MemberController login POST.....");
 		
 		HttpSession session = req.getSession();
@@ -135,7 +156,7 @@ public class MemberController {
 	
 	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(HttpSession session) throws Exception {
+	private String logout(HttpSession session) throws Exception {
 		LOGGER.info("MemberController logout().....");
 		
 		// 로그아웃 버튼을 눌렀을 경우, 세션을 없애고 로그인화면으로 돌아가도록 한다.
@@ -146,7 +167,7 @@ public class MemberController {
 	// 수정할 화면을 보여주세요. 라는 회원정보 수정 요청이 들어왔다.
 	// 회원정보 수정 GET
 	@RequestMapping(value="/memberUpdate", method=RequestMethod.GET)
-	public String memberUpdateView(HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
+	private String memberUpdateView(HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
 		LOGGER.info("MemberController memberUpdateView().....");
 		
 		// MemberDTO를 저장하기 위한 변수 선언
@@ -176,7 +197,7 @@ public class MemberController {
 	
 	// 회원정보 수정 POST
 	@RequestMapping(value="/memberUpdate", method=RequestMethod.POST)
-	public String memberUpdate(MemberDTO memberDTO, HttpSession session, HttpServletRequest request) throws Exception {
+	private String memberUpdate(MemberDTO memberDTO, HttpSession session, HttpServletRequest request) throws Exception {
 		LOGGER.info("MemberController memberUpdate().....");
 		
 		// 전화번호 01X-XXXX-XXXX 형식으로 변환
@@ -199,14 +220,14 @@ public class MemberController {
 	
 	// 회원 탈퇴 GET
 	@RequestMapping(value="/memberDelete", method=RequestMethod.GET)
-	public String memberDeleteView() throws Exception {
+	private String memberDeleteView() throws Exception {
 		LOGGER.info("MemberController memberDeleteView GET.....");
 		return "/member/memberDelete";
 	}
 	
 	// 회원 탈퇴 POST
 	@RequestMapping(value="/memberDelete", method=RequestMethod.POST)
-	public String memberDelete(MemberDTO memberDTO, HttpSession session, Model model) throws Exception {
+	private String memberDelete(MemberDTO memberDTO, HttpSession session, Model model) throws Exception {
 		LOGGER.info("MemberController memberDelete POST.....");
 		
 		// 세션에 들어있는(=DB에 있는 정보) member정보를 가져와서 member변수에 저장한다.

@@ -42,7 +42,6 @@ public class ClassboardController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/member/login";
 		}
-		model.addAttribute("class", "yes");
 		return "/classboard/write";
 	}
 	
@@ -91,7 +90,7 @@ public class ClassboardController {
 		logger.info("ClassboardController list() viewCategory : " + viewCategory);
 		
 		if (lectureNo == 1 || lectureNo == 0) {
-			model.addAttribute("message", "관리자에게 강의번호를 확인 받은 후 다시 이용해주세요.");
+			model.addAttribute("message", "수강중인 강의가 있어야 이용할 수 있는 메뉴입니다.<br>관리자 확인을 받은 후 다시 이용해주세요.");
 			return "/common/noAccess";
 		} else {
 			// 현재 페이지의 번호를 저장하는 변수
@@ -108,7 +107,7 @@ public class ClassboardController {
 				totalCount = classboardService.getBoardCount(lectureNo, viewCategory);
 			}
 			// 화면에 보여줄 게시글의 수
-			int numOfPage = 5;
+			int numOfPage = 10;
 			// 구한 값을 뷰 페이지로 보내준다.
 			model.addAttribute("pageNumber", pageNumber);
 			model.addAttribute("totalCount", totalCount);
@@ -119,8 +118,6 @@ public class ClassboardController {
 			// 내가 쓴 TIL로 들어왔을 때 구분해서 보여주기
 			if(viewCategory.equals("myTIL")) {
 				model.addAttribute("list", classboardService.boardListTIL(lectureNo, memberId, startNo, numOfPage));
-				model.addAttribute("til", "yes");
-				model.addAttribute("listName", "내가 쓴 TIL");
 				return "/classboard/listTIL";
 			} else {
 				model.addAttribute("list", 
@@ -128,10 +125,8 @@ public class ClassboardController {
 					viewCategory.equals("all") ? 
 						classboardService.boardListAll(lectureNo, startNo, numOfPage) :
 						classboardService.boardList(lectureNo, viewCategory, startNo, numOfPage));
-				model.addAttribute("class", "yes");
-				model.addAttribute("listName", "클래스룸");
+				return "/classboard/list";
 			}
-			return "/classboard/list";
 		}
 	}
 	
@@ -159,8 +154,6 @@ public class ClassboardController {
 		// til 옵션이 있으면 TIL 페이지로 이동하기 위해 값을 설정한다.
 		if (cbOption.contains("til")) {
 			model.addAttribute("til", "yes");
-		} else {
-			model.addAttribute("class", "yes");
 		}
 		// comment 옵션이 있으면 commentList 위치로 이동하기 위해 값을 설정한다.
 		if (cbOption.contains("comment")) {
@@ -269,7 +262,7 @@ public class ClassboardController {
 		// 말머리가 있으면 해당하는 게시글만 카운트한다.
 		int totalCount = classboardService.getTILSearchCount(lectureNo, memberId, "%" + keyword + "%");
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 5;
+		int numOfPage = 10;
 		// 키워드에 특수문자가 있으면 치환
 		keyword = commonUtils.htmlConverter(keyword);
 		// 구한 값을 뷰 페이지로 보내준다.
@@ -301,10 +294,10 @@ public class ClassboardController {
 		// 화면에 보여줄 전체 게시글 건수를 구하기. 
 		// 말머리가 있으면 해당하는 게시글만 카운트한다.
 		int totalCount = viewCategory.equals("all") ? 
-				classboardService.getSearchCount(lectureNo, "%" + keyword + "%") : 
-				classboardService.getSearchCount2(lectureNo, viewCategory, "%" + keyword + "%");
+				classboardService.getSearchCountAll(lectureNo, "%" + keyword + "%") : 
+				classboardService.getSearchCount(lectureNo, viewCategory, "%" + keyword + "%");
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 5;
+		int numOfPage = 10;
 		// 키워드에 특수문자가 있으면 치환
 		keyword = commonUtils.htmlConverter(keyword);
 		// 구한 값을 뷰 페이지로 보내준다.
@@ -317,9 +310,9 @@ public class ClassboardController {
 		int startNo = (pageNumber-1) * numOfPage;
 		// 클래스게시판 목록 화면에 보여줄 데이터를 검색해와서 담는다.
 		if (viewCategory.equals("all")) {
-			model.addAttribute("list", classboardService.search(lectureNo, "%" + keyword + "%", startNo, numOfPage));
+			model.addAttribute("list", classboardService.searchAll(lectureNo, "%" + keyword + "%", startNo, numOfPage));
 		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 검색한다.
-			model.addAttribute("list", classboardService.search2(lectureNo, "%" + keyword + "%", viewCategory, startNo, numOfPage));
+			model.addAttribute("list", classboardService.search(lectureNo, "%" + keyword + "%", viewCategory, startNo, numOfPage));
 		}
 		return "/classboard/list";
 	}

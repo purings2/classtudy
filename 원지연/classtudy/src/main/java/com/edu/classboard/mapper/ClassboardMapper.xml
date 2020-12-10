@@ -167,7 +167,7 @@
 	</select>
 	
 	<!-- 게시글 검색 -->
-	<select id="search" resultType="com.edu.classboard.domain.ClassboardDTO">
+	<select id="searchAll" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 
@@ -176,7 +176,7 @@
 	</select>
 	
 	<!-- 게시글 검색2 -->
-	<select id="search2" resultType="com.edu.classboard.domain.ClassboardDTO">
+	<select id="search" resultType="com.edu.classboard.domain.ClassboardDTO">
 	SELECT 	*, m.name writerName 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	AND 	c.lectureNo = #{lectureNo} 

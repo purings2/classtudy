@@ -9,8 +9,8 @@
 	<!-- 게시글 작성 -->
 	<insert id="write" parameterType="com.edu.freeboard.domain.FreeboardDTO">
 	INSERT	INTO freeboard
-			(WRITER, TITLE, CONTENT, writeDate, category) 
-	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category} )
+			(WRITER, TITLE, CONTENT, writeDate, category, tags) 
+	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category}, #{tags})
 	</insert>
 	
 	<!-- 게시글 상세 보기 -->
@@ -23,7 +23,7 @@
 	<!-- 게시글 수정 -->
 	<update id="boardUpdate" >
 	UPDATE 	freeboard 
-	SET 	TITLE = #{title}, CONTENT = #{content}, category = #{category} 
+	SET 	TITLE = #{title}, CONTENT = #{content}, category = #{category}, tags = #{tags} 
 	WHERE 	boardNo = #{boardNo} 
 	</update>
 	
@@ -41,15 +41,15 @@
 	WHERE 	boardNo = #{boardNo}
 	</delete>
 	
-	<!-- 게시글 검색1-->
-	<select id="search" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	<!-- 게시글 검색 All-->
+	<select id="searchAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
 	SELECT	f.*, m.name writerName 
 	FROM 	freeboard f inner join member m on f.writer = m.memberId 
 	AND 	(f.title like #{keyword} or f.content like #{keyword}) 
 	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
 	</select>
-	<!-- 게시글 검색2-->
-	<select id="search2" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	<!-- 게시글 검색-->
+	<select id="search" resultType="com.edu.freeboard.domain.FreeboardDTO">
 	SELECT 	f.*, m.name writerName 
 	FROM 	freeboard f inner join member m on f.writer = m.memberId 
 	AND 	(f.title LIKE #{keyword} OR f.content LIKE #{keyword}) 
@@ -57,41 +57,63 @@
 	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
 	</select>
 	
-	<!-- 게시글 목록1(전체) -->	
-	<select id="boardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	<!-- 게시글 목록(전체) -->	
+	<select id="boardListAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
 	SELECT	f.*, m.name writerName, 
 			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
 	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
 	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>	
-	<!-- 게시글 목록2(정해진 말머리) -->	
-	<select id="boardList2" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	<!-- 게시글 목록(정해진 말머리) -->	
+	<select id="boardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
 	SELECT	f.*, m.name writerName, 
 			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
 	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
 	AND		f.category = #{viewCategory} 
 	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
+	<!-- 공지사항 목록 보기 -->
+	<select id="boardListNotice" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	AND		f.category = '공지사항' 
+	ORDER BY boardNo DESC LIMIT #{numOfNotice}, #{noticeCount}
+	</select>
+	<!-- 공지사항 목록 보기 - 첫번째 -->
+	<select id="boardListNoticeFirst" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	AND		f.category = '공지사항' 
+	ORDER BY boardNo DESC LIMIT 0, #{numOfNotice}
+	</select>
 	
-	<!-- 화면에 보여줄 게시글 개수 추출1 -->
-	<select id="getBoardCount" resultType="Integer">
+	<!-- 공지사항 게시글 개수 추출 -->
+	<select id="getNoticeCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	WHERE 	category = '공지사항' 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 All -->
+	<select id="getBoardCountAll" resultType="Integer">
 	SELECT 	COUNT(boardNo) 
 	FROM 	freeboard 
 	</select>
-	<!-- 화면에 보여줄 게시글 개수 추출2 -->
-	<select id="getBoardCount2" resultType="Integer">
+	<!-- 화면에 보여줄 게시글 개수 추출 -->
+	<select id="getBoardCount" resultType="Integer">
 	SELECT 	COUNT(boardNo)
 	FROM 	freeboard 
 	WHERE 	category = #{viewCategory} 
 	</select>
-	<!-- 화면에 보여줄 게시글 개수 추출1 (검색시) -->
-	<select id="getSearchCount" resultType="Integer">
+	<!-- 화면에 보여줄 게시글 개수 추출 All (검색시) -->
+	<select id="getSearchCountAll" resultType="Integer">
 	SELECT 	COUNT(boardNo) 
 	FROM 	freeboard 
 	WHERE 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
 	</select>
-	<!-- 화면에 보여줄 게시글 개수 추출2 (검색시) -->
-	<select id="getSearchCount2" resultType="Integer">
+	<!-- 화면에 보여줄 게시글 개수 추출 (검색시) -->
+	<select id="getSearchCount" resultType="Integer">
 	SELECT 	COUNT(boardNo) 
 	FROM 	freeboard
 	WHERE 	category = #{viewCategory}

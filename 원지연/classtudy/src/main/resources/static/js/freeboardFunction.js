@@ -29,13 +29,13 @@ function checkFreeboardForm(freeboardForm)
 	// 제목 검사
 	if(freeboardForm.title.value == "") {
 		alert("제목을 입력하세요.");
-		classboardForm.title.focus();
+		freeboardForm.title.focus();
 		return false;
 	}
 	// 내용 검사
 	if(document.getElementById("content").value.length == 0) {
 		alert("내용을 입력하세요.");
-		memberForm.content.focus();
+		freeboardForm.content.focus();
 		return false;
 	}
 	freeboardForm.submit();
@@ -72,7 +72,6 @@ function freeboardCheckForm(freeboardForm)
 // freeboard 게시글 좋아요 - 좋아요 버튼이 눌렸을 경우
 //---------------------------------------------------------------------
 function likefBoard(boardForm) {
-	
 	/*
 	// 자신이 작성한 글은 좋아요를 누를 수 없다.
 	// 게시글의 작성자와 로그인한 사람의 아이디 확인
@@ -81,7 +80,6 @@ function likefBoard(boardForm) {
 		return false;
 	}
 	*/
-	
 	// 해당 게시글에 좋아요를 이미 눌렀는지 확인
 	if(document.getElementById("likeBtn").value == "Y"){
 		//alert("이미 좋아요를 누른 게시글입니다.");
@@ -93,7 +91,7 @@ function likefBoard(boardForm) {
 				url: 	"/community/freeboard/deleteLike/",
 				type: 	"post",
 				dataType: "json",
-				data: 	{"boardNo" : boardForm.boardNo.value, "memberId" : boardForm.memberId.value},
+				data: 	{"boardNo" : boardNo, "memberId" : loginId},
 				success: function(data) {
 						document.getElementById("likeBtn").value = "N";
 						document.getElementById("likeBtn").style.backgroundColor = "#ffffff";
@@ -109,7 +107,7 @@ function likefBoard(boardForm) {
 			url: 	"/community/freeboard/like/",
 			type: 	"post",
 			dataType: "json",
-			data: 	{"boardNo" : boardForm.boardNo.value, "memberId" : boardForm.memberId.value},
+			data: 	{"boardNo" : boardNo, "memberId" : loginId},
 			success: function(data) {
 					document.getElementById("likeBtn").value = "Y";
 					document.getElementById("likeBtn").style.backgroundColor = "#888888";
@@ -120,13 +118,13 @@ function likefBoard(boardForm) {
 		});
 		// ----- 알림 보내기 -----
 		// 자신이 작성한 글은 알림을 보내지 않는다.
-		if(boardForm.writer.value != loginId) {
+		if(boardWriter != loginId) {
 			// 작성자에게 보낼 알림 텍스트를 만든다.
 			//var boardTitle = boardForm.title.value; //제목이 길면 잘라서 저장
 			//if (boardTitle.length > 10) { boardTitle = boardTitle.substring(0, 10) + '...'; }
 			var notiContent = '';
 			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
-			notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardForm.boardNo.value + '">게시글</a>';
+			notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '">게시글</a>';
 			notiContent += '을 좋아합니다.';
 			//alert(notiContent);
 			// 게시글 작성자에게 알림을 보낸다.
@@ -134,7 +132,7 @@ function likefBoard(boardForm) {
 				url: 	"/noti/insert/",
 				type: 	"post",
 				dataType: "json",
-				data: 	{"notiContent" : notiContent, "receiver" : boardForm.writer.value},
+				data: 	{"notiContent" : notiContent, "receiver" : boardWriter},
 				success: function(data) { }
 			});
 		}
@@ -180,7 +178,7 @@ function searchfBoard(keyword, searchCategory) {
 //---------------------------------------------------------------------
 // 댓글 목록 보기
 //---------------------------------------------------------------------
-function commentList() {
+function fbcommentList() {
 	$.ajax({
 		url:	"/fbcomment/list/" + boardNo + "/" + loginId,
 		type:	"get",
@@ -201,16 +199,16 @@ function commentList() {
 					if (value.writer == loginId) {
 						str += '<div class="col-sm-7 commentContent' + value.commentNo + '" align="left"><p>' + value.content +'</p></div>';
 						str += '<div class="col-sm-3" align="right">';
-						str += '<button class="btn btn-sm btn-default" onclick="commentUpdate(' + value.commentNo + ',\'' + value.content + '\',\'' + value.writer + '\');">수정</button>&nbsp;';
-						str += '<button class="btn btn-sm btn-default" onclick="commentDelete(' + value.commentNo + ',\'' + value.writer + '\');">삭제</button>&nbsp;';
+						str += '<button class="btn btn-sm btn-default" onclick="fbcommentUpdate(' + value.commentNo + ',\'' + value.content + '\',\'' + value.writer + '\');">수정</button>&nbsp;';
+						str += '<button class="btn btn-sm btn-default" onclick="fbcommentDelete(' + value.commentNo + ',\'' + value.writer + '\');">삭제</button>&nbsp;';
 					} else {
 						str += '<div class="col-sm-8 commentContent' + value.commentNo + '" align="left"><p>' + value.content +'</p></div>';
 						str += '<div class="col-sm-2" align="right">';
 					}
 					if (value.commentLikesNum > 0) {
-						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="Y" onclick="likefcBoard(' + value.commentNo + ',\'' + value.writer + '\')" style="background-color: #888888; color: #ffffff">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
+						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="Y" onclick="likeComment(' + value.commentNo + ',\'' + value.writer + '\')" style="background-color: #888888; color: #ffffff">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
 					} else {
-						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="N" onclick="likefcBoard(' + value.commentNo + ',\'' + value.writer + '\')">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
+						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="N" onclick="likeComment(' + value.commentNo + ',\'' + value.writer + '\')">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
 					}
 					str += '</div>';
 				});
@@ -223,7 +221,7 @@ function commentList() {
 //---------------------------------------------------------------------
 // 댓글 작성
 //---------------------------------------------------------------------
-function commentInsert(content){
+function fbcommentInsert(content){
 	// 댓글 내용이 입력되었는지 확인
 	if(document.getElementById("commentContent").value == "") {
 		alert("댓글 내용을 입력하세요.");
@@ -233,7 +231,7 @@ function commentInsert(content){
 			type: 	"post",
 			data: 	{"writer": loginId, "content": content, "boardNo": boardNo },
 			success: function(data){
-				if(data == 1) {	commentList(); // 댓글 목록 새로고침
+				if(data == 1) {	fbcommentList(); // 댓글 목록 새로고침
 					$("#commentContent").val(""); // 댓글 작성칸 비우기
 				}
 			}
@@ -244,20 +242,20 @@ function commentInsert(content){
 //---------------------------------------------------------------------
 // 댓글 수정 - 댓글 내용 부분을 input으로 변경
 //---------------------------------------------------------------------
-function commentUpdate(commentNo, content, writer) {
+function fbcommentUpdate(commentNo, content, writer) {
 	if (writer != loginId) {
 		alert("수정할 수 있는 권한이 없습니다.");
 	} else {
 		var str = '';
 		str += '<div class="input-group">';
 		str += '<input type="text" class="form-control" name="content_' + commentNo + '" value="' + content + '"/>';
-		str += '<span class="input-group-btn"><button class="btn btn-success" type="button" onclick="commentUpdateProc(' + commentNo + ');">수정</button></span>';
+		str += '<span class="input-group-btn"><button class="btn btn-success" type="button" onclick="fbcommentUpdateProc(' + commentNo + ');">수정</button></span>';
 		str += '</div>';
 		$('.commentContent' + commentNo).html(str);
 	}
 }
 // 댓글 수정 - 수정한 댓글 내용을 DB에 업데이트
-function commentUpdateProc(commentNo) {
+function fbcommentUpdateProc(commentNo) {
 	// 댓글 번호에 해당하는 댓글 내용을 가져온다.
 	var updateContent = $('[name=content_' + commentNo + ']').val();
 	$.ajax({
@@ -265,7 +263,7 @@ function commentUpdateProc(commentNo) {
 		type:	'post',
 		data:	{'content' : updateContent, 'commentNo' : commentNo},
 		success: function(data) {
-			if(data == 1) { commentList(); } //댓글 수정 후 목록을 다시 출력
+			if(data == 1) { fbcommentList(); } //댓글 수정 후 목록을 다시 출력
 		}
 	});
 }
@@ -273,7 +271,7 @@ function commentUpdateProc(commentNo) {
 //---------------------------------------------------------------------
 // 댓글 삭제
 //---------------------------------------------------------------------
-function commentDelete(commentNo, writer) {
+function fbcommentDelete(commentNo, writer) {
 	if (writer != loginId) {
 		alert("삭제할 수 있는 권한이 없습니다.");
 	} else {
@@ -284,7 +282,7 @@ function commentDelete(commentNo, writer) {
 				url:	'/fbcomment/delete/' + commentNo,
 				type:	'post',
 				success: function(data) {
-					if(data == 1) { commentList(); } //댓글 삭제 후 목록을 다시 출력
+					if(data == 1) { fbcommentList(); } //댓글 삭제 후 목록을 다시 출력
 				}
 			});
 		}
@@ -294,7 +292,7 @@ function commentDelete(commentNo, writer) {
 //---------------------------------------------------------------------
 // 댓글 좋아요 - DB에 업데이트
 //---------------------------------------------------------------------
-function likefcBoard(commentNo, writer) {
+function likeComment(commentNo, writer) {
 	// 해당 댓글의 좋아요버튼 아이디 저장
 	var btnName = "likefcBtn" + commentNo;
 	// 해당 댓글에 좋아요를 이미 눌렀는지 확인
@@ -359,7 +357,7 @@ function likefcBoard(commentNo, writer) {
 //---------------------------------------------------------------------
 // freeboard 댓글 좋아요 여부 확인
 //---------------------------------------------------------------------
-function checkfcLikes(commentNo, memberId) {
+function checkCommentLikes(commentNo, memberId) {
 	// 해당 댓글의 좋아요버튼 아이디 저장
 	var btnName = "likefcBtn" + commentNo;
 	// 좋아요 테이블에 좋아요 목록이 있는지 확인
@@ -380,4 +378,99 @@ function checkfcLikes(commentNo, memberId) {
 				}
 			}
 	});
+}
+
+//---------------------------------------------------------------------
+// freeboard 게시글 조회수 확인 후 알림 발송
+//---------------------------------------------------------------------
+function notiTofbViews(views) {
+	var NUM1 = 10;
+	var NUM2 = 50;
+	// 조회수가 NUM이면 알림을 보낸다. 
+	if (views == NUM1 || views == NUM2) {
+		// ----- 알림 보내기 -----
+		// 게시글 번호와 작성자 저장
+		var boardNo = document.getElementById("boardNo").value;
+		var writer = document.getElementById("writer").value;
+		// 작성자에게 보낼 알림 텍스트를 만든다.
+		var notiContent = '';
+		notiContent += '회원님의 ';
+		notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '">게시글</a>이 ';
+		notiContent += views + '회 이상 조회되었습니다.';
+		//alert(notiContent);
+		// 게시글 작성자에게 알림을 보낸다.
+		$.ajax({
+			url: 	"/noti/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			success: function(data) { notiLoad(); }
+		});
+	}
+}
+
+//---------------------------------------------------------------------
+// freeboard 게시글 좋아요수 확인 후 알림 발송
+//---------------------------------------------------------------------
+function notiTofbLikes(likes) {
+	var NUM1 = 10;
+	var NUM2 = 50;
+	// 좋아요수가 NUM이면 알림을 보낸다. 
+	if (likes == NUM1 || likes == NUM2) {
+		// ----- 알림 보내기 -----
+		// 게시글 번호와 작성자 저장
+		var boardNo = document.getElementById("boardNo").value;
+		var writer = document.getElementById("writer").value;
+		// 작성자에게 보낼 알림 텍스트를 만든다.
+		var notiContent = '';
+		notiContent += '회원님의 ';
+		notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '">게시글</a>을 ';
+		notiContent += likes + '명 이상 좋아합니다.';
+		//alert(notiContent);
+		// 게시글 작성자에게 알림을 보낸다.
+		$.ajax({
+			url: 	"/noti/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			success: function(data) { notiLoad(); }
+		});
+	}
+}
+
+//---------------------------------------------------------------------
+// freeboard 댓글 좋아요수 확인 후 알림 발송
+//---------------------------------------------------------------------
+function notiTofbcLikes(likes) {
+	var NUM1 = 5;
+	var NUM2 = 20;
+	// 좋아요수가 NUM이면 알림을 보낸다. 
+	if (likes == NUM1 || likes == NUM2) {
+		// ----- 알림 보내기 -----
+		// 게시글 번호와 작성자 저장
+		var boardNo = document.getElementById("boardNo").value;
+		var writer = document.getElementById("writer").value;
+		// 작성자에게 보낼 알림 텍스트를 만든다.
+		var notiContent = '';
+		notiContent += '회원님의 ';
+		notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '/comment">댓글</a>을 ';
+		notiContent += likes + '명 이상 좋아합니다.';
+		//alert(notiContent);
+		// 게시글 작성자에게 알림을 보낸다.
+		$.ajax({
+			url: 	"/noti/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			success: function(data) { notiLoad(); }
+		});
+	}
+}
+
+//---------------------------------------------------------------------
+// 태그 영역에 태그 입력
+//---------------------------------------------------------------------
+function addTag(tagName) {
+	//alert("addThisTag 실행");
+	$('#tags').tagsinput('add', tagName);
 }

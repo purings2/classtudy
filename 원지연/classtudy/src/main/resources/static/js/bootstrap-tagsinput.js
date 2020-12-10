@@ -1,115 +1,31 @@
 (function ($) {
   "use strict";
 
-  var defaultOptions = {
-    tagClass: function(item) {
-      /*
-      * item의 class속성 값에 programmingTagBtn이 있다면 return값이 'label label-primary' 
-      * 위와 같이 class 속성값으로 if문을 작성해야 4줄로 끝이나며 추후 유지보수에도 용이하지만
-      * 위의 조건식 작성을 못하여 일일히 작성한 경우가 아래경우.. 추후 꼭 javascript 공부해서 수정해야함.
-      */
-      if(item === 'Java') {     
-      return 'label label-primary'
-      } else if(item === 'Spring') {
-      return 'label label-primary'
-      } else if(item === 'Spring Boot') {
-      return 'label label-primary'
-      } else if(item === 'JDBC') {
-      return 'label label-primary'
-      } else if(item === 'JSTL') {
-      return 'label label-primary'
-      } else if(item === 'Front-End') {
-      return 'label label-primary'
-      } else if(item === 'Back-End') {
-      return 'label label-primary'
-      } else if(item === '웹 개발') {
-      return 'label label-primary'
-      } else if(item === '앱 개발') {
-      return 'label label-primary'
-      } else if(item === 'HTML/CSS') {
-      return 'label label-primary'
-      } else if(item === 'Javascript') {
-      return 'label label-primary'
-      } else if(item === 'jQuery') {
-      return 'label label-primary'
-      } else if(item === 'JSP') {
-      return 'label label-primary'
-      } else if(item === 'Bootstrap') {
-      return 'label label-primary'
-      } else if(item === 'Python') {
-      return 'label label-primary'
-      } else if(item === 'Django') {
-      return 'label label-primary'
-      } else if(item === 'Flask') {
-      return 'label label-primary'
-      } else if(item === '게임 개발') {
-      return 'label label-primary'
-      } else if(item === 'Unity') {
-      return 'label label-primary'
-      } else if(item === 'Android') {
-      return 'label label-primary'
-      } else if(item === 'iOS') {
-      return 'label label-primary'
-      } else if(item === 'Swift') {
-      return 'label label-primary'
-      } else if(item === 'Node.js') {
-      return 'label label-primary'
-      } else if(item === '알고리즘') {
-      return 'label label-primary'
-      } else if(item === 'React') {
-      return 'label label-primary'
-      } else if(item === '클라우드') {
-      return 'label label-primary'
-      } else if(item === 'Linux') {
-      return 'label label-primary'
-      } else if(item === 'Git') {
-      return 'label label-primary'
-      } 
-      
-        else if(item === '정보보안') {
-      return 'label label-success'
-      } else if(item === '블록체인') {
-      return 'label label-success'
-      } else if(item === 'DevOps') {
-      return 'label label-success'
-      } else if(item === '해킹') {
-      return 'label label-success'
-      } 
-      
-      	else if(item === '데이터베이스') {
-      return 'label label-warning'
-      } else if(item === '인공지능') {
-      return 'label label-warning'
-      } else if(item === 'SQL') {
-      return 'label label-warning'
-      } else if(item === '머신러닝') {
-      return 'label label-warning'
-      } else if(item === 'R') {
-      return 'label label-warning'
-      } 
-      
-      	else if(item === 'UI/UX') {
-      return 'label label-danger'
-      } else if(item === '3D 모델링') {
-      return 'label label-danger'
-      } else if(item === 'After Effects') {
-      return 'label label-danger'
-      } else if(item === 'Premiere Pro') {
-      return 'label label-danger'
-      } else if(item === 'Photoshop') {
-      return 'label label-danger'
-      } else if(item === 'Illustrator') {
-      return 'label label-danger'
-      } else if(item === '편집 디자인') {
-      return 'label label-danger'
-      } else if(item === 'InDesign') {
-      return 'label label-danger'
-      } 
-      
-      	else {
-      return 'label label-info'	
-      }
-    },
+	// 사용하는 태그 목록
+	var programmingTags = 
+			["Java", "Spring", "Spring Boot", "JDBC", "JSTL", "Front-End", "Back-End", "웹 개발", "앱 개발", 
+			"HTML/CSS","JavaScript", "jQuery", "JSP", "Bootstrap", "Python", "Django", "Flask", "게임 개발", "Unity", 
+			"Android", "iOS", "Swift", "Node.js", "알고리즘", "React", "클라우드", "Linux",  "Git"];
+	var guardTags = ["정보보안", "블록체인", "DevOps", "해킹"];
+	var dataTags = ["데이터베이스", "인공지능", "SQL", "머신러닝", "R"];
+	var designTags = ["UI/UX", "3D 모델링", "After Effects", "Premiere Pro", "Photoshop", "Illustrator", "편집 디자인", "InDesign"];
+	
+	var defaultOptions = {
+		tagClass: function(item) {
+				for (var i = 0; i < programmingTags.length; i++) {
+					if (item == programmingTags[i]) { return 'label label-primary'; }
+				}
+				for (var i = 0; i < guardTags.length; i++) {
+					if (item == guardTags[i]) { return 'label label-success'; }
+				}
+				for (var i = 0; i < dataTags.length; i++) {
+					if (item == dataTags[i]) { return 'label label-warning'; }
+				}
+				for (var i = 0; i < designTags.length; i++) {
+					if (item == designTags[i]) { return 'label label-danger'; }
+				}
+				return 'label label-info';
+		},
     itemValue: function(item) {
       return item ? item.toString() : item;
     },
@@ -123,10 +39,10 @@
     addOnBlur: true,
     maxTags: 5,
     maxChars: undefined,
-    confirmKeys: [13, 44],
+    confirmKeys: [13],
     delimiter: ',',
     delimiterRegex: null,
-    cancelConfirmKeysOnEmpty: true,
+    cancelConfirmKeysOnEmpty: false,
     onTagExists: function(item, $tag) {
       $tag.hide().fadeIn();
     },
@@ -235,8 +151,11 @@
       self.itemsArray.push(item);
 
       // add a tag element
-
-      var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      if (document.getElementById("isDetail").value == "yes") {
+        var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '</span>');
+      } else {
+        var $tag = $('<span class="tag ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+      }
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');

@@ -4,17 +4,12 @@
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!-- Markdown Editor & View -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/static/css/style.css" />
 <link rel="stylesheet" href="/static/css/editormd.css" />
 <link rel="stylesheet" href="/static/css/editormd.preview.css" />
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<!-- Fonts -->
-<!-- 
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
- -->
+<!-- Bootstrap Tags Input -->
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
 <style>
 <%-- Fonts --%>
 @font-face {
@@ -29,14 +24,13 @@
 	font-weight: normal;
 	font-style: normal;
 }
-.container {
+<%-- CSS --%>
+body {
 	font-family: 'IBMPlexSansKR-Regular', sans-serif;
 	font-size: 15px;
-	<%--
-	font-family: 'Nanum Gothic', sans-serif;
-	font-family: 'Noto Sans KR', sans-serif;
-	font-family: 'Noto Serif KR', serif;
-	--%>
+	color: #666;
+	background: #fff;
+	text-align: center;
 }
 #commentList {
 	font-family: 'IBMPlexSansKR-Regular', sans-serif;

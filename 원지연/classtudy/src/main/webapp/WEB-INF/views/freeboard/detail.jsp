@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>자유게시판</title>
+	<title>자유게시판 :: 게시글 상세 정보</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
@@ -20,13 +20,11 @@
 	<form class="form-horizontal" action="/community/freeboard/update/{boardNo}" method="post">
 		<div>
 			<!-- 숨겨서 넘길 정보들 -->
-			<input type="hidden" id="comment" name="comment" class="form-control" value="${comment}"/>
-			<input type="hidden" id="boardNo" name="boardNo" class="form-control" value="${detail.boardNo}" maxlength=16/>
-			<input type="hidden" id="views" name="views" class="form-control" value="${detail.views}"/>
-			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
-			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
-			<input type="hidden" id="memberId" name="memberId" class="form-control" value="${member.memberId}" maxlength="16"/>
-			
+			<input type="hidden" id="comment" name="comment" value="${comment}"/>
+			<input type="hidden" id="boardNo" name="boardNo" value="${detail.boardNo}"/>
+			<input type="hidden" id="views" name="views" value="${detail.views}"/>
+			<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>
+			<input type="hidden" id="writer" name="writer" value="${detail.writer}" maxlength=16/>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>
@@ -37,7 +35,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2">작성자</label>
 			<div class="col-sm-3">
-				<input type="text" id="writerName" name="writerName" class="form-control" value="${detail.writerName}" maxlength=16 readonly/>
+				<input type="text" id="writerName" name="writerName" class="form-control" value="${detail.writerName} (${detail.writer})" maxlength=16 readonly/>
 			</div>
 			<label class="control-label col-sm-2">작성일</label>
 			<div class="col-sm-3">
@@ -45,9 +43,16 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제  목</label>
+			<label class="control-label col-sm-2">제&nbsp;&nbsp;&nbsp;&nbsp;목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" value="${detail.title}" maxlength=50 readonly/>
+			</div>
+		</div>
+		<div class="form-group form-inline">
+			<label class="control-label col-sm-2">태&nbsp;&nbsp;&nbsp;&nbsp;그</label>
+			<div class="col-sm-8" align="left">
+				<input type="hidden" id="isDetail" name="isDetail" value="yes"/>
+				<input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" value="${detail.tags}" disabled/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -80,7 +85,7 @@
 					</span>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 </div>
 	
@@ -96,39 +101,16 @@
 			//htmlDecode : "style,script,iframe"  // Note: If enabled, you should filter some dangerous HTML tags for website security.
 		});
 		
+		// 게시글--------------------------------------------------		
 		// 좋아요 누른 게시글인지 확인
 		checkfbLikes($("#boardNo").val(), $("#memberId").val());
-		
-		// 좋아요 누른 댓글인지 확인
-		//checkfbcLikes($("#commentNo").val(), $("#memberId").val());
-		
 		// 조회수를 확인해서 알림을 보낸다.
-		notiToViews($("#views").val());
-					
-		// 게시글에 댓글이 있으면 댓글을 보여준다.
-		commentList();
-		// 댓글-----------------------------------------------------
-		// 댓글 뱃지를 누르고 들어왔으면 댓글 위치로 이동
-		if (document.getElementById("comment").value == "yes") {
-			//document.getElementById("commentList").scrollIntoView(true);
-			var divPosition = $("#commentList").offset();
-			$("html, body").animate({scrollTop: divPosition.top});
-		}
-		// 댓글 등록 버튼이 눌렸을 경우
-		$("#commentInsertBtn").on("click", function() {
-			//commentInsert($("#writer").val(), $("#content").val(), $("#boardNo").val());
-			commentInsert($("#commentContent").val());
-		});
-		// 댓글창에서 엔터키를 입력할 경우
-		$("#commentContent").keyup(function(e) { if(e.keyCode == 13) {
-			commentInsert($("#commentContent").val());
-		}});
+		notiTofbViews($("#views").val());
 		
-		// 게시글--------------------------------------------------		
 		// 내용 수정 버튼이 눌렸을 경우
 		$("#updateBtn").on("click", function() {
 			// 작성자와 로그인한 아이디가 같은지 확인
-			if(document.getElementById("writer").value == document.getElementById("memberId").value){
+			if(document.getElementById("writer").value == document.getElementById("loginId").value){
 				location.href="/community/freeboard/update/${detail.boardNo}";
 			} else {
 				alert("수정할 수 있는 권한이 없습니다.");
@@ -139,7 +121,7 @@
 		// 게시글 내용 삭제 버튼이 눌렸을 경우
 		$("#deleteBtn").on("click", function() {
 			// 작성자와 로그인한 아이디가 같은지 확인
-			if(document.getElementById("writer").value == document.getElementById("memberId").value){
+			if(document.getElementById("writer").value == document.getElementById("loginId").value){
 				if(confirm("정말 삭제하시겠습니까?") == false){
 					return false;
 				} else {
@@ -150,6 +132,25 @@
 				return false;
 			}
 		});
+		
+		// 댓글-----------------------------------------------------
+		// 게시글에 댓글이 있으면 댓글을 보여준다.
+		fbcommentList();
+		// 댓글 뱃지를 누르고 들어왔으면 댓글 위치로 이동
+		if (document.getElementById("comment").value == "yes") {
+			//document.getElementById("commentList").scrollIntoView(true);
+			var divPosition = $("#commentList").offset();
+			$("html, body").animate({scrollTop: divPosition.top});
+		}
+		// 댓글 등록 버튼이 눌렸을 경우
+		$("#commentInsertBtn").on("click", function() {
+			fbcommentInsert($("#commentContent").val());
+		});
+		// 댓글창에서 엔터키를 입력할 경우
+		$("#commentContent").keyup(function(e) { if(e.keyCode == 13) {
+			fbcommentInsert($("#commentContent").val());
+		}});
+		
 	});
 	</script>
 </body>

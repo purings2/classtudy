@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>게시글 수정</title>
+	<title>클래스룸 :: 게시글 수정</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
@@ -18,13 +18,12 @@
 		<h1>게시글 수정</h1><br>
 	</header>
 	<form class="form-horizontal" action="/class/classboard/update" method="post">
-		<div>
-			<!-- 숨겨서 넘길 정보들 -->
-			<input type="hidden" id="boardNo" name="boardNo" class="form-control" value="${detail.boardNo}" maxlength=16/>
-			<input type="hidden" id="views" name="views" class="form-control" value="${detail.views}"/>
-			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
-			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${detail.lectureNo}"/>
-		</div>
+		<!-- 숨겨서 넘길 정보들 -->
+		<input type="hidden" id="boardNo" name="boardNo" value="${detail.boardNo}"/>
+		<input type="hidden" id="views" name="views" value="${detail.views}"/>
+		<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>
+		<input type="hidden" id="lectureNo" name="lectureNo" value="${detail.lectureNo}"/>
+		<!-- 보여줄 내용들 -->
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>
 			<div class="col-sm-3">
@@ -49,7 +48,7 @@
 						<option value="클래스">클래스</option>
 						<option value="질문" selected>질문</option>
 					</select>
-				</c:if>					
+				</c:if>
 			</div>
 		</div>
 		<div class="form-group">
@@ -63,7 +62,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제  목</label>
+			<label class="control-label col-sm-2">제&nbsp;&nbsp;&nbsp;&nbsp;목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" maxlength=50 value="${detail.title}"/>
 			</div>
@@ -75,7 +74,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-12" style="text-align: center;">
-				<button type="button" class="btn btn-success" onclick="classboardCheckForm(this.form)">수정</button>&nbsp;
+				<button type="button" class="btn btn-success" onclick="checkUpdateClassboardForm(this.form)">수정</button>&nbsp;
 				<button type="button" class="btn btn-warning cancel">취소</button>
 			</div>
 		</div>
@@ -85,7 +84,7 @@
 	<%@ include file="../include/footer.jsp" %>
 	<script>
 	$(document).ready(function() {
-
+		
 		// 취소 버튼이 눌렸을 경우
 		$(".cancel").on("click", function() {
 			if(confirm("정말 취소하시겠습니까?") == false){
@@ -94,7 +93,7 @@
 				location.href="/class/classboard/detail/${detail.boardNo}";
 			}
 		});
-
+		
 		// Markdown Editor
 		var testEditor;
 		$(function() {
@@ -103,7 +102,8 @@
 				height 		: 640,
 				syncScrolling : "single",
 				path 		: "/static/js/lib/",
-				readOnly 	: false
+				readOnly 	: false,
+				placeholder : "내용을 입력하세요."
 			});
 		});
 		

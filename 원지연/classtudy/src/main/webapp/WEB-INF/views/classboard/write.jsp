@@ -7,25 +7,29 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>게시글 작성</title>
+	<title>클래스룸 :: 게시글 작성</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
 	<%@ include file="../include/topmenu.jsp" %>
 
 <div class="container" style="padding-bottom: 30px">
+	<header>
+		<h1>게시글 작성</h1><br>
+	</header>
 	<form class="form-horizontal" action="/class/classboard/write" method="post">
-		<header>
-			<h1>게시글 작성</h1><br>
-		</header>
 		<div class="form-group">
+			<!-- 숨겨서 넘길 정보들 -->
+			<input type="hidden" id="writer" name="writer" value="${member.memberId}" maxlength=16/>
+			<input type="hidden" id="lectureNo" name="lectureNo" value="${member.lectureNo}"/>
+			<!-- 보여줄 내용들 -->
 			<label class="control-label col-sm-2">작성자</label>
 			<div class="col-sm-3">
-				<input type="text" id="name" name="name" class="form-control" value="${member.name}" readonly="readonly" maxlength=16/>
+				<input type="text" id="writerName" name="writerName" class="form-control" value="${member.name}" readonly="readonly" maxlength=16/>
 			</div>
 			<label class="control-label col-sm-2">말머리</label>
 			<div class="col-sm-3">
-				<c:if test="${class == 'yes'}">
+				<c:if test="${til != 'yes'}">
 					<select id="category" name="category" class="form-control">
 						<option value="TIL">TIL</option>
 						<option value="클래스">클래스</option>
@@ -36,12 +40,9 @@
 					<input type="text" id="category" name="category" class="form-control" value="TIL" readonly/>
 				</c:if>
 			</div>
-			<!-- 숨겨서 넘길 정보들 -->
-			<input type="hidden" id="writer" name="writer" class="form-control" value="${member.memberId}" maxlength=16/>
-			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}"/>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제  목</label>
+			<label class="control-label col-sm-2">제&nbsp;&nbsp;&nbsp;목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" maxlength=50/>
 			</div>
@@ -64,7 +65,7 @@
 	<script>
 	$(document).ready(function() {
 		
-		// 취소 버튼이 눌렸을 경우 => OK하면 메인으로 이동
+		// 취소 버튼이 눌렸을 경우
 		$(".cancel").on("click", function() {
 			if(confirm("정말 취소하시겠습니까?") == false){
 				return false;
@@ -72,7 +73,7 @@
 				location.href ="/class/classboard/all";
 			}
 		});
-
+		
 		// Markdown Editor
 		var testEditor;
 		$(function() {
@@ -81,7 +82,8 @@
 				height 		: "600px",
 				syncScrolling : "single",
 				path 		: "/static/js/lib/",
-				readOnly 	: false
+				readOnly 	: false,
+				placeholder : "내용을 입력하세요."
 			});
 		});
 		

@@ -5,14 +5,22 @@
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
 <mapper namespace="com.edu.member.mapper.MemberMapper">
-
+	
 	<!-- 아이디 중복 검사 -->
 	<select id="idCheck" resultType="int">
 	SELECT COUNT(*)
 	FROM member
-	WHERE memberId = #{memberId}	
+	WHERE memberId = #{memberId}
 	</select>
-
+	
+	<!-- 강의번호 검색 -->
+	<select id="search" resultType="com.edu.member.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
+	ORDER BY lectureNo DESC 
+	</select>
+	
 	<!-- 회원 가입 -->
 	<!-- <insert id="memberInsert" parameterType="com.edu.domain.MemberDTO" > -->
 	<insert id="memberInsert">
@@ -32,11 +40,10 @@
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="com.edu.member.domain.MemberDTO">
-	SELECT memberId, passwd, name, dateOfBirth, gender, tel, 
-	zipcode, address, addressDetail, email, regDate, lectureNo, group1, group2, group3 
-	FROM member
-	WHERE memberId = #{memberId}
-	AND passwd = #{passwd}
+	SELECT 	m.*, lec.lectureName lectureName 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+	WHERE 	m.memberId = #{memberId} 
+	AND 	m.passwd = #{passwd} 
 	</select>
 	
 	<!-- 회원 정보 수정 -->
@@ -47,7 +54,7 @@
 				zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail} 
 		WHERE 	memberId = #{memberId}
 	</update>
-
+	
 	<!-- 회원 탈퇴 -->
 	<delete id="memberDelete">
 		DELETE 

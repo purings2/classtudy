@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <%
 	// 로그인 여부 체크할 변수 선언
 	boolean isLogin = false;

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class MemberDTO {
-
+	
 	private String 	memberId;
 	private String 	passwd;
 	private String 	name;
@@ -26,6 +26,10 @@ public class MemberDTO {
 	private int 	group2;
 	private int 	group3;
 	
-	public MemberDTO() {}	
+	// Lecture Table에 있는 lectureName 컬럼의 값
+	// lectureNo가 일치할 때의 값을 가져온다.
+	private String 	lectureName;
+	
+	public MemberDTO() {}
 	
 }

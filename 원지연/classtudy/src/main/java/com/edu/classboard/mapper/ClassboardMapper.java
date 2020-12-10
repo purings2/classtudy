@@ -62,8 +62,8 @@ public interface ClassboardMapper {
 	// TIL 게시글 검색
 	public List<ClassboardDTO> searchTIL(int lectureNo, String memberId, String keyword, int startNo, int numOfPage) throws Exception;
 	// 게시글 검색
-	public List<ClassboardDTO> search(int lectureNo, String keyword, int startNo, int numOfPage) throws Exception;
+	public List<ClassboardDTO> searchAll(int lectureNo, String keyword, int startNo, int numOfPage) throws Exception;
 	// 게시글 검색 - 정해진 말머리만
-	public List<ClassboardDTO> search2(int lectureNo, String keyword, String viewCategory, int startNo, int numOfPage) throws Exception;
+	public List<ClassboardDTO> search(int lectureNo, String keyword, String viewCategory, int startNo, int numOfPage) throws Exception;
 	
 }

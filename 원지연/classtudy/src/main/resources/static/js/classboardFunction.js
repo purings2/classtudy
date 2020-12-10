@@ -50,7 +50,7 @@ function checkClassboardForm(classboardForm)
 		var lectureNo = classboardForm.lectureNo.value;
 		// 클래스원들에게 보낼 알림 텍스트를 만든다.
 		var notiContent = '';
-		notiContent += '<a href="' + path + '/class/classroom/TIL">클래스룸</a>에 ';
+		notiContent += '<a href="' + path + '/class/classboard/TIL">클래스룸</a>에 ';
 		notiContent += '새로운 TIL 게시글이 올라왔습니다.';
 		// 같은 클래스원 모두에게 알림을 보낸다.
 		$.ajax({
@@ -66,7 +66,7 @@ function checkClassboardForm(classboardForm)
 //---------------------------------------------------------------------
 // 게시글 수정 검사
 //---------------------------------------------------------------------
-function classboardCheckForm(classboardForm) {
+function checkUpdateClassboardForm(classboardForm) {
 	// 카테고리 검사
 	if( !(classboardForm.category.value == "질문" || classboardForm.category.value == "클래스" || classboardForm.category.value == "TIL") ) {
 		alert("인식할 수 없는 말머리 값입니다.");
@@ -107,7 +107,7 @@ function likeBoard(boardForm) {
 		} else {
 			// 해당 게시글의 좋아요를 취소한다.
 			$.ajax({
-				url: 	"/class/deleteLike/",
+				url: 	"/class/classboard/deleteLike/",
 				type: 	"post",
 				dataType: "json",
 				data: 	{"boardNo" : boardForm.boardNo.value, "memberId" : loginId},
@@ -123,10 +123,10 @@ function likeBoard(boardForm) {
 	} else if(document.getElementById("likeBtn").value == "N"){
 		// 해당 게시글의 좋아요수를 올린다.
 		$.ajax({
-			url: 	"/class/like/",
+			url: 	"/class/classboard/like/",
 			type: 	"post",
 			dataType: "json",
-			data: 	{"boardNo" : boardForm.boardNo.value, "memberId" : loginId},
+			data: 	{"boardNo" : boardNo, "memberId" : loginId},
 			success: function(data) {
 					document.getElementById("likeBtn").value = "Y";
 					document.getElementById("likeBtn").style.backgroundColor = "#888888";
@@ -145,7 +145,7 @@ function likeBoard(boardForm) {
 			//if (boardTitle.length > 10) { boardTitle = boardTitle.substring(0, 10) + '...'; }
 			var notiContent = '';
 			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
-			notiContent += '<a href="' + path + '/class/detail/' + boardForm.boardNo.value + '">게시글</a>';
+			notiContent += '<a href="' + path + '/class/classboard/detail/' + boardForm.boardNo.value + '">게시글</a>';
 			notiContent += '을 좋아합니다.';
 			//alert(notiContent);
 			// 게시글 작성자에게 알림을 보낸다.
@@ -167,7 +167,7 @@ function checkLikes(boardNo, memberId) {
 	// 좋아요 테이블에 좋아요 목록이 있는지 확인
 	// 게시글번호, 로그인한 아이디가 모두 같아야 한다.
 	$.ajax({
-		url: 	"/class/likeCheck/",
+		url: 	"/class/classboard/likeCheck/",
 		type: 	"post",
 		dataType: "json",
 		data: 	{"boardNo"  : boardNo, "memberId" : memberId},
@@ -190,7 +190,7 @@ function checkLikes(boardNo, memberId) {
 function searchBoard(keyword, searchCategory) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/class/search/" + keyword + "/" + searchCategory;
+		location.href=path + "/class/classboard/search/" + keyword + "/" + searchCategory;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;
@@ -203,7 +203,7 @@ function searchBoard(keyword, searchCategory) {
 function searchTIL(keyword) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/class/searchTIL/" + keyword;
+		location.href=path + "/class/classboard/searchTIL/" + keyword;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;
@@ -274,7 +274,7 @@ function commentInsert(content){
 			var notiContent = '';
 			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
 			notiContent += '게시글에 ';
-			notiContent += '<a href="' + path + '/class/detail/' + boardNo + '/comment">댓글</a>을 남겼습니다.';
+			notiContent += '<a href="' + path + '/class/classboard/detail/' + boardNo + '/comment">댓글</a>을 남겼습니다.';
 			// 게시글 작성자에게 알림을 보낸다.
 			$.ajax({
 				url: 	"/noti/insert/",
@@ -339,5 +339,63 @@ function commentDelete(commentNo, writer) {
 				}
 			});
 		}
+	}
+}
+
+//---------------------------------------------------------------------
+// 게시글 조회수 확인 후 알림 발송
+//---------------------------------------------------------------------
+function notiToViews(views) {
+	var NUM1 = 100;
+	var NUM2 = 500;
+	// 조회수가 NUM이면 알림을 보낸다. 
+	if (views == NUM1 || views == NUM2) {
+		// ----- 알림 보내기 -----
+		// 게시글 번호와 작성자 저장
+		var boardNo = document.getElementById("boardNo").value;
+		var writer = document.getElementById("writer").value;
+		// 작성자에게 보낼 알림 텍스트를 만든다.
+		var notiContent = '';
+		notiContent += '회원님의 ';
+		notiContent += '<a href="' + path + '/class/classboard/detail/' + boardNo + '">게시글</a>이 ';
+		notiContent += views + '회 이상 조회되었습니다.';
+		//alert(notiContent);
+		// 게시글 작성자에게 알림을 보낸다.
+		$.ajax({
+			url: 	"/noti/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			success: function(data) { notiLoad(); }
+		});
+	}
+}
+
+//---------------------------------------------------------------------
+// 게시글 좋아요수 확인 후 알림 발송
+//---------------------------------------------------------------------
+function notiToLikes(likes) {
+	var NUM1 = 10;
+	var NUM2 = 50;
+	// 좋아요수가 NUM이면 알림을 보낸다. 
+	if (likes == NUM1 || likes == NUM2) {
+		// ----- 알림 보내기 -----
+		// 게시글 번호와 작성자 저장
+		var boardNo = document.getElementById("boardNo").value;
+		var writer = document.getElementById("writer").value;
+		// 작성자에게 보낼 알림 텍스트를 만든다.
+		var notiContent = '';
+		notiContent += '회원님의 ';
+		notiContent += '<a href="' + path + '/class/classboard/detail/' + boardNo + '">게시글</a>을 ';
+		notiContent += likes + '명 이상 좋아합니다.';
+		//alert(notiContent);
+		// 게시글 작성자에게 알림을 보낸다.
+		$.ajax({
+			url: 	"/noti/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			success: function(data) { notiLoad(); }
+		});
 	}
 }

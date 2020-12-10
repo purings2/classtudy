@@ -41,7 +41,7 @@ public class FreeboardController {
 			return "redirect:/member/login";
 		}
 		return "/freeboard/write";
-	}	
+	}
 	// 게시글 작성 POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	private String postWrite(FreeboardDTO boardDTO, HttpSession session, Model model )throws Exception {
@@ -50,26 +50,26 @@ public class FreeboardController {
 			boardDTO.setTitle(commonUtils.htmlConverter(boardDTO.getTitle()));
 			boardDTO.setContent(commonUtils.htmlConverter(boardDTO.getContent()));
 			freeboardService.write(boardDTO);
-		}		
-		model.addAttribute("게시글 등록이 완료되었습니다.");	
-				
-		return "redirect:/community/freeboard/all";		
+		}
+		model.addAttribute("게시글 등록이 완료되었습니다.");
+		
+		return "redirect:/community/freeboard/all";
 	}	
 	//게시글 목록
 	@RequestMapping(value={"/{viewCategory}", "/{viewCategory}/{pageNum}"})
-	private String freeboard(@PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum, 
+	private String freeboard(@PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum,
 			 Model model, RedirectAttributes rttr)throws Exception {
 		LOGGER.info("FreeboardController Freeboard().....");
 		LOGGER.info("freeboardController freeboard() viewCategory : " + viewCategory);
 		// 현재 페이지의 번호를 저장하는 변수
 		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
-		// 화면에 보여줄 전체 게시글 건수를 구하기. 
+		// 화면에 보여줄 전체 게시글 건수를 구하기.
 		// 말머리가 있으면 해당하는 게시글만 카운트한다.
-		int totalCount = viewCategory.equals("all") ? freeboardService.getBoardCount() : freeboardService.getBoardCount2(viewCategory);
+		int totalCount = viewCategory.equals("all") ? freeboardService.getBoardCountAll() : freeboardService.getBoardCount(viewCategory);
 		LOGGER.info("viewCategory1 : " + viewCategory);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 5;
+		int numOfPage = 10;
 		// 구한 값을 뷰 페이지로 보내준다
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("totalCount", totalCount);
@@ -78,18 +78,28 @@ public class FreeboardController {
 		int startNo = (pageNumber-1) * numOfPage;
 		// 자유게시판 목록 보기 화면에 보여줄 데이터를 가져와서 담는다.
 		if (viewCategory.equals("all")) {
-			model.addAttribute("list", freeboardService.boardList(startNo, numOfPage));
-			LOGGER.info("viewCategory all : " + viewCategory,"startNo : " + startNo,"numOfPage" + numOfPage);
+			model.addAttribute("list", freeboardService.boardListAll(startNo, numOfPage));
+			//LOGGER.info("viewCategory all : " + viewCategory,"startNo : " + startNo,"numOfPage" + numOfPage);
 		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 보여준다.
-			model.addAttribute("list", freeboardService.boardList2(viewCategory, startNo, numOfPage));
-			LOGGER.info("viewCategory2 : " + viewCategory,"startNo : " + startNo,"numOfPage" + numOfPage);
-		}			
+			model.addAttribute("list", freeboardService.boardList(viewCategory, startNo, numOfPage));
+			//LOGGER.info("viewCategory2 : " + viewCategory,"startNo : " + startNo,"numOfPage" + numOfPage);
+		}
+		// 게시판 상단에 공지사항 출력
+		// 공지사항 개수를 카운트한다.
+		int noticeCount = freeboardService.getNoticeCount();
+		// 출력할 공지사항 개수
+		int numOfNotice = 3;
+		// 처음에 보여지는 공지사항 목록
+		model.addAttribute("noticeListfirst", freeboardService.boardListNoticeFirst(numOfNotice));
+		// 더보기 눌렀을 때 보여지는 공지사항 목록
+		model.addAttribute("noticeList", freeboardService.boardListNotice(numOfNotice, noticeCount));
 		return "/freeboard/list";
 	}
 	// 게시판 상세보기
 	@RequestMapping(value={"/detail/{boardNo}", "/detail/{boardNo}/{str}"})
 	private String detailBoard(@PathVariable int boardNo, @PathVariable Optional<String> str, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
 		LOGGER.info("FreeboardController detailBoard()....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
 		if (session.getAttribute("member") == null) {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/member/login";
@@ -129,7 +139,7 @@ public class FreeboardController {
 		boardDTO.setContent(commonUtils.htmlConverter(boardDTO.getContent()));
 		freeboardService.boardUpdate(boardDTO);
 		return "redirect:/community/freeboard/detail/" + boardDTO.getBoardNo();
-	}		
+	}
 	// 게시글 삭제
 	@RequestMapping(value="/delete/{boardNo}")
 	private String delete(@PathVariable int boardNo) throws Exception {
@@ -175,7 +185,7 @@ public class FreeboardController {
 		freeboardService.deleteLikes(boardNo, memberId);
 		// 좋아요 취소 후의 좋아요수를 가져와서 보낸다.
 		int result = freeboardService.getLikes(boardNo);
-		LOGGER.info("FreeboardController Return Value [" + result + "]");	
+		LOGGER.info("FreeboardController Return Value [" + result + "]");
 		return result;
 	}	
 	// 게시글 검색(제목 또는 내용에 키워드가 들어간 글 찾기)
@@ -189,7 +199,7 @@ public class FreeboardController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		// 화면에 보여줄 전체 게시글 건수를 구하기. 
 		// 말머리가 있으면 해당하는 게시글만 카운트한다.
-		int totalCount = viewCategory.equals("all") ? freeboardService.getSearchCount("%" + keyword + "%") : freeboardService.getSearchCount2(viewCategory, "%" + keyword + "%");
+		int totalCount = viewCategory.equals("all") ? freeboardService.getSearchCountAll("%" + keyword + "%") : freeboardService.getSearchCount(viewCategory, "%" + keyword + "%");
 		// 화면에 보여줄 게시글의 수
 		int numOfPage = 10;
 		// 구한 값을 뷰 페이지로 보내준다.
@@ -202,11 +212,11 @@ public class FreeboardController {
 		int startNo = (pageNumber-1) * numOfPage;
 		// 자유게시판 목록 화면에 보여줄 데이터를 검색해와서 담는다.
 		if (viewCategory.equals("all")) {
-			model.addAttribute("list", freeboardService.search("%" + keyword + "%", startNo, numOfPage));	
+			model.addAttribute("list", freeboardService.searchAll("%" + keyword + "%", startNo, numOfPage));
 		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 검색한다.
-			model.addAttribute("list", freeboardService.search2("%" + keyword + "%", viewCategory, startNo, numOfPage));	
-		}		
-		return "/freeboard/list";		
+			model.addAttribute("list", freeboardService.search("%" + keyword + "%", viewCategory, startNo, numOfPage));
+		}
+		return "/freeboard/list";
 	}
 
 }

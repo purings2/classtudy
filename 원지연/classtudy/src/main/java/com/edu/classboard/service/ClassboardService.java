@@ -55,11 +55,11 @@ public class ClassboardService {
 		return classboardMapper.getBoardCount(lectureNo, viewCategory);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 검색 했을 때
-	public int getSearchCount(int lectureNo, String keyword) throws Exception {
+	public int getSearchCountAll(int lectureNo, String keyword) throws Exception {
 		return classboardMapper.getSearchCountAll(lectureNo, keyword);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 정해진 말머리만, 검색 했을 때
-	public int getSearchCount2(int lectureNo, String viewCategory, String keyword) throws Exception {
+	public int getSearchCount(int lectureNo, String viewCategory, String keyword) throws Exception {
 		return classboardMapper.getSearchCount(lectureNo, viewCategory, keyword);
 	}
 	
@@ -116,12 +116,12 @@ public class ClassboardService {
 		return classboardMapper.searchTIL(lectureNo, memberId, keyword, startNo, numOfPage);
 	}
 	// 게시글 검색
-	public List<ClassboardDTO> search(int lectureNo, String keyword, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.search(lectureNo, keyword, startNo, numOfPage);
+	public List<ClassboardDTO> searchAll(int lectureNo, String keyword, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.searchAll(lectureNo, keyword, startNo, numOfPage);
 	}
 	// 게시글 검색 - 정해진 말머리만
-	public List<ClassboardDTO> search2(int lectureNo, String keyword, String viewCategory, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.search2(lectureNo, keyword, viewCategory, startNo, numOfPage);
+	public List<ClassboardDTO> search(int lectureNo, String keyword, String viewCategory, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.search(lectureNo, keyword, viewCategory, startNo, numOfPage);
 	}
 	
 }

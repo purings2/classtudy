@@ -1,17 +1,16 @@
-<%@page import="java.util.Date"%>
+<%@ page import="java.util.Date" %>
 <%@ page session="true" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.member.domain.MemberDTO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.edu.freeboard.domain.FreeboardDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>자유게시판</title>
-<%@ include file="../include/header.jsp" %>
+	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
-<%@ include file="../include/topmenu.jsp" %>
+	<%@ include file="../include/topmenu.jsp" %>
 	<%
 	// 현재 페이지의 번호를 저장하는 변수
 	// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
@@ -32,27 +31,25 @@
 	//계산한 endPage가 실제 가지고 있는 페이지 수보다 많으면 가장 마지막 페이지의 값을 endPage로 한다.
 	if (endPage > pageCount) endPage = pageCount;
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
-	String paging = "freeboard";
+	String paging = "community/freeboard";
 	if (request.getAttribute("nowKeyword") != null) {
-		paging = "search/" + (String)request.getAttribute("nowKeyword");
+		paging = "community/freeboard/search/" + (String)request.getAttribute("nowKeyword");
 	}
 	%>
-
 <div class="container">
 	<header>
-		<h1>자유게시판</h1><br>
+		<h1>자유게시판</h1>
 	</header>
 	<!-- 상단 부분 테이블 형태로 구성 -->
 	<table style="width: 100%;">
 		<tr>
 			<td align="left" style="padding-bottom: 15px; padding-left: 20px;">
 				<div class="btn-group">
-				<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->		
-					<select class="form-control" id="viewCategory" name="viewCategory" onchange="location.href='/community/freeboard/' + this.value">
+				<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->
+					<select class="form-control" id="viewCategory" name="viewCategory" onchange="location.href='${path}/community/freeboard/' + this.value">
 						<c:if test="${viewCategory == 'all'}">
 							<option value="all" selected>전체</option>
 							<option value="이야기">이야기</option>
-							<option value="공지사항">공지사항</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
 							<option value="그룹홍보">그룹홍보</option>
@@ -60,15 +57,6 @@
 						<c:if test="${viewCategory == '이야기'}">
 							<option value="all">전체</option>
 							<option value="이야기" selected>이야기</option>
-							<option value="공지사항">공지사항</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
-							<option value="그룹홍보">그룹홍보</option>
-						</c:if>
-						<c:if test="${viewCategory == '공지사항'}">
-							<option value="all">전체</option>
-							<option value="이야기">이야기</option>
-							<option value="공지사항" selected>공지사항</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
 							<option value="그룹홍보">그룹홍보</option>
@@ -76,7 +64,6 @@
 						<c:if test="${viewCategory == '질문'}">	
 							<option value="all">전체</option>
 							<option value="이야기">이야기</option>
-							<option value="공지사항">공지사항</option>
 							<option value="질문" selected>질문</option>
 							<option value="정보">정보</option>
 							<option value="그룹홍보">그룹홍보</option>
@@ -84,7 +71,6 @@
 						<c:if test="${viewCategory == '정보'}">
 							<option value="all">전체</option>
 							<option value="이야기">이야기</option>
-							<option value="공지사항">공지사항</option>
 							<option value="질문" >질문</option>
 							<option value="정보"selected>정보</option>
 							<option value="그룹홍보">그룹홍보</option>
@@ -92,16 +78,15 @@
 						<c:if test="${viewCategory == '그룹홍보'}">
 							<option value="all">전체</option>
 							<option value="이야기">이야기</option>
-							<option value="공지사항">공지사항</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
 							<option value="그룹홍보" selected>그룹홍보</option>
 						</c:if>
 					</select>
 				</div>
-			</td>	
+			</td>
 			<td align=right style="padding-bottom: 15px; padding-right: 20px;">
-				<button class="btn btn-success" onclick="location.href='/community/freeboard/write'">작성</button>
+				<button class="btn btn-success" onclick="location.href='${path}/community/freeboard/write'">작성</button>
 			</td>
 		</tr>
 	</table>
@@ -118,15 +103,54 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="board" items="${list}">
-				<tr>				
+			<c:forEach var="board" items="${noticeListfirst}">
+				<tr style="background-color: #f2f2f2;">
 					<td>${board.boardNo}</td>
 					<td>${board.category}</td>
 					<td>
-						<a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a>&nbsp;						
+						<b><a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
 						<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
 					</td>
-					<td>${board.writerName}(${board.writer})</td>
+					<td>${board.writerName} (${board.writer})</td>
+					<td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
+					<td>${board.views}</td>
+					<td>${board.likes}</td>
+				</tr>
+			</c:forEach>
+			<tr style="background-color: #e2e2e2;">
+				<td colspan="7">
+					<div class="accordion-heading">
+						<b><a style="color: #444444" class="accordion-toggle" data-toggle="collapse" href="#accordion_notice">더보기</a></b>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+		<tbody id="accordion_notice" class="accordion-body collapse">
+			<c:forEach var="board" items="${noticeList}">
+				<tr style="background-color: #f2f2f2;">
+					<td>${board.boardNo}</td>
+					<td>${board.category}</td>
+					<td>
+						<b><a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
+						<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
+					</td>
+					<td>${board.writerName} (${board.writer})</td>
+					<td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
+					<td>${board.views}</td>
+					<td>${board.likes}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+		<tbody>
+			<c:forEach var="board" items="${list}">
+				<tr>
+					<td>${board.boardNo}</td>
+					<td>${board.category}</td>
+					<td>
+						<a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a>&nbsp;
+						<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
+					</td>
+					<td>${board.writerName} (${board.writer})</td>
 					<td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd"/></td>
 					<td>${board.views}</td>
 					<td>${board.likes}</td>
@@ -142,7 +166,7 @@
 				<div class="input-group col-sm-5">
 					<div class="input-group-btn btn-group">
 						<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->
-						<select class="form-control" id="searchCategory" name="searchCategory" style="width: 90px;">
+						<select class="form-control" id="searchCategory" name="searchCategory" style="width: 100px;">
 							<c:if test="${viewCategory == 'all'}">
 								<option value="all" selected>전체</option>
 								<option value="이야기">이야기</option>
@@ -190,7 +214,7 @@
 								<option value="질문">질문</option>
 								<option value="정보">정보</option>
 								<option value="그룹홍보" selected>그룹홍보</option>
-							</c:if>	
+							</c:if>
 						</select>
 					</div>
 					<input type="text" id="keyword" name="keyword" class="form-control" value="${nowKeyword}" placeholder="검색어를 입력하세요." maxlength=50/>
@@ -209,24 +233,24 @@
 		//startPage가 pageBlock보다 큰 경우에만 << 버튼을 보여준다.
 		if(startPage > pageBlock) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=startPage - 1%>'">&lt;&lt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=startPage - 1%>'">&lt;&lt;</button>
 			<%
 		}
 		//pageNumber가 1보다 큰 경우에만 < 버튼을 보여준다.
 		if(pageNumber > 1) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=pageNumber - 1%>'">&lt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=pageNumber - 1%>'">&lt;</button>
 			<%
 		}		
 		//하단에 페이지 번호를 보여준다.
 		for(int num = startPage; num <= endPage; num++) {
 			if (num == pageNumber) {
 			%>
-			<button type="button" class="btn btn-success" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
+			<button type="button" class="btn btn-success" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
 			<%
 			} else {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
 			<%
 			}
 		}
@@ -235,21 +259,21 @@
 		//pageNumber가 pageCount보다 작은 경우에만 > 버튼을 보여준다.
 		if(pageNumber < pageCount) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=pageNumber + 1%>'">&gt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=pageNumber + 1%>'">&gt;</button>
 			<%
 		}
 		//endPage가 pageCount보다 작은 경우에만 >> 버튼을 보여준다.
 		if(endPage < pageCount) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='/community/<%=paging%>/${viewCategory}/<%=endPage + 1%>'">&gt;&gt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=endPage + 1%>'">&gt;&gt;</button>
 			<%
 		}
 		%>
 		</div>
 	</footer>
 </div>
-<%@ include file="../include/footer.jsp" %>
-	<script src="/static/js/fbcommentAction.js"></script>
+	
+	<%@ include file="../include/footer.jsp" %>
 	<script>
 	$(document).ready(function() {
 		/*

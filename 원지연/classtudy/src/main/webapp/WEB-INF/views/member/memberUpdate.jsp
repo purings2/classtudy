@@ -36,7 +36,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">이  름</label>
+				<label class="control-label col-sm-4">이&nbsp;&nbsp;&nbsp;&nbsp;름</label>
 				<div class="col-sm-3">
 					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 readonly/>
 				</div>
@@ -49,7 +49,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">성  별</label>
+				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
 					<c:if test="${member.gender == 'M'}">
 						<div class="control-form col-sm-3" style="text-align: left;">
 							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/> 남성</label>&nbsp;
@@ -145,7 +145,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">주  소</label>
+				<label class="control-label col-sm-4">주&nbsp;&nbsp;&nbsp;&nbsp;소</label>
 				<div class="col-sm-5">
 					<input type="text" class="form-control" value="${member.address}" name="address" id="address" readonly/>
 				</div>
@@ -163,21 +163,17 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">강의번호</label>
+				<label class="control-label col-sm-4">강의이름</label>
 				<div class="col-sm-3">
-					<!-- 강의번호가 DEFAULT 값일 때 -->
-					<c:if test="${member.lectureNo == '1'}">
-						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" value="강의번호 확인 중입니다" readonly/>
-						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
-					</c:if>
 					<!-- 강의번호가 NULL일 때(int형이라 0으로 비교) -->
 					<c:if test="${member.lectureNo == '0'}">
 						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="강의가 종료되었습니다" readonly/>
 						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
 					</c:if>
 					<!-- 강의번호가 있을 때 -->
-					<c:if test="${member.lectureNo != '1' && member.lectureNo != '0'}">
-						<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					<c:if test="${member.lectureNo != '0'}">
+						<input type="hidden" id="lectureNo" name="lectureNo" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureName" name="lectureName" class="form-control" value="${member.lectureName}" readonly/>
 					</c:if>
 				</div>
 			</div>

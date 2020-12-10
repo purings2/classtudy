@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>게시글 상세 정보</title>
+	<title>클래스룸 :: 게시글 상세 정보</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
@@ -18,15 +18,14 @@
 		<h1>게시글 상세 정보</h1><br>
 	</header>
 	<form class="form-horizontal" action="/class/classboard/update/{boardNo}" method="post">
-		<div>
-			<!-- 숨겨서 넘길 정보들 -->
-			<input type="hidden" id="comment" name="comment" class="form-control" value="${comment}"/>
-			<input type="hidden" id="boardNo" name="boardNo" class="form-control" value="${detail.boardNo}" maxlength=16/>
-			<input type="hidden" id="views" name="views" class="form-control" value="${detail.views}"/>
-			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>
-			<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${detail.lectureNo}"/>
-			<input type="hidden" id="writer" name="writer" class="form-control" value="${detail.writer}" maxlength=16/>
-		</div>
+		<!-- 숨겨서 넘길 정보들 -->
+		<input type="hidden" id="comment" name="comment" value="${comment}"/>
+		<input type="hidden" id="boardNo" name="boardNo" value="${detail.boardNo}"/>
+		<input type="hidden" id="views" name="views" value="${detail.views}"/>
+		<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>
+		<input type="hidden" id="lectureNo" name="lectureNo" value="${detail.lectureNo}"/>
+		<input type="hidden" id="writer" name="writer" value="${detail.writer}" maxlength=16/>
+		<!-- 보여줄 내용들 -->
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>
 			<div class="col-sm-3">
@@ -44,7 +43,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제  목</label>
+			<label class="control-label col-sm-2">제&nbsp;&nbsp;&nbsp;&nbsp;목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" value="${detail.title}" maxlength=50 readonly/>
 			</div>
@@ -60,7 +59,7 @@
 					><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;좋아요&nbsp;${detail.likes}</button><br><br>
 				<button type="button" class="btn btn-success" id="updateBtn">수정</button>&nbsp;
 				<button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>&nbsp;
-				<c:if test="${class == 'yes'}">
+				<c:if test="${til != 'yes'}">
 					<button type="button" class="btn btn-primary" onclick="location.href='/class/classboard/all'">목록</button>
 				</c:if>
 				<c:if test="${til == 'yes'}">
@@ -91,7 +90,6 @@
 </div>
 	
 	<%@ include file="../include/footer.jsp" %>
-	<script src="/static/js/commentAction.js"></script>
 	<script>
 	$(document).ready(function() {
 		
@@ -102,12 +100,44 @@
 			//htmlDecode : "style,script,iframe"  // Note: If enabled, you should filter some dangerous HTML tags for website security.
 		});
 		
+		// -------------------------------------------------
+		// 게시글 관련 스크립트
+		// -------------------------------------------------
 		// 좋아요 누른 게시글인지 확인
 		checkLikes($("#boardNo").val(), $("#loginId").val());
 		
 		// 조회수를 확인해서 알림을 보낸다.
 		notiToViews($("#views").val());
 		
+		// 수정 버튼이 눌렸을 경우
+		$("#updateBtn").on("click", function() {
+			// 작성자와 로그인한 아이디가 같은지 확인
+			if(document.getElementById("writer").value == document.getElementById("loginId").value){
+				location.href="/class/classboard/update/${detail.boardNo}";
+			} else {
+				alert("수정할 수 있는 권한이 없습니다.");
+				return false;
+			}
+		});
+		
+		// 삭제 버튼이 눌렸을 경우
+		$("#deleteBtn").on("click", function() {
+			// 작성자와 로그인한 아이디가 같은지 확인
+			if(document.getElementById("writer").value == document.getElementById("loginId").value){
+				if(confirm("정말 삭제하시겠습니까?") == false){
+					return false;
+				} else {
+					location.href="/class/classboard/delete/${detail.boardNo}";
+				}
+			} else {
+				alert("삭제할 수 있는 권한이 없습니다.");
+				return false;
+			}
+		});
+		
+		// -------------------------------------------------
+		// 댓글 관련 스크립트
+		// -------------------------------------------------
 		// 게시글에 댓글이 있으면 댓글을 보여준다.
 		commentList();
 		
@@ -126,31 +156,6 @@
 		$("#commentContent").keyup(function(e) { if(e.keyCode == 13) {
 			commentInsert($("#commentContent").val());
 		}});
-		
-		// 수정 버튼이 눌렸을 경우
-		$("#updateBtn").on("click", function() {
-			// 작성자와 로그인한 아이디가 같은지 확인
-			if(document.getElementById("writer").value == document.getElementById("loginId").value){
-				location.href="/class/classboard/update/${detail.boardNo}";
-			} else {
-				alert("수정할 수 있는 권한이 없습니다.");
-				return false;
-			}
-		});
-		// 삭제 버튼이 눌렸을 경우
-		$("#deleteBtn").on("click", function() {
-			// 작성자와 로그인한 아이디가 같은지 확인
-			if(document.getElementById("writer").value == document.getElementById("loginId").value){
-				if(confirm("정말 삭제하시겠습니까?") == false){
-					return false;
-				} else {
-					location.href="/class/classboard/delete/${detail.boardNo}";
-				}
-			} else {
-				alert("삭제할 수 있는 권한이 없습니다.");
-				return false;
-			}
-		});
 		
 	});
 	</script>

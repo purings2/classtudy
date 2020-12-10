@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>자유게시판</title>
+	<title>자유게시판 :: 게시글 수정</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
@@ -20,10 +20,10 @@
 	<form class="form-horizontal" action="/community/freeboard/update/${detail.boardNo}" method="post">
 		<div>
 			<!-- 숨겨서 넘길 정보들 -->
-			<input type="hidden" id="boardNo" name="boardNo" class="form-control" value="${detail.boardNo}" maxlength=16/>
-			<input type="hidden" id="views" name="views" class="form-control" value="${detail.views}"/>
-			<input type="hidden" id="likes" name="likes" class="form-control" value="${detail.likes}"/>			
-			<input type="hidden" id="memberId" name="memberId" class="form-control" value="${member.memberId}" maxlength="16"/>
+			<input type="hidden" id="boardNo" name="boardNo" value="${detail.boardNo}"/>
+			<input type="hidden" id="views" name="views" value="${detail.views}"/>
+			<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>			
+			<input type="hidden" id="memberId" name="memberId" value="${member.memberId}" maxlength="16"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">말머리</label>
@@ -31,14 +31,13 @@
 				<c:if test="${detail.category == '이야기'}">
 					<select id="category" name="category" class="form-control" >
 						<option value="이야기" selected>이야기</option>
-						<option value="공지사항">공지사항</option>
 						<option value="질문">질문</option>
 						<option value="정보">정보</option>
 						<option value="그룹홍보">그룹홍보</option>	
 					</select>
 				</c:if>
 				<c:if test="${detail.category == '공지사항'}">
-					<select id="category" name="category" class="form-control">
+					<select id="category" name="category" class="form-control" disabled>
 						<option value="이야기">이야기</option>
 						<option value="공지사항" selected>공지사항</option>
 						<option value="질문">질문</option>
@@ -49,7 +48,6 @@
 				<c:if test="${detail.category == '질문'}">
 					<select id="category" name="category" class="form-control">
 						<option value="이야기">이야기</option>
-						<option value="공지사항">공지사항</option>
 						<option value="질문" selected>질문</option>
 						<option value="정보">정보</option>
 						<option value="그룹홍보">그룹홍보</option>
@@ -58,27 +56,25 @@
 				<c:if test="${detail.category == '정보'}">
 					<select id="category" name="category" class="form-control">
 						<option value="이야기">이야기</option>
-						<option value="공지사항">공지사항</option>
 						<option value="질문">질문</option>
-						<option value="정보"selected>정보</option>
+						<option value="정보" selected>정보</option>
 						<option value="그룹홍보">그룹홍보</option>
 					</select>
 				</c:if>
 				<c:if test="${detail.category == '그룹홍보'}">
 					<select id="category" name="category" class="form-control">
 						<option value="이야기">이야기</option>
-						<option value="공지사항">공지사항</option>
 						<option value="질문">질문</option>
 						<option value="정보">정보</option>
 						<option value="그룹홍보" selected>그룹홍보</option>
 					</select>
-				</c:if>		
+				</c:if>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2">작성자</label>
 			<div class="col-sm-3">
-				<input type="text" id="writerName" name="writerName" class="form-control" value="${detail.writerName}" readonly="readonly" maxlength=16/>
+				<input type="text" id="writerName" name="writerName" class="form-control" value="${detail.writerName} (${detail.writer})" readonly="readonly" maxlength=16/>
 			</div>
 			<label class="control-label col-sm-2">작성일</label>
 			<div class="col-sm-3">
@@ -86,9 +82,51 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2">제 목</label>
+			<label class="control-label col-sm-2">제&nbsp;&nbsp;&nbsp;&nbsp;목</label>
 			<div class="col-sm-8">
 				<input type="text" id="title" name="title" class="form-control" maxlength=50 value="${detail.title}"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">태&nbsp;&nbsp;&nbsp;&nbsp;그</label>
+			<div class="col-sm-7" align="left">
+				<input type="hidden" id="isDetail" name="isDetail" value="no"/>
+				<input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" value="${detail.tags}"/>
+			</div>
+			<div class="col-sm-1" align="left">
+				<div class="accordion-heading">
+					<a class="accordion-toggle btn btn-default" style="background-color: #dddddd" data-toggle="collapse" href="#accordion_example_tagclass">선택</a>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="accordion col-sm-offset-2 col-sm-8">
+				<div class="accordion-group">
+					<div id="accordion_example_tagclass" class="accordion-body collapse">
+						<div class="accordion-inner" align="justify">
+						<% // 사용하는 태그 목록
+							String[] programmingTags = 
+									{"Java", "Spring", "Spring Boot", "JDBC", "JSTL", "Front-End", "Back-End", "웹 개발", "앱 개발", 
+									"HTML/CSS","JavaScript", "jQuery", "JSP", "Bootstrap", "Python", "Django", "Flask", "게임 개발", "Unity", 
+									"Android", "iOS", "Swift", "Node.js", "알고리즘", "React", "클라우드", "Linux",  "Git"};
+							String[] guardTags = {"정보보안", "블록체인", "DevOps", "해킹"};
+							String[] dataTags = {"데이터베이스", "인공지능", "SQL", "머신러닝", "R"};
+							String[] designTags = {"UI/UX", "3D 모델링", "After Effects", "Premiere Pro", "Photoshop", "Illustrator", "편집 디자인", "InDesign"};
+							for (int i = 0; i < programmingTags.length; i++) { %>
+								<a href="#" class="btn btn-sm btn-primary programmingTagBtn" style="margin-bottom: 5px;" onclick="addTag('<%=programmingTags[i]%>')"><%=programmingTags[i]%></a>
+							<% } 
+							for (int i = 0; i < guardTags.length; i++) { %>
+								<a href="#" class="btn btn-sm btn-success guardTagBtn" style="margin-bottom: 5px;" onclick="addTag('<%=guardTags[i]%>')"><%=guardTags[i]%></a>
+							<% } 
+							for (int i = 0; i < dataTags.length; i++) { %>
+								<a href="#" class="btn btn-sm btn-warning dataTagBtn" style="margin-bottom: 5px;" onclick="addTag('<%=dataTags[i]%>')"><%=dataTags[i]%></a>
+							<% } 
+							for (int i = 0; i < designTags.length; i++) { %>
+								<a href="#" class="btn btn-sm btn-danger designTagBtn" style="margin-bottom: 5px;" onclick="addTag('<%=designTags[i]%>')"><%=designTags[i]%></a>
+							<% } %>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
@@ -106,7 +144,6 @@
 </div>
 	
 	<%@ include file="../include/footer.jsp" %>
-	<script src="/static/js/fbcommentAction.js"></script>
 	<script>
 	$(document).ready(function() {
 
@@ -127,7 +164,8 @@
 				height 		: 640,
 				syncScrolling : "single",
 				path 		: "/static/js/lib/",
-				readOnly 	: false
+				readOnly 	: false,
+				placeholder : "내용을 입력하세요."
 			});
 		});
 		

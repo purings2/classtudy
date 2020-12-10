@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">이  름</label>
+				<label class="control-label col-sm-4">이&nbsp;&nbsp;&nbsp;&nbsp;름</label>
 				<div class="col-sm-3">
 					<input type="text" id="name" name="name" class="form-control" maxlength=16 placeholder="이름을 입력하세요."/>
 				</div>
@@ -87,7 +87,7 @@
 				 --%>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">성  별</label>
+				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
 					<div class="control-form col-sm-3" style="text-align: left;">
 						<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"> 남성</label>&nbsp;
 						<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"> 여성</label>
@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">주  소</label>
+				<label class="control-label col-sm-4">주&nbsp;&nbsp;&nbsp;&nbsp;소</label>
 				<div class="col-sm-5">
 					<input type="text" class="form-control" name="address" id="address" placeholder="우편번호 찾기 버튼을 이용해주세요." readonly/>
 				</div>
@@ -145,12 +145,13 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">강의번호</label>
+				<label class="control-label col-sm-4">강의이름</label>
 				<div class="col-sm-3">
-					<input type="text" id="lectureNo" name="lectureNo" class="form-control" placeholder="검색 버튼을 이용해주세요." readonly/>
+					<input type="hidden" id="lectureNo" name="lectureNo" readonly/>
+					<input type="text" id="lectureName" name="lectureName" class="form-control" placeholder="검색 버튼을 이용해주세요." readonly/>
 				</div>
 				<div class="col-sm-2">
-					<button class="form-control" type="button" onclick="searchLectureNo()" 
+					<button class="form-control" type="button" onclick="openLecturePopup()" 
 						style="background-color: #dddddd"><b>검색</b></button>
 				</div>
 			</div>

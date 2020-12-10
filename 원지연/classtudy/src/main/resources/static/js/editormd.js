@@ -113,7 +113,7 @@
         delay                : 300,            // Delay parse markdown to html, Uint : ms
         autoLoadModules      : true,           // Automatic load dependent module files
         watch                : true,
-        placeholder          : "오늘의 학습 내용을 기록하세요.",
+        placeholder          : "내용을 입력하세요.",
         gotoLine             : true,
         codeFold             : false,
         autoHeight           : false,
