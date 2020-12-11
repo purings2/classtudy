@@ -33,7 +33,7 @@
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
 	String paging = "class/classboard/myTIL";
 	if (request.getAttribute("nowKeyword") != null) {
-		paging = "class/classboard/searchTIL/" + (String)request.getAttribute("nowKeyword");
+		paging = "class/classboard/searchTIL/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
 	}
 	%>
 <div class="container">
@@ -55,16 +55,11 @@
 				</div>
 			</td>
 			<td align=right style="padding-bottom: 15px; padding-right: 20px;">
+				<button class="btn btn-default" onclick="location.href='${path}/class/classboard/myTIL'">전체보기</button>&nbsp;
 				<button class="btn btn-success" onclick="location.href='${path}/class/classboard/write/til'">작성</button>
 			</td>
 		</tr>
 	</table>
-	<!-- 
-	<div class="col-sm-12" style="text-align: right; padding-bottom: 10px;">
-		<button class="btn btn-success" 
-			onclick="location.href='/class/writeTIL'">작성</button>
-	</div>
-	 -->
 	<table class="table table-hover table-bordered">
 		<thead>
 			<tr>
@@ -76,6 +71,11 @@
 			</tr>
 		</thead>
 		<tbody>
+			<c:if test="${empty list}">
+				<tr style="background-color: #FFFFFF;">
+					<td colspan="5">게시글이 없습니다.</td>
+				</tr>
+			</c:if>
 			<c:forEach var="board" items="${list}">
 				<tr>
 					<td>${board.boardNo}</td>
@@ -95,7 +95,27 @@
 		<tr>
 			<!-- 검색 -->
 			<td align=center style="padding-bottom: 15px;">
-				<div class="input-group col-sm-4">
+				<div class="input-group col-sm-5">
+					<div class="input-group-btn btn-group">
+						<!-- 검색 범위 선택 : 제목+내용, 제목, 내용, 작성자 -->
+						<select class="form-control" id="searchCode" name="searchCode" style="width: 110px;">
+							<c:if test="${searchCode == '1' || empty searchCode}">
+								<option value="1" selected>제목+내용</option>
+								<option value="2">제목</option>
+								<option value="3">내용</option>
+							</c:if>
+							<c:if test="${searchCode == '2'}">
+								<option value="1">제목+내용</option>
+								<option value="2" selected>제목</option>
+								<option value="3">내용</option>
+							</c:if>
+							<c:if test="${searchCode == '3'}">
+								<option value="1">제목+내용</option>
+								<option value="2">제목</option>
+								<option value="3" selected>내용</option>
+							</c:if>
+						</select>
+					</div>
 					<input type="text" id="keyword" name="keyword" class="form-control" value="${nowKeyword}" placeholder="검색어를 입력하세요." maxlength=50/>
 					<span class="input-group-btn">
 						<button class="btn btn-info" id="searchBtn"><span class="glyphicon glyphicon-search"></span></button>
@@ -165,11 +185,11 @@
 		
 		// 검색 버튼이 눌렸을 경우
 		$("#searchBtn").on("click", function() {
-			searchTIL($("#keyword").val());
+			searchTIL($("#keyword").val(), $("#searchCode").val());
 		});
 		// 검색창에서 엔터키를 입력할 경우
 		$("#keyword").keyup(function(e) { if(e.keyCode == 13) {
-			searchTIL($("#keyword").val());
+			searchTIL($("#keyword").val(), $("#searchCode").val());
 		}});
 		
 	});

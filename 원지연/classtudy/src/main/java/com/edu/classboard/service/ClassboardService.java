@@ -20,33 +20,67 @@ public class ClassboardService {
 	@Resource(name="com.edu.classboard.mapper.ClassboardMapper")
 	ClassboardMapper classboardMapper;
 	
-	// 게시글 작성
-	public int write(ClassboardDTO cbDTO) throws Exception {
-		logger.info("Service write : " + cbDTO);
-		return classboardMapper.write(cbDTO);
-	}
-	// 게시글 목록 보기 - 내가 쓴 TIL
+	//----------------------------------------------------------------
+	// 게시글 목록 가져오기 관련
+	//----------------------------------------------------------------
+	// TIL 게시글 목록
 	public List<ClassboardDTO> boardListTIL(int lectureNo, String memberId, int startNo, int numOfPage) throws Exception {
 		return classboardMapper.boardListTIL(lectureNo, memberId, startNo, numOfPage);
 	}
-	// 게시글 목록 보기 - 전체
-	public List<ClassboardDTO> boardListAll(int lectureNo, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.boardListAll(lectureNo, startNo, numOfPage);
+	// TIL 게시글 목록 - 제목+내용 검색
+	public List<ClassboardDTO> searchTILAll(int lectureNo, String memberId, String keyword, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.searchTILAll(lectureNo, memberId, keyword, startNo, numOfPage);
 	}
-	// 게시글 목록 보기 - 정해진 말머리만
-	public List<ClassboardDTO> boardList(int lectureNo, String viewCategory, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.boardList(lectureNo, viewCategory, startNo, numOfPage);
+	// TIL 게시글 목록 - 제목 검색
+	public List<ClassboardDTO> searchTILTitle(int lectureNo, String memberId, String keyword, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.searchTILTitle(lectureNo, memberId, keyword, startNo, numOfPage);
 	}
-	
+	// TIL 게시글 목록 - 내용 검색
+	public List<ClassboardDTO> searchTILContent(int lectureNo, String memberId, String keyword, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.searchTILContent(lectureNo, memberId, keyword, startNo, numOfPage);
+	}
 	// 화면에 보여줄 TIL 게시글 개수 추출
 	public int getTILCount(int lectureNo, String memberId) throws Exception {
 		return classboardMapper.getTILCount(lectureNo, memberId);
 	}
-	// 화면에 보여줄 TIL 게시글 개수 추출 - 검색 했을 때
-	public int getTILSearchCount(int lectureNo, String memberId, String keyword) throws Exception {
-		return classboardMapper.getTILSearchCount(lectureNo, memberId, keyword);
+	// 화면에 보여줄 TIL 게시글 개수 추출 - 제목+내용 검색
+	public int getSearchTILCountAll(int lectureNo, String memberId, String keyword) throws Exception {
+		return classboardMapper.getSearchTILCountAll(lectureNo, memberId, keyword);
 	}
-	// 화면에 보여줄 게시글 개수 추출
+	// 화면에 보여줄 TIL 게시글 개수 추출 - 제목 검색
+	public int getSearchTILCountTitle(int lectureNo, String memberId, String keyword) throws Exception {
+		return classboardMapper.getSearchTILCountTitle(lectureNo, memberId, keyword);
+	}
+	// 화면에 보여줄 TIL 게시글 개수 추출 - 내용 검색
+	public int getSearchTILCountContent(int lectureNo, String memberId, String keyword) throws Exception {
+		return classboardMapper.getSearchTILCountContent(lectureNo, memberId, keyword);
+	}
+	//----------------------------------------------------------------
+	// 게시글 목록 - 전체
+	public List<ClassboardDTO> boardListAll(int lectureNo, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.boardListAll(lectureNo, startNo, numOfPage);
+	}
+	// 게시글 목록 - 정해진 말머리만
+	public List<ClassboardDTO> boardList(int lectureNo, String viewCategory, int startNo, int numOfPage) throws Exception {
+		return classboardMapper.boardList(lectureNo, viewCategory, startNo, numOfPage);
+	}
+	// 게시글 목록 - 제목+내용 검색
+	public List<ClassboardDTO> searchAll(int lectureNo, String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return classboardMapper.searchAll(lectureNo, keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 목록 - 제목 검색
+	public List<ClassboardDTO> searchTitle(int lectureNo, String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return classboardMapper.searchTitle(lectureNo, keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 목록 - 내용 검색
+	public List<ClassboardDTO> searchContent(int lectureNo, String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return classboardMapper.searchContent(lectureNo, keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 목록 - 작성자 검색
+	public List<ClassboardDTO> searchWriter(int lectureNo, String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return classboardMapper.searchWriter(lectureNo, keyword, startNo, numOfPage, viewCategory);
+	}
+	// 화면에 보여줄 게시글 개수 추출 - 전체
 	public int getBoardCountAll(int lectureNo) throws Exception {
 		return classboardMapper.getBoardCountAll(lectureNo);
 	}
@@ -54,36 +88,50 @@ public class ClassboardService {
 	public int getBoardCount(int lectureNo, String viewCategory) throws Exception {
 		return classboardMapper.getBoardCount(lectureNo, viewCategory);
 	}
-	// 화면에 보여줄 게시글 개수 추출 - 검색 했을 때
-	public int getSearchCountAll(int lectureNo, String keyword) throws Exception {
-		return classboardMapper.getSearchCountAll(lectureNo, keyword);
+	// 화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 했을 때
+	public int getSearchCountAll(int lectureNo, String keyword, String viewCategory) throws Exception {
+		return classboardMapper.getSearchCountAll(lectureNo, keyword, viewCategory);
 	}
-	// 화면에 보여줄 게시글 개수 추출 - 정해진 말머리만, 검색 했을 때
-	public int getSearchCount(int lectureNo, String viewCategory, String keyword) throws Exception {
-		return classboardMapper.getSearchCount(lectureNo, viewCategory, keyword);
+	// 화면에 보여줄 게시글 개수 추출 - 제목 검색 했을 때
+	public int getSearchCountTitle(int lectureNo, String keyword, String viewCategory) throws Exception {
+		return classboardMapper.getSearchCountTitle(lectureNo, keyword, viewCategory);
 	}
+	// 화면에 보여줄 게시글 개수 추출 - 내용 검색 했을 때
+	public int getSearchCountContent(int lectureNo, String keyword, String viewCategory) throws Exception {
+		return classboardMapper.getSearchCountContent(lectureNo, keyword, viewCategory);
+	}
+	// 화면에 보여줄 게시글 개수 추출 - 작성자 검색 했을 때
+	public int getSearchCountWriter(int lectureNo, String keyword, String viewCategory) throws Exception {
+		return classboardMapper.getSearchCountWriter(lectureNo, keyword, viewCategory);
+	}
+	//----------------------------------------------------------------
 	
 	// 게시글 상세 보기
 	public ClassboardDTO boardDetail(int boardNo) throws Exception {
 		return classboardMapper.boardDetail(boardNo);
 	}
-	
 	// 게시글 조회수 증가
 	public int addViews(int boardNo) throws Exception {
 		return classboardMapper.addViews(boardNo);
 	}
-	
+	// 게시글 작성
+	public int write(ClassboardDTO cbDTO) throws Exception {
+		logger.info("Service write : " + cbDTO);
+		return classboardMapper.write(cbDTO);
+	}
 	// 게시글 수정
 	public int update(ClassboardDTO cbDTO) throws Exception {
 		//logger.info("Service update : " + cbDTO);
 		return classboardMapper.update(cbDTO);
 	}
-	
 	// 게시글 삭제
 	public int delete(int boardNo) throws Exception {
 		return classboardMapper.delete(boardNo);
 	}
 	
+	//----------------------------------------------------------------
+	// 게시글 좋아요 관련
+	//----------------------------------------------------------------
 	// 게시글 좋아요수 증가
 	public int addLikes(int boardNo) throws Exception {
 		return classboardMapper.addLikes(boardNo);
@@ -92,7 +140,6 @@ public class ClassboardService {
 	public int writeLikes(int boardNo, String memberId) throws Exception {
 		return classboardMapper.writeLikes(boardNo, memberId);
 	}
-	
 	// 게시글 좋아요수 가져오기
 	public int getLikes(int boardNo) throws Exception {
 		return classboardMapper.getLikes(boardNo);
@@ -101,7 +148,6 @@ public class ClassboardService {
 	public int likeCheck(int boardNo, String memberId) throws Exception {
 		return classboardMapper.likeCheck(boardNo, memberId);
 	}
-	
 	// 게시글 좋아요수 감소
 	public int subtractLikes(int boardNo) throws Exception {
 		return classboardMapper.subtractLikes(boardNo);
@@ -110,18 +156,6 @@ public class ClassboardService {
 	public int deleteLikes(int boardNo, String memberId) throws Exception {
 		return classboardMapper.deleteLikes(boardNo, memberId);
 	}
-	
-	// TIL 게시글 검색
-	public List<ClassboardDTO> searchTIL(int lectureNo, String memberId, String keyword, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.searchTIL(lectureNo, memberId, keyword, startNo, numOfPage);
-	}
-	// 게시글 검색
-	public List<ClassboardDTO> searchAll(int lectureNo, String keyword, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.searchAll(lectureNo, keyword, startNo, numOfPage);
-	}
-	// 게시글 검색 - 정해진 말머리만
-	public List<ClassboardDTO> search(int lectureNo, String keyword, String viewCategory, int startNo, int numOfPage) throws Exception {
-		return classboardMapper.search(lectureNo, keyword, viewCategory, startNo, numOfPage);
-	}
+	//----------------------------------------------------------------
 	
 }

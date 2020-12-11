@@ -58,7 +58,7 @@ public class FreeboardController {
 	//게시글 목록
 	@RequestMapping(value={"/{viewCategory}", "/{viewCategory}/{pageNum}"})
 	private String freeboard(@PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum,
-			 Model model, RedirectAttributes rttr)throws Exception {
+			 Model model, RedirectAttributes rttr) throws Exception {
 		LOGGER.info("FreeboardController Freeboard().....");
 		LOGGER.info("freeboardController freeboard() viewCategory : " + viewCategory);
 		// 현재 페이지의 번호를 저장하는 변수
@@ -87,8 +87,10 @@ public class FreeboardController {
 		// 게시판 상단에 공지사항 출력
 		// 공지사항 개수를 카운트한다.
 		int noticeCount = freeboardService.getNoticeCount();
+		model.addAttribute("noticeCount", noticeCount);
 		// 출력할 공지사항 개수
 		int numOfNotice = 3;
+		model.addAttribute("numOfNotice", numOfNotice);
 		// 처음에 보여지는 공지사항 목록
 		model.addAttribute("noticeListfirst", freeboardService.boardListNoticeFirst(numOfNotice));
 		// 더보기 눌렀을 때 보여지는 공지사항 목록
@@ -189,33 +191,64 @@ public class FreeboardController {
 		return result;
 	}	
 	// 게시글 검색(제목 또는 내용에 키워드가 들어간 글 찾기)
-	@RequestMapping(value={"/search/{keyword}/{viewCategory}", "/search/{keyword}/{viewCategory}/{pageNum}"})
-	private String search (@PathVariable String keyword, @PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum, HttpSession session, Model model) throws Exception {
+	@RequestMapping(value={"/search/{searchCode}/{keyword}/{viewCategory}", "/search/{searchCode}/{keyword}/{viewCategory}/{pageNum}"})
+	private String search (@PathVariable int searchCode, @PathVariable String keyword, @PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum, Model model) throws Exception {
 		LOGGER.info("FreeboardController search()....");
 		LOGGER.info("FreeboardController search() : " + keyword);
-		// List<FreeboardDTO> boardList = freeboardService.search("%" + keyword + "%");
+		// 검색한 키워드를 뷰 페이지로 보내준다.
+		model.addAttribute("nowKeyword", keyword);
+		// 키워드에 특수문자가 있으면 치환
+		keyword = commonUtils.htmlConverter(keyword);
 		// 현재 페이지의 번호를 저장하는 변수
 		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
-		// 화면에 보여줄 전체 게시글 건수를 구하기. 
-		// 말머리가 있으면 해당하는 게시글만 카운트한다.
-		int totalCount = viewCategory.equals("all") ? freeboardService.getSearchCountAll("%" + keyword + "%") : freeboardService.getSearchCount(viewCategory, "%" + keyword + "%");
+		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
 		int numOfPage = 10;
-		// 구한 값을 뷰 페이지로 보내준다.
-		model.addAttribute("pageNumber", pageNumber);
-		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("numOfPage", numOfPage);
-		// 검색한 키워드를 뷰 페이지로 보내준다.
-		model.addAttribute("nowKeyword", keyword);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
+		// 화면에 보여줄 전체 게시글 건수를 구하기
+		// 말머리가 있으면 해당하는 게시글만 카운트한다.
+		if (viewCategory.equals("all")) { viewCategory = "%"; } //말머리 전체
 		// 자유게시판 목록 화면에 보여줄 데이터를 검색해와서 담는다.
+		switch (searchCode) {
+			case 1: //제목+내용 검색
+				model.addAttribute("totalCount", freeboardService.getSearchCountAll("%" + keyword + "%", viewCategory));
+				model.addAttribute("list", freeboardService.searchAll("%" + keyword + "%", startNo, numOfPage, viewCategory));
+				break;
+			case 2: //제목 검색
+				model.addAttribute("totalCount", freeboardService.getSearchCountTitle("%" + keyword + "%", viewCategory));
+				model.addAttribute("list", freeboardService.searchTitle("%" + keyword + "%", startNo, numOfPage, viewCategory));
+				break;
+			case 3: //내용 검색
+				model.addAttribute("totalCount", freeboardService.getSearchCountContent("%" + keyword + "%", viewCategory));
+				model.addAttribute("list", freeboardService.searchContent("%" + keyword + "%", startNo, numOfPage, viewCategory));
+				break;
+			case 4: //작성자 검색
+				model.addAttribute("totalCount", freeboardService.getSearchCountWriter("%" + keyword + "%", viewCategory));
+				model.addAttribute("list", freeboardService.searchWriter("%" + keyword + "%", startNo, numOfPage, viewCategory));
+				break;
+		}
+		//int totalCount = viewCategory.equals("all") ? freeboardService.getSearchCountAll("%" + keyword + "%") : freeboardService.getSearchCount(viewCategory, "%" + keyword + "%");
+		/*
 		if (viewCategory.equals("all")) {
 			model.addAttribute("list", freeboardService.searchAll("%" + keyword + "%", startNo, numOfPage));
 		} else { // 말머리가 선택되면 선택된 말머리의 게시글만 검색한다.
 			model.addAttribute("list", freeboardService.search("%" + keyword + "%", viewCategory, startNo, numOfPage));
 		}
+		*/
+		// 게시판 상단에 공지사항 출력
+		// 공지사항 개수를 카운트한다.
+		int noticeCount = freeboardService.getNoticeCount();
+		model.addAttribute("noticeCount", noticeCount);
+		// 출력할 공지사항 개수
+		int numOfNotice = 3;
+		model.addAttribute("numOfNotice", numOfNotice);
+		// 처음에 보여지는 공지사항 목록
+		model.addAttribute("noticeListfirst", freeboardService.boardListNoticeFirst(numOfNotice));
+		// 더보기 눌렀을 때 보여지는 공지사항 목록
+		model.addAttribute("noticeList", freeboardService.boardListNotice(numOfNotice, noticeCount));
 		return "/freeboard/list";
 	}
 

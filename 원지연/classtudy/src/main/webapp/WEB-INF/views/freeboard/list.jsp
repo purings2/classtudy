@@ -31,9 +31,9 @@
 	//계산한 endPage가 실제 가지고 있는 페이지 수보다 많으면 가장 마지막 페이지의 값을 endPage로 한다.
 	if (endPage > pageCount) endPage = pageCount;
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
-	String paging = "community/freeboard";
+	String paging = "community/freeboard/" + (String)request.getAttribute("viewCategory");
 	if (request.getAttribute("nowKeyword") != null) {
-		paging = "community/freeboard/search/" + (String)request.getAttribute("nowKeyword");
+		paging = "community/freeboard/search/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
 	}
 	%>
 <div class="container">
@@ -45,10 +45,26 @@
 		<tr>
 			<td align="left" style="padding-bottom: 15px; padding-left: 20px;">
 				<div class="btn-group">
-				<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->
-					<select class="form-control" id="viewCategory" name="viewCategory" onchange="location.href='${path}/community/freeboard/' + this.value">
-						<c:if test="${viewCategory == 'all'}">
+					<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->
+					<c:if test="${empty nowKeyword}">
+						<c:set var="changePath" value="'${path}/community/freeboard/' + this.value"/>
+					</c:if>
+					<!-- 검색 상태일 때는 검색 결과 내의 말머리 선택 -->
+					<c:if test="${!empty nowKeyword}">
+						<c:set var="changePath" value="'${path}/community/freeboard/search/${searchCode}/${nowKeyword}/' + this.value"/>
+					</c:if>
+					<select class="form-control" id="viewCategory" name="viewCategory" onchange="location.href=${changePath}">
+						<c:if test="${viewCategory == 'all' || empty viewCategory}">
 							<option value="all" selected>전체</option>
+							<option value="공지사항">공지사항</option>
+							<option value="이야기">이야기</option>
+							<option value="질문">질문</option>
+							<option value="정보">정보</option>
+							<option value="그룹홍보">그룹홍보</option>
+						</c:if>
+						<c:if test="${viewCategory == '공지사항'}">
+							<option value="all">전체</option>
+							<option value="공지사항" selected>공지사항</option>
 							<option value="이야기">이야기</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -56,6 +72,7 @@
 						</c:if>
 						<c:if test="${viewCategory == '이야기'}">
 							<option value="all">전체</option>
+							<option value="공지사항">공지사항</option>
 							<option value="이야기" selected>이야기</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -63,6 +80,7 @@
 						</c:if>
 						<c:if test="${viewCategory == '질문'}">	
 							<option value="all">전체</option>
+							<option value="공지사항">공지사항</option>
 							<option value="이야기">이야기</option>
 							<option value="질문" selected>질문</option>
 							<option value="정보">정보</option>
@@ -70,6 +88,7 @@
 						</c:if>
 						<c:if test="${viewCategory == '정보'}">
 							<option value="all">전체</option>
+							<option value="공지사항">공지사항</option>
 							<option value="이야기">이야기</option>
 							<option value="질문" >질문</option>
 							<option value="정보"selected>정보</option>
@@ -77,6 +96,7 @@
 						</c:if>
 						<c:if test="${viewCategory == '그룹홍보'}">
 							<option value="all">전체</option>
+							<option value="공지사항">공지사항</option>
 							<option value="이야기">이야기</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -86,6 +106,7 @@
 				</div>
 			</td>
 			<td align=right style="padding-bottom: 15px; padding-right: 20px;">
+				<button class="btn btn-default" onclick="location.href='${path}/community/freeboard/all'">전체보기</button>&nbsp;
 				<button class="btn btn-success" onclick="location.href='${path}/community/freeboard/write'">작성</button>
 			</td>
 		</tr>
@@ -102,11 +123,12 @@
 				<th style="text-align: center; width: 60px;"><span class="glyphicon glyphicon-thumbs-up"></span></th>
 			</tr>
 		</thead>
+		<!-- 공지사항 목록 일부 출력 -->
 		<tbody>
 			<c:forEach var="board" items="${noticeListfirst}">
 				<tr style="background-color: #f2f2f2;">
 					<td>${board.boardNo}</td>
-					<td>${board.category}</td>
+					<td><span class="glyphicon glyphicon-info-sign"></span></td>
 					<td>
 						<b><a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
 						<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
@@ -117,19 +139,24 @@
 					<td>${board.likes}</td>
 				</tr>
 			</c:forEach>
-			<tr style="background-color: #e2e2e2;">
-				<td colspan="7">
-					<div class="accordion-heading">
-						<b><a style="color: #444444" class="accordion-toggle" data-toggle="collapse" href="#accordion_notice">더보기</a></b>
-					</div>
-				</td>
-			</tr>
+			<!-- 더보기 버튼 : 총 개수가 보여질 개수보다 많으면 표시 -->
+			<c:if test="${noticeCount+0 > numOfNotice+0}">
+				<tr>
+					<td colspan="7">
+						<div class="accordion-heading" style="height: 10px; position: relative; top: -3px;">
+							<a class="accordion-toggle" data-toggle="collapse" href="#accordion_notice" onclick="clickNoticeBtn();"
+								style="color: #444444"><span id="viewNoticeBtn" class="glyphicon glyphicon-chevron-down"></span></a>
+						</div>
+					</td>
+				</tr>
+			</c:if>
 		</tbody>
+		<!-- 더보기 누르면 나오는 공지사항 목록 -->
 		<tbody id="accordion_notice" class="accordion-body collapse">
 			<c:forEach var="board" items="${noticeList}">
 				<tr style="background-color: #f2f2f2;">
 					<td>${board.boardNo}</td>
-					<td>${board.category}</td>
+					<td><span class="glyphicon glyphicon-info-sign"></span></td>
 					<td>
 						<b><a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
 						<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
@@ -141,7 +168,13 @@
 				</tr>
 			</c:forEach>
 		</tbody>
+		<!-- 그외 게시글 목록 -->
 		<tbody>
+			<c:if test="${empty list}">
+				<tr style="background-color: #FFFFFF;">
+					<td colspan="7">게시글이 없습니다.</td>
+				</tr>
+			</c:if>
 			<c:forEach var="board" items="${list}">
 				<tr>
 					<td>${board.boardNo}</td>
@@ -165,12 +198,39 @@
 			<td align=center style="padding-bottom: 15px;">
 				<div class="input-group col-sm-5">
 					<div class="input-group-btn btn-group">
+						<!-- 검색 범위 선택 : 제목+내용, 제목, 내용, 작성자 -->
+						<select class="form-control" id="searchCode" name="searchCode" style="width: 110px;">
+							<c:if test="${searchCode == '1' || empty searchCode}">
+								<option value="1" selected>제목+내용</option>
+								<option value="2">제목</option>
+								<option value="3">내용</option>
+								<option value="4">작성자</option>
+							</c:if>
+							<c:if test="${searchCode == '2'}">
+								<option value="1">제목+내용</option>
+								<option value="2" selected>제목</option>
+								<option value="3">내용</option>
+								<option value="4">작성자</option>
+							</c:if>
+							<c:if test="${searchCode == '3'}">
+								<option value="1">제목+내용</option>
+								<option value="2">제목</option>
+								<option value="3" selected>내용</option>
+								<option value="4">작성자</option>
+							</c:if>
+							<c:if test="${searchCode == '4'}">
+								<option value="1">제목+내용</option>
+								<option value="2">제목</option>
+								<option value="3">내용</option>
+								<option value="4" selected>작성자</option>
+							</c:if>
+						</select>
+						<%-- 
 						<!-- 말머리 선택 : 선택된 말머리의 글만 표시 -->
 						<select class="form-control" id="searchCategory" name="searchCategory" style="width: 100px;">
 							<c:if test="${viewCategory == 'all'}">
 								<option value="all" selected>전체</option>
 								<option value="이야기">이야기</option>
-								<option value="공지사항">공지사항</option>
 								<option value="질문">질문</option>
 								<option value="정보">정보</option>
 								<option value="그룹홍보">그룹홍보</option>
@@ -178,15 +238,6 @@
 							<c:if test="${viewCategory == '이야기'}">
 								<option value="all">전체</option>
 								<option value="이야기" selected>이야기</option>
-								<option value="공지사항">공지사항</option>
-								<option value="질문">질문</option>
-								<option value="정보">정보</option>
-								<option value="그룹홍보">그룹홍보</option>
-							</c:if>
-							<c:if test="${viewCategory == '공지사항'}">
-								<option value="all">전체</option>
-								<option value="이야기">이야기</option>
-								<option value="공지사항" selected>공지사항</option>
 								<option value="질문">질문</option>
 								<option value="정보">정보</option>
 								<option value="그룹홍보">그룹홍보</option>
@@ -194,7 +245,6 @@
 							<c:if test="${viewCategory == '질문'}">
 								<option value="all">전체</option>
 								<option value="이야기">이야기</option>
-								<option value="공지사항">공지사항</option>
 								<option value="질문" selected>질문</option>
 								<option value="정보">정보</option>
 								<option value="그룹홍보">그룹홍보</option>
@@ -202,7 +252,6 @@
 							<c:if test="${viewCategory == '정보'}">
 								<option value="all">전체</option>
 								<option value="이야기">이야기</option>
-								<option value="공지사항">공지사항</option>
 								<option value="질문">질문</option>
 								<option value="정보" selected>정보</option>
 								<option value="그룹홍보">그룹홍보</option>
@@ -210,12 +259,12 @@
 							<c:if test="${viewCategory == '그룹홍보'}">
 								<option value="all">전체</option>
 								<option value="이야기">이야기</option>
-								<option value="공지사항">공지사항</option>
 								<option value="질문">질문</option>
 								<option value="정보">정보</option>
 								<option value="그룹홍보" selected>그룹홍보</option>
 							</c:if>
 						</select>
+						--%>
 					</div>
 					<input type="text" id="keyword" name="keyword" class="form-control" value="${nowKeyword}" placeholder="검색어를 입력하세요." maxlength=50/>
 					<span class="input-group-btn">
@@ -233,24 +282,24 @@
 		//startPage가 pageBlock보다 큰 경우에만 << 버튼을 보여준다.
 		if(startPage > pageBlock) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=startPage - 1%>'">&lt;&lt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/<%=startPage - 1%>'">&lt;&lt;</button>
 			<%
 		}
 		//pageNumber가 1보다 큰 경우에만 < 버튼을 보여준다.
 		if(pageNumber > 1) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=pageNumber - 1%>'">&lt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/<%=pageNumber - 1%>'">&lt;</button>
 			<%
 		}		
 		//하단에 페이지 번호를 보여준다.
 		for(int num = startPage; num <= endPage; num++) {
 			if (num == pageNumber) {
 			%>
-			<button type="button" class="btn btn-success" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
+			<button type="button" class="btn btn-success" onclick="location.href='${path}/<%=paging%>/<%=num%>'"><%=num%></button>
 			<%
 			} else {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=num%>'"><%=num%></button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/<%=num%>'"><%=num%></button>
 			<%
 			}
 		}
@@ -259,13 +308,13 @@
 		//pageNumber가 pageCount보다 작은 경우에만 > 버튼을 보여준다.
 		if(pageNumber < pageCount) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=pageNumber + 1%>'">&gt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/<%=pageNumber + 1%>'">&gt;</button>
 			<%
 		}
 		//endPage가 pageCount보다 작은 경우에만 >> 버튼을 보여준다.
 		if(endPage < pageCount) {
 			%>
-			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/${viewCategory}/<%=endPage + 1%>'">&gt;&gt;</button>
+			<button type="button" class="btn btn-default" onclick="location.href='${path}/<%=paging%>/<%=endPage + 1%>'">&gt;&gt;</button>
 			<%
 		}
 		%>
@@ -276,6 +325,7 @@
 	<%@ include file="../include/footer.jsp" %>
 	<script>
 	$(document).ready(function() {
+		
 		/*
 		// 검색 버튼이 눌렸을 경우
 		$("#searchBtn").on("click", function() {
@@ -290,14 +340,22 @@
 		*/
 		// 검색 버튼이 눌렸을 경우
 		$("#searchBtn").on("click", function() {
-			searchfBoard($("#keyword").val(), $("#searchCategory").val());
+			searchfBoard($("#keyword").val(), $("#searchCode").val(), $("#viewCategory").val());
 		});
 		// 검색창에서 엔터키를 입력할 경우
 		$("#keyword").keyup(function(e) { if(e.keyCode == 13) {
-			searchfBoard($("#keyword").val(), $("#searchCategory").val());
+			searchfBoard($("#keyword").val(), $("#searchCode").val(), $("#viewCategory").val());
 		}});
 		
 	});
+	// 공지사항 더보기 버튼 누를 때마다 모양을 바꿔줌
+	function clickNoticeBtn() {
+		if ($("#accordion_notice").is(":visible")) { 
+			$("#viewNoticeBtn").attr('class', 'glyphicon glyphicon-chevron-down');
+		} else {
+			$("#viewNoticeBtn").attr('class', 'glyphicon glyphicon-chevron-up');
+		}
+	}
 	</script>
 </body>
 </html>

@@ -83,7 +83,7 @@
 										<li><a href="${path}/member/memberDelete">탈퇴하기</a></li>
 									</ul>
 								</li>
-								<li><a href="${path}/member/portfolio">이력서&포폴</a></li>
+								<li><a href="${path}/member/portfolio">이력서&amp;포폴</a></li>
 							</ul>
 						</li>
 						<!-- 알림 영역 -->

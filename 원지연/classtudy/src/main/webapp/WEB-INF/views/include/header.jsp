@@ -24,17 +24,14 @@
 	font-weight: normal;
 	font-style: normal;
 }
-<%-- CSS --%>
+
+<%-- Body --%>
 body {
 	font-family: 'IBMPlexSansKR-Regular', sans-serif;
 	font-size: 15px;
 	color: #666;
 	background: #fff;
 	text-align: center;
-}
-#commentList {
-	font-family: 'IBMPlexSansKR-Regular', sans-serif;
-	font-size: 14px;
 }
 
 <%-- Navigation Bar --%>
@@ -57,14 +54,18 @@ body {
 	left: 	100%;
 }
 
+<%-- CommentList --%>
+#commentList {
+	font-size: 14px;
+}
+
 <%-- NotiList --%>
 @media (min-width: 768px) {
 	#notiList {
-		width: 		500px;
+		width: 			500px;
 		right: 			-50px;
 		padding-top: 	15px;
 		padding-bottom: 15px;
-		font-family: 	'IBMPlexSansKR-Regular', sans-serif;
 		font-size: 		14px;
 	}
 }

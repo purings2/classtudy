@@ -165,10 +165,10 @@ function checkfbLikes(boardNo, memberId) {
 //---------------------------------------------------------------------
 // freeboard 게시글 검색 - 제목 및 내용
 //---------------------------------------------------------------------
-function searchfBoard(keyword, searchCategory) {
+function searchfBoard(keyword, searchCode, viewCategory) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/community/freeboard/search/" + keyword + "/" + searchCategory;
+		location.href=path + "/community/freeboard/search/" + searchCode + "/" + keyword + "/" + viewCategory;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;

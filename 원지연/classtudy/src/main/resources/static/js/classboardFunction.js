@@ -187,10 +187,10 @@ function checkLikes(boardNo, memberId) {
 //---------------------------------------------------------------------
 // 게시글 검색 - 제목 및 내용
 //---------------------------------------------------------------------
-function searchBoard(keyword, searchCategory) {
+function searchBoard(keyword, searchCode, viewCategory) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/class/classboard/search/" + keyword + "/" + searchCategory;
+		location.href=path + "/class/classboard/search/" + searchCode + "/" + keyword + "/" + viewCategory;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;
@@ -200,10 +200,10 @@ function searchBoard(keyword, searchCategory) {
 //---------------------------------------------------------------------
 // TIL 게시글 검색 - 제목 및 내용
 //---------------------------------------------------------------------
-function searchTIL(keyword) {
+function searchTIL(keyword, searchCode) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/class/classboard/searchTIL/" + keyword;
+		location.href=path + "/class/classboard/searchTIL/" + searchCode + "/" + keyword;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;

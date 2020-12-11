@@ -70,23 +70,46 @@ public class FreeboardService {
 	// 화면에 보여줄 게시글 개수 추출
 	public int getBoardCount(String viewCategory) throws Exception {
 		return freeboardMapper.getBoardCount(viewCategory);
-	}	
-	// 게시글 검색
-	public List<FreeboardDTO> searchAll(String keyword, int startNo, int numOfPage) throws Exception {	
-		return freeboardMapper.searchAll(keyword, startNo,numOfPage);
+	}
+	
+	// 게시글 제목+내용 검색
+	public List<FreeboardDTO> searchAll(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return freeboardMapper.searchAll(keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 제목 검색
+	public List<FreeboardDTO> searchTitle(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return freeboardMapper.searchTitle(keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 내용 검색
+	public List<FreeboardDTO> searchContent(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return freeboardMapper.searchContent(keyword, startNo, numOfPage, viewCategory);
+	}
+	// 게시글 작성자 검색
+	public List<FreeboardDTO> searchWriter(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
+		return freeboardMapper.searchWriter(keyword, startNo, numOfPage, viewCategory);
 	}
 	// 게시글 검색 - 정해진 말머리만
 	public List<FreeboardDTO> search(String keyword, String viewCategory, int startNo, int numOfPage) throws Exception {		
 		return freeboardMapper.search(keyword, viewCategory,startNo, numOfPage);
 	}
-	// 화면에 보여줄 게시글 개수 추출 - 검색 했을 때
-	public int getSearchCountAll(String keyword) throws Exception {
-		return freeboardMapper.getSearchCountAll(keyword);
+	
+	// 화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 했을 때
+	public int getSearchCountAll(String keyword, String viewCategory) throws Exception {
+		return freeboardMapper.getSearchCountAll(keyword, viewCategory);
 	}
-	// 화면에 보여줄 게시글 개수 추출 - 정해진 말머리만, 검색 했을 때
-	public int getSearchCount(String viewCategory, String keyword) throws Exception {
-		return freeboardMapper.getSearchCount(viewCategory, keyword);
+	// 화면에 보여줄 게시글 개수 추출 - 제목 검색 했을 때
+	public int getSearchCountTitle(String keyword, String viewCategory) throws Exception {
+		return freeboardMapper.getSearchCountTitle(keyword, viewCategory);
 	}
+	// 화면에 보여줄 게시글 개수 추출 - 내용 검색 했을 때
+	public int getSearchCountContent(String keyword, String viewCategory) throws Exception {
+		return freeboardMapper.getSearchCountContent(keyword, viewCategory);
+	}
+	// 화면에 보여줄 게시글 개수 추출 - 작성자 검색 했을 때
+	public int getSearchCountWriter(String keyword, String viewCategory) throws Exception {
+		return freeboardMapper.getSearchCountWriter(keyword, viewCategory);
+	}
+	
 	// 게시글 좋아요수 증가
 	public int addLikes(int boardNo) throws Exception  {
 		return freeboardMapper.addLikes(boardNo);
