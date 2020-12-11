@@ -88,11 +88,11 @@ public class FreeboardController {
 		// 공지사항 개수를 카운트한다.
 		int noticeCount = freeboardService.getNoticeCount();
 		model.addAttribute("noticeCount", noticeCount);
-		// 출력할 공지사항 개수
+		// 처음에 출력할 공지사항 개수
 		int numOfNotice = 3;
 		model.addAttribute("numOfNotice", numOfNotice);
 		// 처음에 보여지는 공지사항 목록
-		model.addAttribute("noticeListfirst", freeboardService.boardListNoticeFirst(numOfNotice));
+		model.addAttribute("noticeListFirst", freeboardService.boardListNoticeFirst(numOfNotice));
 		// 더보기 눌렀을 때 보여지는 공지사항 목록
 		model.addAttribute("noticeList", freeboardService.boardListNotice(numOfNotice, noticeCount));
 		return "/freeboard/list";
@@ -242,11 +242,11 @@ public class FreeboardController {
 		// 공지사항 개수를 카운트한다.
 		int noticeCount = freeboardService.getNoticeCount();
 		model.addAttribute("noticeCount", noticeCount);
-		// 출력할 공지사항 개수
+		// 처음에 출력할 공지사항 개수
 		int numOfNotice = 3;
 		model.addAttribute("numOfNotice", numOfNotice);
 		// 처음에 보여지는 공지사항 목록
-		model.addAttribute("noticeListfirst", freeboardService.boardListNoticeFirst(numOfNotice));
+		model.addAttribute("noticeListFirst", freeboardService.boardListNoticeFirst(numOfNotice));
 		// 더보기 눌렀을 때 보여지는 공지사항 목록
 		model.addAttribute("noticeList", freeboardService.boardListNotice(numOfNotice, noticeCount));
 		return "/freeboard/list";

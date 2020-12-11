@@ -123,9 +123,9 @@
 				<th style="text-align: center; width: 60px;"><span class="glyphicon glyphicon-thumbs-up"></span></th>
 			</tr>
 		</thead>
-		<!-- 공지사항 목록 일부 출력 -->
 		<tbody>
-			<c:forEach var="board" items="${noticeListfirst}">
+			<!-- 먼저 보여질 공지사항 목록 -->
+			<c:forEach var="board" items="${noticeListFirst}">
 				<tr style="background-color: #f2f2f2;">
 					<td>${board.boardNo}</td>
 					<td><span class="glyphicon glyphicon-info-sign"></span></td>
@@ -144,7 +144,7 @@
 				<tr>
 					<td colspan="7">
 						<div class="accordion-heading" style="height: 10px; position: relative; top: -3px;">
-							<a class="accordion-toggle" data-toggle="collapse" href="#accordion_notice" onclick="clickNoticeBtn();"
+							<a class="accordion-toggle" data-toggle="collapse" href="#accordion_notice" onclick="viewSecondList('#accordion_notice', '#viewNoticeBtn');"
 								style="color: #444444"><span id="viewNoticeBtn" class="glyphicon glyphicon-chevron-down"></span></a>
 						</div>
 					</td>
@@ -348,14 +348,6 @@
 		}});
 		
 	});
-	// 공지사항 더보기 버튼 누를 때마다 모양을 바꿔줌
-	function clickNoticeBtn() {
-		if ($("#accordion_notice").is(":visible")) { 
-			$("#viewNoticeBtn").attr('class', 'glyphicon glyphicon-chevron-down');
-		} else {
-			$("#viewNoticeBtn").attr('class', 'glyphicon glyphicon-chevron-up');
-		}
-	}
 	</script>
 </body>
 </html>

@@ -566,3 +566,90 @@ function notiCheckAll(memberId) {
 		}
 	});
 }
+
+//---------------------------------------------------------------------
+// 마이페이지 내가 쓴 글에 보여지는 게시판 변경
+//---------------------------------------------------------------------
+function changeBoard(boardName) {
+	// 로그인한 회원 아이디와 이름을 저장
+	var loginId = document.getElementById("loginId").value;
+	// 처음에 보여줄 글 개수
+	var numOfPage = 10;
+	// 게시글에 연결될 상세보기 링크
+	var detailPath;
+	// 게시판에 따라 버튼 색상 및 게시글 상세보기 링크 다르게 설정
+	if (boardName == 'class') {
+		detailPath = path + '/class/classboard/detail/';
+		$("#classBtn").attr('class', 'btn btn-sm btn-info');
+		$("#freeBtn").attr('class', 'btn btn-sm btn-default');
+		$("#groupBtn").attr('class', 'btn btn-sm btn-default');
+	} else if (boardName == 'free') {
+		detailPath = path + '/community/freeboard/detail/';
+		$("#classBtn").attr('class', 'btn btn-sm btn-default');
+		$("#freeBtn").attr('class', 'btn btn-sm btn-info');
+		$("#groupBtn").attr('class', 'btn btn-sm btn-default');
+	} else if (boardName == 'group') {
+		detailPath = path + '/community/groupboard/detail/';
+		$("#classBtn").attr('class', 'btn btn-sm btn-default');
+		$("#freeBtn").attr('class', 'btn btn-sm btn-default');
+		$("#groupBtn").attr('class', 'btn btn-sm btn-info');
+	}
+	// 내가 쓴 글에 보여지는 내용 변경
+	$.ajax({
+		url:	"/member/" + boardName + "boardList",
+		type:	"get",
+		data:	{"memberId": loginId},
+		success: function(data) {
+			var str1 = '';
+			var str2 = '';
+			if (data.length < 1) { //게시글이 없을 때
+				str1 += '<tr style="background-color: #FFFFFF;">';
+				str1 += '<td colspan="6">게시글이 없습니다.</td></tr>';
+			} else {
+				$.each(data, function(key, value){
+					if (key < numOfPage+0) {
+						str1 += '<tr><td>' + value.boardNo + '</td>';
+						str1 += '<td>' + value.category + '</td>';
+						str1 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
+						str1 += '<a href="' + detailPath + value.boardNo + '/comment">';
+						str1 += '<span class="badge">' + value.commentNum + '</span></a></td>';
+						str1 += '<td>' + (value.writeDate).substring(0, 10); + '</td>';
+						//str1 += '<td><fmt:formatDate value="' + value.writeDate + '" pattern="yyyy-MM-dd"/></td>';
+						str1 += '<td>' + value.views + '</td>';
+						str1 += '<td>' + value.likes + '</td></tr>';
+					} else {
+						str2 += '<tr><td>' + value.boardNo + '</td>';
+						str2 += '<td>' + value.category + '</td>';
+						str2 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
+						str2 += '<a href="' + detailPath + value.boardNo + '/comment">';
+						str2 += '<span class="badge">' + value.commentNum + '</span></a></td>';
+						str2 += '<td>' + (value.writeDate).substring(0, 10); + '</td>';
+						str2 += '<td>' + value.views + '</td>';
+						str2 += '<td>' + value.likes + '</td></tr>';
+					}
+					if (key == numOfPage+0) {
+						str1 += '<tr><td colspan="6">';
+						str1 += '<div class="accordion-heading" style="height: 10px; position: relative; top: -3px;">';
+						str1 += '<a class="accordion-toggle" data-toggle="collapse" href="#myBoardListSecond"';
+						str1 += ' onclick="viewSecondList(\'#myBoardListSecond\', \'#viewSecondBtn\');"';
+						str1 += 'style="color: #444444"><span id="viewSecondBtn" class="glyphicon glyphicon-chevron-down"></span></a>';
+						str1 += '</div></td></tr>';
+					}
+				});
+			}
+			$("#myBoardListFirst").html(str1);
+			$("#myBoardListSecond").html(str2);
+		}
+	});
+}
+
+//---------------------------------------------------------------------
+// 더보기 버튼 누를 때 모양을 바꿔주기
+//---------------------------------------------------------------------
+function viewSecondList(visibleId, btnId) {
+	if ($(visibleId).is(":visible")) { 
+		$(btnId).attr('class', 'glyphicon glyphicon-chevron-down');
+	} else {
+		$(btnId).attr('class', 'glyphicon glyphicon-chevron-up');
+	}
+}

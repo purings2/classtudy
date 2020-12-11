@@ -8,8 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 
+import com.edu.classboard.domain.ClassboardDTO;
+import com.edu.freeboard.domain.FreeboardDTO;
+import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
+import com.edu.member.domain.PointDTO;
+import com.edu.member.domain.RewardDTO;
 import com.edu.member.mapper.MemberMapper;
 
 @Service("com.edu.member.service.MemberService")
@@ -68,6 +73,45 @@ public class MemberService {
 	// 강의 번호에 해당하는 회원 찾기
 	public List<String> getLectureMembers(int lectureNo) throws Exception {
 		return memberMapper.getLectureMembers(lectureNo);
+	}
+	
+	// 마이페이지 포인트 내역 개수 추출
+	public int getPointListCount(String memberId) throws Exception {
+		return memberMapper.getPointListCount(memberId);
+	}
+	// 마이페이지 포인트 내역 - 처음
+	public List<PointDTO> pointListFirst(String memberId, int numOfList) throws Exception {
+		return memberMapper.pointListFirst(memberId, numOfList);
+	}
+	// 마이페이지 포인트 내역 - 더보기 아래
+	public List<PointDTO> pointListSecond(String memberId, int numOfList, int listCount) throws Exception {
+		return memberMapper.pointListSecond(memberId, numOfList, listCount);
+	}
+	
+	// 마이페이지 적립금 내역 개수 추출
+	public int getRewardListCount(String memberId) throws Exception {
+		return memberMapper.getRewardListCount(memberId);
+	}
+	// 마이페이지 적립금 내역 - 처음
+	public List<RewardDTO> rewardListFirst(String memberId, int numOfList) throws Exception {
+		return memberMapper.rewardListFirst(memberId, numOfList);
+	}
+	// 마이페이지 적립금 내역 - 더보기 아래
+	public List<RewardDTO> rewardListSecond(String memberId, int numOfList, int listCount) throws Exception {
+		return memberMapper.rewardListSecond(memberId, numOfList, listCount);
+	}
+	
+	// 마이페이지 내가 쓴 글 - 클래스게시판
+	public List<ClassboardDTO> classboardList(String memberId) throws Exception {
+		return memberMapper.classboardList(memberId);
+	}
+	// 마이페이지 내가 쓴 글 - 자유게시판
+	public List<FreeboardDTO> freeboardList(String memberId) throws Exception {
+		return memberMapper.freeboardList(memberId);
+	}
+	// 마이페이지 내가 쓴 글 - 그룹게시판
+	public List<GroupboardDTO> groupboardList(String memberId) throws Exception {
+		return memberMapper.groupboardList(memberId);
 	}
 	
 }

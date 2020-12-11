@@ -73,16 +73,6 @@
 	AND 	category LIKE #{viewCategory} 
 	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
 	</select>
-	<!-- 게시글 검색 - 말머리별 -->
-	<!-- 
-	<select id="search" resultType="com.edu.freeboard.domain.FreeboardDTO">
-	SELECT 	f.*, m.name writerName 
-	FROM 	freeboard f inner join member m on f.writer = m.memberId 
-	AND 	(f.title LIKE #{keyword} OR f.content LIKE #{keyword}) 
-	AND 	f.category = #{viewCategory} 
-	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
-	</select>
-	 -->
 	
 	<!-- 게시글 목록(전체) -->	
 	<select id="boardListAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
