@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.freeboard.mapper.FreeboardMapper">
+	
+	<!-- 게시글 작성 -->
+	<insert id="write" parameterType="com.edu.freeboard.domain.FreeboardDTO">
+	INSERT	INTO freeboard
+			(WRITER, TITLE, CONTENT, writeDate, category, tags) 
+	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category}, #{tags})
+	</insert>
+	
+	<!-- 게시글 상세 보기 -->
+	<select id="boardDetail" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="boardUpdate" >
+	UPDATE 	freeboard 
+	SET 	TITLE = #{title}, CONTENT = #{content}, category = #{category}, tags = #{tags} 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 조회수 증가 -->
+	<update id="addViews">
+	UPDATE 	freeboard 
+	SET 	views = views + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="boardDelete">
+	DELETE 
+	FROM 	freeboard 
+	WHERE 	boardNo = #{boardNo}
+	</delete>
+	
+	<!-- 게시글 제목+내용 검색 -->
+	<select id="searchAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName 
+	FROM 	freeboard f inner join member m on f.writer = m.memberId 
+	WHERE 	(f.title LIKE #{keyword} OR f.content LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
+	</select>
+	<!-- 게시글 제목 검색 -->
+	<select id="searchTitle" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName 
+	FROM 	freeboard f inner join member m on f.writer = m.memberId 
+	WHERE 	(f.title LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
+	</select>
+	<!-- 게시글 내용 검색 -->
+	<select id="searchContent" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName 
+	FROM 	freeboard f inner join member m on f.writer = m.memberId 
+	WHERE 	(f.content LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
+	</select>
+	<!-- 게시글 작성자 검색 -->
+	<select id="searchWriter" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName 
+	FROM 	freeboard f inner join member m on f.writer = m.memberId 
+	WHERE 	(f.writer LIKE #{keyword} or m.name LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage}
+	</select>
+	
+	<!-- 게시글 목록(전체) -->	
+	<select id="boardListAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>	
+	<!-- 게시글 목록(정해진 말머리) -->	
+	<select id="boardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	AND		f.category = #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 공지사항 목록 보기 -->
+	<select id="boardListNotice" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	AND		f.category = '공지사항' 
+	ORDER BY boardNo DESC LIMIT #{numOfNotice}, #{noticeCount}
+	</select>
+	<!-- 공지사항 목록 보기 - 첫번째 -->
+	<select id="boardListNoticeFirst" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT	f.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	AND		f.category = '공지사항' 
+	ORDER BY boardNo DESC LIMIT 0, #{numOfNotice}
+	</select>
+	
+	<!-- 공지사항 게시글 개수 추출 -->
+	<select id="getNoticeCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	WHERE 	category = '공지사항' 
+	</select>
+	
+	<!-- 화면에 보여줄 게시글 개수 추출 -->
+	<select id="getBoardCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 말머리별 -->
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	COUNT(boardNo)
+	FROM 	freeboard 
+	WHERE 	category = #{viewCategory} 
+	</select>
+	
+	<!-- 화면에 보여줄 게시글 개수 추출 (제목+내용 검색시) -->
+	<select id="getSearchCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	WHERE 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (제목 검색시) -->
+	<select id="getSearchCountTitle" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	WHERE 	(title LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (내용 검색시) -->
+	<select id="getSearchCountContent" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	freeboard 
+	WHERE 	(content LIKE #{keyword}) 
+	AND 	category LIKE #{viewCategory} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (작성자 검색시) -->
+	<select id="getSearchCountWriter" resultType="Integer">
+	SELECT 	COUNT(f.boardNo) 
+	FROM 	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE 	(f.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
+	AND 	f.category LIKE #{viewCategory} 
+	</select>
+	
+	<!-- 게시글 좋아요수 증가 -->
+	<update id="addLikes">
+	UPDATE 	freeboard 
+	SET 	likes = likes + 1 
+	WHERE 	boardNo = #{boardNo}
+	</update>
+	
+	<!-- 좋아요 내용 기록 -->
+	<insert id="writeLikes">
+	INSERT INTO fblikes 
+			(memberId, boardNo) 
+	VALUES 	(#{memberId}, #{boardNo})
+	</insert>
+	
+	<!-- 게시글 좋아요수 가져오기 -->
+	<select id="getLikes" resultType="int">
+	SELECT 	likes 
+	FROM 	freeboard 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	
+	<!-- 게시글 좋아요 여부 검사 -->
+	<select id="likeCheck" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	fblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</select>
+	
+	<!-- 게시글 좋아요수 감소 -->
+	<update id="subtractLikes">
+	UPDATE 	freeboard 
+	SET 	likes = likes - 1 
+	WHERE 	boardNo = #{boardNo}
+	</update>
+	
+	<!-- 좋아요 내용 삭제 -->
+	<delete id="deleteLikes">
+	DELETE 
+	FROM 	fblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</delete>
+	
+</mapper>

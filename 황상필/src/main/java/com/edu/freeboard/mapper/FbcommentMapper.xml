@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.freeboard.mapper.FbcommentMapper">
+
+	<!-- 댓글 작성 -->
+	<insert id="commentInsert">
+	INSERT INTO fbcomment 
+			(writer,	 content, 	boardNo, 	writeDate)
+	VALUES 	(#{writer}, #{content}, #{boardNo}, SYSDATE())
+	</insert>	
+	<!-- 댓글 목록 보기 -->
+	<select id="commentList" resultType="com.edu.freeboard.domain.FbcommentDTO">
+	SELECT 	f.*, m.name writerName, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo AND memberId = #{memberId}) commentLikesNum 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	boardNo = #{boardNo} 
+	ORDER BY commentNo 
+	</select>
+	<!-- 댓글 수정 -->
+	<update id="commentUpdate">
+	UPDATE 	fbcomment 
+	SET 	content = #{content} 
+	WHERE 	commentNo = #{commentNo} 
+	</update>
+	<!-- 댓글 삭제 -->
+	<delete id="commentDelete">
+	DELETE 	
+	FROM 	fbcomment 
+	WHERE 	commentNo = #{commentNo} 
+	</delete>
+	
+	<!-- 댓글 좋아요수 증가 -->
+	<update id="addLikes">
+	UPDATE 	fbcomment 
+	SET 	likes = likes + 1 
+	WHERE 	commentNo = #{commentNo}
+	</update>
+	<!-- 좋아요 내용 기록 -->
+	<insert id="writeLikes">
+	INSERT INTO fbcommentlikes 
+			(memberId, commentNo) 
+	VALUES 	(#{memberId}, #{commentNo})
+	</insert>	
+	<!-- 댓글 좋아요수 가져오기 -->
+	<select id="getLikes" resultType="int">
+	SELECT 	likes 
+	FROM 	fbcomment 
+	WHERE 	commentNo = #{commentNo} 
+	</select>
+	<!-- 댓글 좋아요 여부 검사 -->
+	<select id="likeCheck" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	fbcommentlikes 
+	WHERE 	commentNo = #{commentNo} 
+	AND 	memberId = #{memberId} 
+	</select>	
+	<!-- 댓글 좋아요수 감소 -->
+	<update id="subtractLikes">
+	UPDATE 	fbcomment 
+	SET 	likes = likes - 1 
+	WHERE 	commentNo = #{commentNo} 
+	</update>
+	<!-- 좋아요 내용 삭제 -->
+	<delete id="deleteLikes">
+	DELETE 
+	FROM 	fbcommentlikes 
+	WHERE 	commentNo = #{commentNo} 
+	AND 	memberId = #{memberId} 
+	</delete>
+	
+	
+</mapper>
