@@ -70,6 +70,55 @@
 		WHERE 	lectureNo = #{lectureNo} 
 	</select>
 	
+	<!-- 마이페이지 활동내역 - 출석여부 확인 -->
+	<select id="checkTodayStatus" resultType="Integer">
+	SELECT 	COUNT(pointNo) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	AND 	accrDate LIKE #{today}
+	</select>
+	<!-- 마이페이지 활동내역 - 클래스게시판 -->
+	<select id="classboardToday" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 자유게시판 -->
+	<select id="freeboardToday" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT 	f.*, (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM 	freeboard f 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 그룹게시판 -->
+	<select id="groupboardToday" resultType="com.edu.groupboard.domain.GroupboardDTO">
+	SELECT 	g.*, (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupboard g 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 클래스게시판 댓글 -->
+	<select id="classboardCommentToday" resultType="com.edu.classboard.domain.CbcommentDTO">
+	SELECT 	* 
+	FROM 	cbcomment 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY commentNo 
+	</select>
+	<!-- 마이페이지 활동내역 - 자유게시판 댓글 -->
+	<select id="freeboardCommentToday" resultType="com.edu.freeboard.domain.FbcommentDTO">
+	SELECT 	*, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo AND memberId = #{memberId}) commentLikesNum 
+	FROM 	fbcomment 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY commentNo 
+	</select>
+	
 	<!-- 마이페이지 포인트 내역 개수 추출 -->
 	<select id="getPointListCount" resultType="Integer">
 	SELECT 	COUNT(pointNo) 
@@ -89,6 +138,12 @@
 	FROM 	point 
 	WHERE 	member = #{memberId} 
 	ORDER BY pointNo DESC LIMIT #{numOfList}, #{listCount} 
+	</select>
+	<!-- 마이페이지 포인트 총 합계 추출 -->
+	<select id="getMyPointSum" resultType="Integer">
+	SELECT 	IFNULL(SUM(changeVal), 0) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
 	</select>
 	
 	<!-- 마이페이지 적립금 내역 개수 추출 -->
@@ -110,6 +165,12 @@
 	FROM 	reward 
 	WHERE 	member = #{memberId} 
 	ORDER BY rewardNo DESC LIMIT #{numOfList}, #{listCount} 
+	</select>
+	<!-- 마이페이지 적립금 총 합계 추출 -->
+	<select id="getMyRewardSum" resultType="Integer">
+	SELECT 	IFNULL(SUM(changeVal), 0) 
+	FROM 	reward 
+	WHERE 	member = #{memberId} 
 	</select>
 	
 	<!-- 마이페이지 내가 쓴 글 - 클래스게시판 -->

@@ -7,8 +7,12 @@ import javax.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
+import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.member.domain.LectureDTO;
@@ -75,6 +79,35 @@ public class MemberService {
 		return memberMapper.getLectureMembers(lectureNo);
 	}
 	
+	// 마이페이지 활동내역 - 출석여부 확인
+	public int checkTodayStatus(String memberId, String today) throws Exception {
+		return memberMapper.checkTodayStatus(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(클래스게시판)
+	public List<ClassboardDTO> classboardToday(String memberId, String today) throws Exception {
+		return memberMapper.classboardToday(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(자유게시판)
+	public List<FreeboardDTO> freeboardToday(String memberId, String today) throws Exception {
+		return memberMapper.freeboardToday(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(그룹게시판)
+	public List<GroupboardDTO> groupboardToday(String memberId, String today) throws Exception {
+		return memberMapper.groupboardToday(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(클래스게시판)
+	public List<CbcommentDTO> classboardCommentToday(String memberId, String today) throws Exception {
+		return memberMapper.classboardCommentToday(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(자유게시판)
+	public List<FbcommentDTO> freeboardCommentToday(String memberId, String today) throws Exception {
+		return memberMapper.freeboardCommentToday(memberId, today);
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(그룹게시판)
+	//public List<GbcommentDTO> groupboardCommentToday(String memberId, String today) throws Exception {
+		//return memberService.groupboardCommentToday(memberId, today + "%");
+	//}
+	
 	// 마이페이지 포인트 내역 개수 추출
 	public int getPointListCount(String memberId) throws Exception {
 		return memberMapper.getPointListCount(memberId);
@@ -86,6 +119,10 @@ public class MemberService {
 	// 마이페이지 포인트 내역 - 더보기 아래
 	public List<PointDTO> pointListSecond(String memberId, int numOfList, int listCount) throws Exception {
 		return memberMapper.pointListSecond(memberId, numOfList, listCount);
+	}
+	// 마이페이지 포인트 총 합계 추출
+	public int getMyPointSum(String memberId) throws Exception {
+		return memberMapper.getMyPointSum(memberId);
 	}
 	
 	// 마이페이지 적립금 내역 개수 추출
@@ -99,6 +136,10 @@ public class MemberService {
 	// 마이페이지 적립금 내역 - 더보기 아래
 	public List<RewardDTO> rewardListSecond(String memberId, int numOfList, int listCount) throws Exception {
 		return memberMapper.rewardListSecond(memberId, numOfList, listCount);
+	}
+	// 마이페이지 적립금 총 합계 추출
+	public int getMyRewardSum(String memberId) throws Exception {
+		return memberMapper.getMyRewardSum(memberId);
 	}
 	
 	// 마이페이지 내가 쓴 글 - 클래스게시판

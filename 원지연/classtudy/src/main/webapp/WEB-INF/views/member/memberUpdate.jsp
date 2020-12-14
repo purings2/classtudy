@@ -10,7 +10,7 @@
 </head>
 <body>
 	<%@ include file="../include/topmenu.jsp" %>
-	<div class="container">
+	<div class="container" style="padding-bottom: 20px;">
 		<form class="form-horizontal" action="/member/memberUpdate" method="post">
 			<div class="form-group">
 				<div class="col-sm-12">
@@ -51,21 +51,21 @@
 			<div class="form-group">
 				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
 					<c:if test="${member.gender == 'M'}">
-						<div class="control-form col-sm-3" style="text-align: left;">
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/> 남성</label>&nbsp;
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/> 여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/> 남성</label
+							>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/> 여성</label>
 						</div>
 					</c:if>
 					<c:if test="${member.gender == 'F'}">
-						<div class="control-form col-sm-3" style="text-align: left;">
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/> 남성</label>&nbsp;
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/> 여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/> 남성</label
+							>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/> 여성</label>
 						</div>
 					</c:if>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">전화번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">전화번호</label>
+				<div class="col-sm-2 col-xs-4">
 					<!-- tel1의 값에 맞게 selected 표시 -->
 					<c:if test="${tel1 == '010'}">
 						<select class="form-control" name="tel1" id="tel1">
@@ -122,10 +122,10 @@
 					</select>
 					 -->
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 col-xs-4">
 					<input type="text" class="form-control" name="tel2" id="tel2" value="${tel2}" maxlength="4">
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 col-xs-4">
 					<input type="text" class="form-control" name="tel3" id="tel3" value="${tel3}" maxlength="4">
 				</div>
 				<!-- 
@@ -135,11 +135,11 @@
 				 -->
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">우편번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">우편번호</label>
+				<div class="col-sm-2 col-xs-6">
 					<input type="text" class="form-control" name="zipcode" id="zipcode" value="${member.zipcode}" readonly/>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3 col-xs-6">
 					<button class="form-control" type="button" onclick="daumZipCode()" 
 						style="background-color: #dddddd"><b>우편번호 찾기</b></button>
 				</div>
@@ -164,11 +164,11 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">강의이름</label>
-				<div class="col-sm-3">
+				<div class="col-sm-4">
 					<!-- 강의번호가 NULL일 때(int형이라 0으로 비교) -->
 					<c:if test="${member.lectureNo == '0'}">
-						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="강의가 종료되었습니다" readonly/>
 						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="종료된 강의" readonly/>
 					</c:if>
 					<!-- 강의번호가 있을 때 -->
 					<c:if test="${member.lectureNo != '0'}">

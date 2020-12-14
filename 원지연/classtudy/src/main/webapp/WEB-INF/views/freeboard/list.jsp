@@ -36,7 +36,7 @@
 		paging = "community/freeboard/search/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
 	}
 	%>
-<div class="container">
+<div class="container" style="padding-bottom: 30px;">
 	<header>
 		<h1>자유게시판</h1>
 	</header>

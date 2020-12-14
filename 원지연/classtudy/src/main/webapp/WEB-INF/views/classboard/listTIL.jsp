@@ -36,7 +36,7 @@
 		paging = "class/classboard/searchTIL/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
 	}
 	%>
-<div class="container">
+<div class="container" style="padding-bottom: 30px;">
 	<header>
 		<h1>${member.name}님의 TIL</h1>
 	</header>

@@ -13,8 +13,10 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.common.CommonUtils;
+import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.member.domain.LectureDTO;
@@ -283,6 +285,8 @@ public class MemberController {
 		model.addAttribute("pointListFirst", memberService.pointListFirst(memberId, numOfPointList));
 		// 더보기 아래로 보여줄 포인트 내역 가져오기
 		model.addAttribute("pointListSecond", memberService.pointListSecond(memberId, numOfPointList, pointListCount));
+		// 현재 총 포인트 구하기
+		model.addAttribute("myPointSum", memberService.getMyPointSum(memberId));
 		
 		// 마이적립금에 적립금 내역을 출력
 		// 적립금 내역 개수를 카운트한다.
@@ -295,8 +299,63 @@ public class MemberController {
 		model.addAttribute("rewardListFirst", memberService.rewardListFirst(memberId, numOfRewardList));
 		// 더보기 아래로 보여줄 적립금 내역 가져오기
 		model.addAttribute("rewardListSecond", memberService.rewardListSecond(memberId, numOfRewardList, rewardListCount));
+		// 현재 총 적립금 구하기
+		model.addAttribute("myRewardSum", memberService.getMyRewardSum(memberId));
 		return "/member/myPage";
 	}
+	
+	// 마이페이지 활동내역 - 출석여부 확인
+	@ResponseBody
+	@RequestMapping(value="/checkTodayStatus")
+	private int checkTodayStatus(HttpSession session, String memberId, String today) throws Exception {
+		LOGGER.info("MemberController checkTodayStatus().....");
+		// 해당날짜의 포인트 적립내역 개수를 확인
+		return memberService.checkTodayStatus(memberId, today + "%");
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(클래스게시판)
+	@ResponseBody
+	@RequestMapping(value="/classboardToday")
+	private List<ClassboardDTO> classboardToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController classboardToday().....");
+		return memberService.classboardToday(memberId, today + "%");
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(자유게시판)
+	@ResponseBody
+	@RequestMapping(value="/freeboardToday")
+	private List<FreeboardDTO> freeboardToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController freeboardToday().....");
+		return memberService.freeboardToday(memberId, today + "%");
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(그룹게시판)
+	@ResponseBody
+	@RequestMapping(value="/groupboardToday")
+	private List<GroupboardDTO> groupboardToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController groupboardToday().....");
+		return memberService.groupboardToday(memberId, today + "%");
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(클래스게시판)
+	@ResponseBody
+	@RequestMapping(value="/classboardCommentToday")
+	private List<CbcommentDTO> classboardCommentToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController classboardCommentToday().....");
+		return memberService.classboardCommentToday(memberId, today + "%");
+	}
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(자유게시판)
+	@ResponseBody
+	@RequestMapping(value="/freeboardCommentToday")
+	private List<FbcommentDTO> freeboardCommentToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController freeboardCommentToday().....");
+		return memberService.freeboardCommentToday(memberId, today + "%");
+	}
+	/*
+	// 마이페이지 활동내역 - 특정 날짜에 작성한 댓글(그룹게시판)
+	@ResponseBody
+	@RequestMapping(value="/groupboardCommentToday")
+	private List<GbcommentDTO> groupboardCommentToday(String memberId, String today) throws Exception {
+		LOGGER.info("MemberController groupboardCommentToday().....");
+		return memberService.groupboardCommentToday(memberId, today + "%");
+	}
+	*/
 	
 	// 마이페이지 내가 쓴 글 - 클래스게시판
 	@ResponseBody

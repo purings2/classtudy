@@ -375,7 +375,7 @@ function notiToViews(views) {
 // 게시글 좋아요수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiToLikes(likes) {
-	var NUM1 = 10;
+	var NUM1 = 1;
 	var NUM2 = 50;
 	// 좋아요수가 NUM이면 알림을 보낸다. 
 	if (likes == NUM1 || likes == NUM2) {

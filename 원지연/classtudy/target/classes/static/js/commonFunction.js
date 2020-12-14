@@ -125,8 +125,8 @@ function dupCheck(memberForm) {
 function openLecturePopup() {
 	// 강의번호 검색창 열기
 	// window.open("open할 window", "자식창 이름", "팝업창 옵션");
-	var openWin = window.open(path + "/member/openLecturePopup", "강의번호 검색",
-			"width=500, height=400, resizable=no, scrollbars=yes, left=100, top=70, status=no");
+	window.open(path + "/member/openLecturePopup", "강의번호 검색",
+		"width=600, height=500, resizable=no, scrollbars=yes, left=100, top=70, status=no");
 }
 // 강의번호 검색
 function searchLectureNo(keyword) {
@@ -604,11 +604,12 @@ function changeBoard(boardName) {
 			var str2 = '';
 			if (data.length < 1) { //게시글이 없을 때
 				str1 += '<tr style="background-color: #FFFFFF;">';
-				str1 += '<td colspan="6">게시글이 없습니다.</td></tr>';
+				str1 += '<td colspan="5">게시글이 없습니다.</td></tr>';
 			} else {
 				$.each(data, function(key, value){
 					if (key < numOfPage+0) {
-						str1 += '<tr><td>' + value.boardNo + '</td>';
+						str1 += '<tr>';
+						//str1 += '<td>' + value.boardNo + '</td>';
 						str1 += '<td>' + value.category + '</td>';
 						str1 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
 						str1 += '<a href="' + detailPath + value.boardNo + '/comment">';
@@ -618,7 +619,8 @@ function changeBoard(boardName) {
 						str1 += '<td>' + value.views + '</td>';
 						str1 += '<td>' + value.likes + '</td></tr>';
 					} else {
-						str2 += '<tr><td>' + value.boardNo + '</td>';
+						str2 += '<tr>';
+						//str2 += '<td>' + value.boardNo + '</td>';
 						str2 += '<td>' + value.category + '</td>';
 						str2 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
 						str2 += '<a href="' + detailPath + value.boardNo + '/comment">';
@@ -628,7 +630,7 @@ function changeBoard(boardName) {
 						str2 += '<td>' + value.likes + '</td></tr>';
 					}
 					if (key == numOfPage+0) {
-						str1 += '<tr><td colspan="6">';
+						str1 += '<tr><td colspan="5">';
 						str1 += '<div class="accordion-heading" style="height: 10px; position: relative; top: -3px;">';
 						str1 += '<a class="accordion-toggle" data-toggle="collapse" href="#myBoardListSecond"';
 						str1 += ' onclick="viewSecondList(\'#myBoardListSecond\', \'#viewSecondBtn\');"';
@@ -639,6 +641,7 @@ function changeBoard(boardName) {
 			}
 			$("#myBoardListFirst").html(str1);
 			$("#myBoardListSecond").html(str2);
+			$("#myBoardListSecond").hide();
 		}
 	});
 }
@@ -649,7 +652,9 @@ function changeBoard(boardName) {
 function viewSecondList(visibleId, btnId) {
 	if ($(visibleId).is(":visible")) { 
 		$(btnId).attr('class', 'glyphicon glyphicon-chevron-down');
+		$(visibleId).hide();
 	} else {
 		$(btnId).attr('class', 'glyphicon glyphicon-chevron-up');
+		$(visibleId).show();
 	}
 }

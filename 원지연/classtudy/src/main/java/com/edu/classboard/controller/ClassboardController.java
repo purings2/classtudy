@@ -107,7 +107,7 @@ public class ClassboardController {
 				totalCount = classboardService.getBoardCount(lectureNo, viewCategory);
 			}
 			// 화면에 보여줄 게시글의 수
-			int numOfPage = 10;
+			int numOfPage = 13;
 			// 구한 값을 뷰 페이지로 보내준다.
 			model.addAttribute("pageNumber", pageNumber);
 			model.addAttribute("totalCount", totalCount);
@@ -269,7 +269,7 @@ public class ClassboardController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -316,7 +316,7 @@ public class ClassboardController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
