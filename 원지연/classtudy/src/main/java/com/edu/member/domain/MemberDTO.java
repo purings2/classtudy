@@ -30,6 +30,12 @@ public class MemberDTO {
 	// lectureNo가 일치할 때의 값을 가져온다.
 	private String 	lectureName;
 	
+	// Grouplist Table에 있는 groupName 컬럼의 값
+	// groupNo가 일치할 때의 값을 가져온다.
+	private String 	groupName1;
+	private String 	groupName2;
+	private String 	groupName3;
+	
 	public MemberDTO() {}
 	
 }

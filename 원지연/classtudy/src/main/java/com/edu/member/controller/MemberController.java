@@ -1,5 +1,6 @@
 package com.edu.member.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import com.edu.common.CommonUtils;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
+import com.edu.member.domain.GrouplistDTO;
 import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.service.MemberService;
@@ -28,8 +30,7 @@ import com.edu.member.service.MemberService;
 public class MemberController {
 	
 	//로깅을 위한 변수 logger를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(MemberController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
 	
 	// 컨트롤러 => 서비스 => Mapper 순서로!!
 	//@Resource(name="com.edu.service.MemberService")
@@ -273,6 +274,16 @@ public class MemberController {
 		// memberDTO에서 아이디를 찾아 저장한다.
 		String memberId = member.getMemberId();
 		LOGGER.info("MemberController myPage() memberId : " + memberId);
+		// 그룹번호와 이름을 저장한다.
+		List<GrouplistDTO> groupList = new ArrayList<GrouplistDTO>();
+		if (member.getGroup1() != 1 && member.getGroup1() != 0) {
+			groupList.add(new GrouplistDTO(member.getGroup1(), member.getGroupName1())); }
+		if (member.getGroup2() != 1 && member.getGroup1() != 0) {
+			groupList.add(new GrouplistDTO(member.getGroup2(), member.getGroupName2())); }
+		if (member.getGroup3() != 1 && member.getGroup1() != 0) {
+			groupList.add(new GrouplistDTO(member.getGroup3(), member.getGroupName3())); }
+		model.addAttribute("groupList", groupList);
+		LOGGER.info("groupList: " + groupList);
 		
 		// 마이포인트에 포인트 내역을 출력
 		// 포인트 내역 개수를 카운트한다.
@@ -308,9 +319,9 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="/checkTodayStatus")
 	private int checkTodayStatus(HttpSession session, String memberId, String today) throws Exception {
-		LOGGER.info("MemberController checkTodayStatus().....");
+		//LOGGER.info("MemberController checkTodayStatus().....");
 		// 해당날짜의 포인트 적립내역 개수를 확인
-		return memberService.checkTodayStatus(memberId, today + "%");
+		return memberService.checkTodayStatus(memberId, today + " %");
 	}
 	// 마이페이지 활동내역 - 특정 날짜에 작성한 게시글(클래스게시판)
 	@ResponseBody

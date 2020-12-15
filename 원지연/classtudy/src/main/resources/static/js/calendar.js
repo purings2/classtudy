@@ -37,7 +37,11 @@ function showCalendar(){
                 var $td = document.createElement('td');
                 $td.textContent = cnt;
                 $td.setAttribute('id', cnt);
+                // 존재하는 날짜임을 표시
                 $td.setAttribute('class', 'existDate');
+                // 해당 날짜에 출석이 되었는지 확인
+                var thisDate = new Date(today.getFullYear(), today.getMonth(), cnt);
+                if (checkTodayStatus(thisDate) === true) { $td.setAttribute('class', 'existDate yesDate'); }
                 $tr.appendChild($td);
                 cnt++;
             }
@@ -45,9 +49,9 @@ function showCalendar(){
         monthCnt++;
         calendarBody.appendChild($tr);
     }
+    currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
 }
 showCalendar();
-currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
 
 // 화면에 있는 달력 없애기
 function removeCalendar(){
@@ -62,7 +66,10 @@ function removeCalendar(){
 // 활동내역칸의 날짜를 업데이트
 function showMain(){
     mainTodayDate.innerHTML = (today.getMonth()+1) + '월&nbsp;&nbsp;' + today.getDate() + '일&nbsp;&nbsp;' + dayList[today.getDay()];
-    checkTodayStatus();
+    // 해당 날짜에 출석을 했는지 확인
+    //checkTodayStatus(today);
+    if (checkTodayStatus(today) === true) { mainTodayStatus.innerHTML = '출석을 완료했습니다.'; }
+    else { mainTodayStatus.innerHTML = '출석을 하지 않았습니다.'; }
 }
 var clickedDate1 = document.getElementById(today.getDate());
 clickedDate1.classList.add('active');
@@ -74,19 +81,24 @@ var tdGroup = [];
 showMain();
 
 // 선택된 날짜에 출석을 했는지 확인
-function checkTodayStatus(){
+function checkTodayStatus(thisToday){
 	// 로그인한 회원 아이디와 이름을 저장
 	var loginId = document.getElementById("loginId").value;
-	var todayStr = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+	var todayStr = thisToday.getFullYear() + '-' + (thisToday.getMonth()+1) + '-' + thisToday.getDate();
+	var result = false;
 	$.ajax({
 		url:	"/member/checkTodayStatus/",
 		type:	"get",
 		data:	{"memberId": loginId, "today": todayStr},
+		async:	false,
 		success: function(data) {
-			if (data > 0) { mainTodayStatus.innerHTML = '출석을 완료했습니다.'; }
-			else { mainTodayStatus.innerHTML = '출석을 하지 않았습니다.'; }
+			// 출석을 했으면 true를 보낸다.
+			if (data > 0) { result = true; }
+			//if (data > 0) { mainTodayStatus.innerHTML = '출석을 완료했습니다.'; }
+			//else { mainTodayStatus.innerHTML = '출석을 하지 않았습니다.'; }
 		}
 	});
+	return result;
 }
 
 // 달력에 날짜별로 EventListener 추가
@@ -128,7 +140,7 @@ function prev(){
         first = pageFirst;
     }
     today = new Date(today.getFullYear(), today.getMonth()-1, today.getDate());
-    currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
+    //currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
     removeCalendar();
     showCalendar();
     showMain();
@@ -157,7 +169,7 @@ function next(){
 	        first = pageFirst;
 	    }
 	    today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-	    currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
+	    //currentTitle.innerHTML = first.getFullYear() + '년&nbsp;&nbsp;&nbsp;'+ monthList[first.getMonth()];
 	    removeCalendar();
 	    showCalendar(); 
 	    showMain();

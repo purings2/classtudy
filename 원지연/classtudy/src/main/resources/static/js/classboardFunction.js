@@ -12,8 +12,7 @@ var path = document.getElementById("nowPath").value;
 //---------------------------------------------------------------------
 // 클래스게시판 게시글 작성 검사
 //---------------------------------------------------------------------
-function checkClassboardForm(classboardForm)
-{
+function checkClassboardForm(classboardForm) {
 	// 아이디 검사
 	if(classboardForm.writer.value == "") {
 		alert("아이디를 받아올 수 없습니다.");
@@ -38,7 +37,7 @@ function checkClassboardForm(classboardForm)
 	// 내용 검사
 	if(document.getElementById("content").value.length == 0) {
 		alert("내용을 입력하세요.");
-		memberForm.content.focus();
+		classboardForm.content.focus();
 		return false;
 	}
 	classboardForm.submit();
@@ -81,7 +80,7 @@ function checkUpdateClassboardForm(classboardForm) {
 	// 내용 검사
 	if(document.getElementById("content").value.length == 0) {
 		alert("내용을 입력하세요.");
-		memberForm.content.focus();
+		classboardForm.content.focus();
 		return false;
 	}
 	classboardForm.submit();
@@ -90,7 +89,7 @@ function checkUpdateClassboardForm(classboardForm) {
 //---------------------------------------------------------------------
 // 게시글 좋아요 - 좋아요 버튼이 눌렸을 경우
 //---------------------------------------------------------------------
-function likeBoard(boardForm) {
+function likeBoard() {
 	/*
 	// 자신이 작성한 글은 좋아요를 누를 수 없다.
 	// 게시글의 작성자와 로그인한 사람의 아이디 확인
@@ -110,7 +109,7 @@ function likeBoard(boardForm) {
 				url: 	"/class/classboard/deleteLike/",
 				type: 	"post",
 				dataType: "json",
-				data: 	{"boardNo" : boardForm.boardNo.value, "memberId" : loginId},
+				data: 	{"boardNo" : boardNo, "memberId" : loginId},
 				success: function(data) {
 						document.getElementById("likeBtn").value = "N";
 						document.getElementById("likeBtn").style.backgroundColor = "#ffffff";
@@ -139,13 +138,13 @@ function likeBoard(boardForm) {
 		});
 		// ----- 알림 보내기 -----
 		// 자신이 작성한 글은 알림을 보내지 않는다.
-		if(boardForm.writer.value != loginId) {
+		if(boardWriter != loginId) {
 			// 작성자에게 보낼 알림 텍스트를 만든다.
 			//var boardTitle = boardForm.title.value; //제목이 길면 잘라서 저장
 			//if (boardTitle.length > 10) { boardTitle = boardTitle.substring(0, 10) + '...'; }
 			var notiContent = '';
 			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
-			notiContent += '<a href="' + path + '/class/classboard/detail/' + boardForm.boardNo.value + '">게시글</a>';
+			notiContent += '<a href="' + path + '/class/classboard/detail/' + boardNo + '">게시글</a>';
 			notiContent += '을 좋아합니다.';
 			//alert(notiContent);
 			// 게시글 작성자에게 알림을 보낸다.
@@ -153,7 +152,7 @@ function likeBoard(boardForm) {
 				url: 	"/noti/insert/",
 				type: 	"post",
 				dataType: "json",
-				data: 	{"notiContent" : notiContent, "receiver" : boardForm.writer.value},
+				data: 	{"notiContent" : notiContent, "receiver" : boardWriter},
 				success: function(data) { }
 			});
 		}
@@ -177,15 +176,13 @@ function checkLikes(boardNo, memberId) {
 					document.getElementById("likeBtn").value = "Y";
 					document.getElementById("likeBtn").style.backgroundColor = "#888888";
 					document.getElementById("likeBtn").style.color = "#ffffff";
-				} else {
-					//alert("좋아요 안했음");
 				}
 			}
 	});
 }
 
 //---------------------------------------------------------------------
-// 게시글 검색 - 제목 및 내용
+// 게시글 검색
 //---------------------------------------------------------------------
 function searchBoard(keyword, searchCode, viewCategory) {
 	// 검색어가 입력되었는지 확인
@@ -198,7 +195,7 @@ function searchBoard(keyword, searchCode, viewCategory) {
 }
 
 //---------------------------------------------------------------------
-// TIL 게시글 검색 - 제목 및 내용
+// TIL 게시글 검색
 //---------------------------------------------------------------------
 function searchTIL(keyword, searchCode) {
 	// 검색어가 입력되었는지 확인
@@ -375,7 +372,7 @@ function notiToViews(views) {
 // 게시글 좋아요수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiToLikes(likes) {
-	var NUM1 = 1;
+	var NUM1 = 10;
 	var NUM2 = 50;
 	// 좋아요수가 NUM이면 알림을 보낸다. 
 	if (likes == NUM1 || likes == NUM2) {

@@ -17,8 +17,8 @@
 	</select>
 	<!-- TIL 게시글 목록 - 제목+내용 검색 -->
 	<select id="searchTILAll" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	* 
-	FROM 	classboard 
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
@@ -27,8 +27,8 @@
 	</select>
 	<!-- TIL 게시글 목록 - 제목 검색 -->
 	<select id="searchTILTitle" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	* 
-	FROM 	classboard 
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
@@ -37,8 +37,8 @@
 	</select>
 	<!-- TIL 게시글 목록 - 내용 검색 -->
 	<select id="searchTILContent" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	* 
-	FROM 	classboard 
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
@@ -48,7 +48,7 @@
 	<!-- 화면에 보여줄 TIL 게시글 개수 추출 -->
 	<select id="getTILCount" resultType="Integer">
 	SELECT 	COUNT(boardNo) 
-	FROM 	classboard 
+	FROM 	classboard c 
 	WHERE 	lectureNo = #{lectureNo} 
 	AND 	category = 'TIL' 
 	AND 	writer = #{memberId} 
@@ -100,7 +100,8 @@
 	</select>
 	<!-- 게시글 목록 - 제목+내용 검색 -->
 	<select id="searchAll" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	WHERE 	c.lectureNo = #{lectureNo} 
 	AND 	c.category LIKE #{viewCategory} 
@@ -109,7 +110,8 @@
 	</select>
 	<!-- 게시글 목록 - 제목 검색 -->
 	<select id="searchTitle" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	WHERE 	c.lectureNo = #{lectureNo} 
 	AND 	c.category LIKE #{viewCategory} 
@@ -118,7 +120,8 @@
 	</select>
 	<!-- 게시글 목록 - 내용 검색 -->
 	<select id="searchContent" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	WHERE 	c.lectureNo = #{lectureNo} 
 	AND 	c.category LIKE #{viewCategory} 
@@ -127,7 +130,8 @@
 	</select>
 	<!-- 게시글 목록 - 작성자 검색 -->
 	<select id="searchWriter" resultType="com.edu.classboard.domain.ClassboardDTO">
-	SELECT 	*, m.name writerName 
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
 	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
 	WHERE 	c.lectureNo = #{lectureNo} 
 	AND 	c.category LIKE #{viewCategory} 

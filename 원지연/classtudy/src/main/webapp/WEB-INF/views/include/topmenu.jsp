@@ -48,7 +48,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="${path}/community/group">그룹찾기</a></li>
-									<li><a href="${path}/community/groupboard/all">그룹게시판</a></li>
+									<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 								</ul>
 							</li>
 							<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
@@ -123,7 +123,7 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a href="${path}/community/group">그룹찾기</a></li>
-										<li><a href="${path}/community/groupboard/all">그룹게시판</a></li>
+										<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 									</ul>
 								</li>
 								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>

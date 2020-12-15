@@ -15,11 +15,10 @@ import com.edu.freeboard.mapper.FreeboardMapper;
 @Service("com.edu.freeboard.service.FreeboardService")
 public class FreeboardService {
 	// 로깅을 위한 변수 LOGGER를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(FreeboardController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FreeboardController.class);
 	
 	@Resource(name = "com.edu.freeboard.mapper.FreeboardMapper")
-	FreeboardMapper freeboardMapper;	
+	FreeboardMapper freeboardMapper;
 	
 	//게시글 작성
 	public int write(FreeboardDTO boardDTO) throws Exception{

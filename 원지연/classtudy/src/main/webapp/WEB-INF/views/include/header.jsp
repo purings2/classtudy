@@ -26,8 +26,8 @@
 	font-style: normal;
 }
 @font-face {
-	font-family: 'Cafe24Dangdanghae';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.2/Cafe24Dangdanghae.woff') format('woff');
+	font-family: 'GmarketSansBold';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -84,7 +84,20 @@ body {
 	font-size: 14px;
 }
 .alert {
-	font-family: 	'Cafe24Dangdanghae';
+	font-family: 	'GmarketSansBold', sans-serif;
 	font-size: 		20px;
+}
+.BackToTop {
+	z-index: 	5;
+	position: 	fixed;
+	bottom: 	40px;
+}
+@media (max-width: 992px) {
+	.BackToTop {
+		z-index: 	5;
+		position: 	fixed;
+		bottom: 	40px;
+		left: 		50px;
+	}
 }
 </style>

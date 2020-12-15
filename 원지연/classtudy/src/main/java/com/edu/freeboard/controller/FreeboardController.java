@@ -44,7 +44,7 @@ public class FreeboardController {
 	}
 	// 게시글 작성 POST
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	private String postWrite(FreeboardDTO boardDTO, HttpSession session, Model model )throws Exception {
+	private String postWrite(FreeboardDTO boardDTO, HttpSession session, Model model)throws Exception {
 		LOGGER.info("FreeboardController write POST....." + boardDTO);
 		if (session.getAttribute("member") != null) {
 			boardDTO.setTitle(commonUtils.htmlConverter(boardDTO.getTitle()));
@@ -54,7 +54,7 @@ public class FreeboardController {
 		model.addAttribute("게시글 등록이 완료되었습니다.");
 		
 		return "redirect:/community/freeboard/all";
-	}	
+	}
 	//게시글 목록
 	@RequestMapping(value={"/{viewCategory}", "/{viewCategory}/{pageNum}"})
 	private String freeboard(@PathVariable String viewCategory, @PathVariable Optional<Integer> pageNum,
@@ -67,7 +67,7 @@ public class FreeboardController {
 		// 화면에 보여줄 전체 게시글 건수를 구하기.
 		// 말머리가 있으면 해당하는 게시글만 카운트한다.
 		int totalCount = viewCategory.equals("all") ? freeboardService.getBoardCountAll() : freeboardService.getBoardCount(viewCategory);
-		LOGGER.info("viewCategory1 : " + viewCategory);
+		//LOGGER.info("viewCategory : " + viewCategory);
 		// 화면에 보여줄 게시글의 수
 		int numOfPage = 10;
 		// 구한 값을 뷰 페이지로 보내준다
@@ -106,7 +106,7 @@ public class FreeboardController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/member/login";
 		}
-		LOGGER.info("detailBoard() : " + freeboardService.boardDetail(boardNo));
+		//LOGGER.info("detailBoard() : " + freeboardService.boardDetail(boardNo));
 		// boardNo에 해당하는 자료의 조회수를 1 증가 시킨다.
 		freeboardService.addViews(boardNo);
 		// boardNo에 해당하는 자료를 model에 담는다.

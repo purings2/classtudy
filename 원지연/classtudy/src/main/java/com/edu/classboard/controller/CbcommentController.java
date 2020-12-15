@@ -67,5 +67,5 @@ public class CbcommentController {
 		logger.info("CbcommentController commentDelete()....");
 		return cbcommentService.commentDelete(commentNo);
 	}
-
+	
 }

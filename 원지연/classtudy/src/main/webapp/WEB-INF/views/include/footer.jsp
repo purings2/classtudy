@@ -6,14 +6,13 @@
 <script src="/static/js/commonFunction.js"></script>
 <script src="/static/js/classboardFunction.js"></script>
 <script src="/static/js/freeboardFunction.js"></script>
+<script src="/static/js/groupboardFunction.js"></script>
 <!-- Markdown Editor & View -->
 <script src="/static/js/editormd.js"></script>
 <script src="/static/js/lib/marked.min.js"></script>
 <script src="/static/js/lib/prettify.min.js"></script>
 <!-- Bootstrap Tags Input -->
 <script src="/static/js/bootstrap-tagsinput.js"></script>
-<!-- Calendar -->
-<script src="/static/js/calendar.js"></script>
 <script>
 $(document).ready(function(){
 	

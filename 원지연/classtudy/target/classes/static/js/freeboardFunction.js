@@ -56,13 +56,13 @@ function freeboardCheckForm(freeboardForm)
 	// 제목 검사
 	if(freeboardForm.title.value == "") {
 		alert("제목을 입력하세요.");
-		classboardForm.title.focus();
+		freeboardForm.title.focus();
 		return false;
 	}
 	// 내용 검사
 	if(document.getElementById("content").value.length == 0) {
 		alert("내용을 입력하세요.");
-		memberForm.content.focus();
+		freeboardForm.content.focus();
 		return false;
 	}
 	freeboardForm.submit();
@@ -116,26 +116,6 @@ function likefBoard(boardForm) {
 						= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;좋아요&nbsp;' + data + '';
 				}
 		});
-		// ----- 알림 보내기 -----
-		// 자신이 작성한 글은 알림을 보내지 않는다.
-		if(boardWriter != loginId) {
-			// 작성자에게 보낼 알림 텍스트를 만든다.
-			//var boardTitle = boardForm.title.value; //제목이 길면 잘라서 저장
-			//if (boardTitle.length > 10) { boardTitle = boardTitle.substring(0, 10) + '...'; }
-			var notiContent = '';
-			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
-			notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '">게시글</a>';
-			notiContent += '을 좋아합니다.';
-			//alert(notiContent);
-			// 게시글 작성자에게 알림을 보낸다.
-			$.ajax({
-				url: 	"/noti/insert/",
-				type: 	"post",
-				dataType: "json",
-				data: 	{"notiContent" : notiContent, "receiver" : boardWriter},
-				success: function(data) { }
-			});
-		}
 	}
 }
 //---------------------------------------------------------------------
@@ -165,10 +145,10 @@ function checkfbLikes(boardNo, memberId) {
 //---------------------------------------------------------------------
 // freeboard 게시글 검색 - 제목 및 내용
 //---------------------------------------------------------------------
-function searchfBoard(keyword, searchCode, viewCategory) {
+function searchfBoard(keyword, searchCategory) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/community/freeboard/search/" + searchCode + "/" + keyword + "/" + viewCategory;
+		location.href=path + "/community/freeboard/search/" + keyword + "/" + searchCategory;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;
@@ -225,6 +205,7 @@ function fbcommentInsert(content){
 	// 댓글 내용이 입력되었는지 확인
 	if(document.getElementById("commentContent").value == "") {
 		alert("댓글 내용을 입력하세요.");
+		return false;
 	} else {
 		$.ajax({
 			url: 	"/fbcomment/insert",
@@ -245,6 +226,7 @@ function fbcommentInsert(content){
 function fbcommentUpdate(commentNo, content, writer) {
 	if (writer != loginId) {
 		alert("수정할 수 있는 권한이 없습니다.");
+		return false;
 	} else {
 		var str = '';
 		str += '<div class="input-group">';
@@ -274,6 +256,7 @@ function fbcommentUpdateProc(commentNo) {
 function fbcommentDelete(commentNo, writer) {
 	if (writer != loginId) {
 		alert("삭제할 수 있는 권한이 없습니다.");
+		return false;
 	} else {
 		if(confirm("정말 삭제하시겠습니까?") == false) {
 			return false;
@@ -329,8 +312,6 @@ function likeComment(commentNo, writer) {
 					document.getElementById(btnName).style.color = "#ffffff";
 					document.getElementById(btnName).innerHTML
 						= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;' + data + '';
-					// 좋아요수를 확인해서 알림을 보낸다.
-					notiToLikes(data);
 				}
 		});
 		// ----- 알림 보내기 -----

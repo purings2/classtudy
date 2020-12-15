@@ -40,8 +40,12 @@
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="com.edu.member.domain.MemberDTO">
-	SELECT 	m.*, lec.lectureName lectureName 
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
 	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
 	WHERE 	m.memberId = #{memberId} 
 	AND 	m.passwd = #{passwd} 
 	</select>
@@ -189,8 +193,9 @@
 	</select>
 	<!-- 마이페이지 내가 쓴 글 - 그룹게시판 -->
 	<select id="groupboardList" resultType="com.edu.groupboard.domain.GroupboardDTO">
-	SELECT 	g.*, (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum 
-	FROM 	groupboard g 
+	SELECT 	g.*, gl.groupName groupName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupboard g INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
 	WHERE 	writer = #{memberId} 
 	ORDER BY boardNo DESC 
 	</select>

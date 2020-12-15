@@ -607,10 +607,15 @@ function changeBoard(boardName) {
 				str1 += '<td colspan="5">게시글이 없습니다.</td></tr>';
 			} else {
 				$.each(data, function(key, value){
+						if (boardName == 'group') {
+							var thisValue = value.groupName;
+						} else {
+							var thisValue = value.category;
+						}
 					if (key < numOfPage+0) {
 						str1 += '<tr>';
 						//str1 += '<td>' + value.boardNo + '</td>';
-						str1 += '<td>' + value.category + '</td>';
+						str1 += '<td>' + thisValue + '</td>';
 						str1 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
 						str1 += '<a href="' + detailPath + value.boardNo + '/comment">';
 						str1 += '<span class="badge">' + value.commentNum + '</span></a></td>';
@@ -621,7 +626,7 @@ function changeBoard(boardName) {
 					} else {
 						str2 += '<tr>';
 						//str2 += '<td>' + value.boardNo + '</td>';
-						str2 += '<td>' + value.category + '</td>';
+						str2 += '<td>' + thisValue + '</td>';
 						str2 += '<td><a href="' + detailPath + value.boardNo + '">'+ value.title + '</a>&nbsp;';
 						str2 += '<a href="' + detailPath + value.boardNo + '/comment">';
 						str2 += '<span class="badge">' + value.commentNum + '</span></a></td>';

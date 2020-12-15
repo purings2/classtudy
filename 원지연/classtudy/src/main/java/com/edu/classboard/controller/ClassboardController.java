@@ -132,13 +132,14 @@ public class ClassboardController {
 	
 	// 게시글 상세 정보
 	@RequestMapping(value={"/detail/{boardNo}", "/detail/{boardNo}/{boardOption}"})
-	private String detailBoard(@PathVariable int boardNo, @PathVariable Optional<String> boardOption, Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
+	private String detailBoard(@PathVariable int boardNo, @PathVariable Optional<String> boardOption, 
+				Model model, HttpSession session, RedirectAttributes rttr) throws Exception {
+		logger.info("ClassboardController detailBoard()....");
 		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
 		if (session.getAttribute("member") == null) {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/member/login";
 		}
-		logger.info("ClassboardController detailBoard()....");
 		//logger.info("detailBoard() : " + classboardService.boardDetail(boardNo));
 		// boardNo에 해당하는 자료의 조회수를 1 증가 시킨다.
 		int isExist = classboardService.addViews(boardNo);

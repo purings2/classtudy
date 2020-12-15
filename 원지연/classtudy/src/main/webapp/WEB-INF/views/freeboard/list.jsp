@@ -33,7 +33,8 @@
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
 	String paging = "community/freeboard/" + (String)request.getAttribute("viewCategory");
 	if (request.getAttribute("nowKeyword") != null) {
-		paging = "community/freeboard/search/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
+		paging  = "community/freeboard/search/" + (int)request.getAttribute("searchCode") + "/";
+		paging += (String)request.getAttribute("nowKeyword") + "/" + (String)request.getAttribute("viewCategory");
 	}
 	%>
 <div class="container" style="padding-bottom: 30px;">
