@@ -90,6 +90,8 @@ function likeGBoard() {
 					document.getElementById("likeBtn").style.color = "#ffffff";
 					document.getElementById("likeBtn").innerHTML
 						= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;좋아요&nbsp;' + data + '';
+					// 좋아요수를 확인해서 알림을 보낸다.
+					notiToGbLikes(data);
 				}
 		});
 		// ----- 알림 보내기 -----
@@ -304,9 +306,9 @@ function notiToGbViews(views) {
 // 그룹게시판 게시글 좋아요수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiToGbLikes(likes) {
-	var NUM1 = 10;
-	var NUM2 = 50;
-	// 좋아요수가 NUM이면 알림을 보낸다. 
+	var NUM1 = 5;
+	var NUM2 = 10;
+	// 좋아요수가 NUM이면 알림을 보내고 포인트를 지급한다.
 	if (likes == NUM1 || likes == NUM2) {
 		// ----- 알림 보내기 -----
 		// 게시글 번호와 작성자 저장
@@ -324,6 +326,19 @@ function notiToGbLikes(likes) {
 			dataType: "json",
 			data: 	{"notiContent" : notiContent, "receiver" : writer},
 			success: function(data) { notiLoad(); }
+		});
+		// ----- 포인트 지급 -----
+		// 작성자에게 보낼 포인트 텍스트를 만든다.
+		var pointContent = '';
+		pointContent += '<a href="' + path + '/community/groupboard/detail/' + boardNo + '">게시글</a> 좋아요 ' + likes + ' 돌파';
+		// 게시글 작성자에게 포인트를 지급한다.
+		var changeVal = 1;
+		$.ajax({
+			url: 	"/point/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"pointContent" : pointContent, "member" : writer, "changeVal" : changeVal},
+			success: function(data) { }
 		});
 	}
 }

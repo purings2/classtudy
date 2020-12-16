@@ -556,15 +556,19 @@ function notiCheck(notiNo) {
 // 알림 모두 확인
 //---------------------------------------------------------------------
 function notiCheckAll(memberId) {
-	$.ajax({
-		url: 	"/noti/checkAll/",
-		type: 	"post",
-		dataType: "json",
-		data: 	{"memberId" : memberId},
-		success: function(data) {
-			if(data > 0) { notiLoad(); } //알림 확인 후 알림 뱃지를 다시 출력
-		}
-	});
+	if(confirm("모두 확인 하시겠습니까?") == false){
+		return false;
+	} else {
+		$.ajax({
+			url: 	"/noti/checkAll/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"memberId" : memberId},
+			success: function(data) {
+				if(data > 0) { notiLoad(); } //알림 확인 후 알림 뱃지를 다시 출력
+			}
+		});
+	}
 }
 
 //---------------------------------------------------------------------

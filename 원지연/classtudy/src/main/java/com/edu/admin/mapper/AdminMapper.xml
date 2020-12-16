@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.admin.mapper.AdminMapper">
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.admin.domain.AdminDTO">
+	SELECT 	adminId, passwd 
+	FROM 	admin 
+	WHERE 	adminId = #{adminId} 
+	AND 	passwd = #{passwd}
+	</select>
+	
+	<!-- 회원가입 개수 추출 - 전체 -->
+	<select id="getRegisterListCountAll" resultType="Integer">
+	SELECT 	COUNT(listNo) 
+	FROM 	registerlist 
+	</select>
+	<!-- 회원가입 개수 추출 - 선택된 상태 -->
+	<select id="getRegisterListCount" resultType="Integer">
+	SELECT 	COUNT(listNo) 
+	FROM 	registerlist 
+	WHERE 	checked = #{viewStatus} 
+	</select>
+	<!-- 회원가입 목록 - 전체 -->
+	<select id="registerListAll" resultType="com.edu.admin.domain.RegisterlistDTO">
+	SELECT 	r.*, l.lectureName lectureName 
+	FROM 	registerlist r INNER JOIN lecture l ON r.lectureNo = l.lectureNo 
+	ORDER BY r.listNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원가입 목록 - 선택된 상태 -->
+	<select id="registerList" resultType="com.edu.admin.domain.RegisterlistDTO">
+	SELECT 	r.*, l.lectureName lectureName 
+	FROM 	registerlist r INNER JOIN lecture l ON r.lectureNo = l.lectureNo 
+	WHERE 	checked = #{viewStatus} 
+	ORDER BY r.listNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 모든 회원가입 내역 승인 -->
+	<update id="registerCheckAll">
+	UPDATE 	registerlist 
+	SET 	checked = true 
+	WHERE 	listNo > 0 
+	</update>
+	<!-- 선택한 회원가입 내역 승인 -->
+	<update id="registerCheck">
+	UPDATE 	registerlist 
+	SET 	checked = true 
+	WHERE 	listNo = #{listNo} 
+	</update>
+	<!-- 선택한 내역의 강의번호를 회원정보에 반영 -->
+	<update id="updateLectureNo">
+	UPDATE member 
+	SET lectureNo = (SELECT lectureNo FROM registerlist WHERE listNo = #{listNo}) 
+	WHERE memberId = (SELECT member FROM registerlist WHERE listNo = #{listNo}) 
+	</update>
+	
+	<!-- 여성 회원 조회 -->
+	<select id = "getWomenCount" resultType="Integer">
+	select count(*) from member where gender = "F";
+	</select>
+	<!-- 남성 회원 조회 -->
+	<select id = "getMenCount" resultType="Integer">
+	select count(*) from member where gender = "M";
+	</select>
+	
+</mapper>

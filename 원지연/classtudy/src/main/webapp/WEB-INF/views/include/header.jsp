@@ -39,7 +39,7 @@ body {
 	background: 	#FFFFFF;
 	text-align: 	center;
 }
-.table > tbody > tr > td {
+.table > tbody > tr > td, .table > thead > tr > td, .table > tr > td {
 	vertical-align: middle;
 }
 .glyphicon {

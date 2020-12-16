@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.admin.mapper.AdminBoardMapper">
+	<select id="boardCount" resultType="int">
+        SELECT
+            COUNT(*)
+            
+        FROM FREEBOARD
+        
+    </select>
+    
+    <select id="boardList" resultType="com.edu.admin.domain.AdminBoardDTO">
+  		SELECT
+            boardNo
+            ,title
+            ,category
+            ,CONTENT
+            ,WRITER
+            ,writeDate
+
+
+     	  	FROM FREEBOARD
+            ORDER BY boardNo DESC
+            
+   
+	
+    </select>
+    
+    <select id="boardDetail" parameterType="int" resultType="com.edu.admin.domain.AdminBoardDTO">
+        SELECT
+            *
+        FROM FREEBOARD
+        WHERE
+            boardNo = #{boardNo}
+    </select>
+    
+    <insert id="boardInsert" parameterType="com.edu.admin.domain.AdminBoardDTO">
+        INSERT INTO
+        Freeboard (boardNo,category, title,WRITER,CONTENT,writeDate)
+        VALUES(#{boardNo},#{category},#{title},#{WRITER},#{content},now()) 
+    </insert>
+    
+    <update id="boardUpdate" parameterType="com.edu.admin.domain.AdminBoardDTO">
+        UPDATE Freeboard
+            SET
+        <if test="title != null">
+            title = #{title}
+        </if>
+        <if test="title != null and content != null"> , </if>
+        <if test="content != null">
+            CONTENT = #{content}
+        </if>
+        WHERE boardNo = #{boardNo}
+    </update>
+    
+    <delete id="boardDelete" parameterType="int">
+        DELETE FROM Freeboard WHERE boardNo = #{boardNo}
+    </delete>
+    
+    <!-- 총 멤버수  -->
+    <select id="memberCount" resultType="int">
+        SELECT
+            COUNT(*)
+            
+        FROM member
+        
+    </select>
+    
+    <!-- 멤버 리스트  -->
+    <select id="memberList" resultType="com.edu.member.domain.MemberDTO">
+  		SELECT
+            memberId
+            ,passwd
+            ,name
+            ,gender
+            ,email
+            ,regDate
+
+
+     	  	FROM member
+            ORDER BY memberID DESC
+    </select>
+    
+    <!--  페이징 처리 후 게시글 조회 -->
+    <select id="memberSelect" resultType="com.edu.member.domain.MemberDTO">
+    
+    SET @rownum:=0;
+   		select @rownum:=@rownum+1 from member
+   		
+  	SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT * 
+						FROM MEMBER 
+						ORDER BY SEQ DESC 
+						) A
+				)
+	WHERE RN BETWEEN #{start} AND #{end}
+     	  	
+	
+    </select>
+    
+    <delete id="memberDelete" parameterType="String">
+        DELETE FROM member WHERE MemberID = #{memberId}
+    </delete>
+</mapper>
+
+
