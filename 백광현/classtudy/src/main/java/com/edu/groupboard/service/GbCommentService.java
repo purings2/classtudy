@@ -1,49 +1,38 @@
 package com.edu.groupboard.service;
 
 import java.util.List;
-import javax.annotation.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.*;
+import javax.annotation.Resource;
 
-import com.edu.groupboard.controller.GbCommentController;
-import com.edu.groupboard.domain.GbCommentDTO;
-import com.edu.groupboard.mapper.GbCommentMapper;
+import org.springframework.stereotype.Service;
 
-@Service("com.edu.groupboard.service.GbCommentService")
-public class GbCommentService {
- 
-    @Resource(name="com.edu.groupboard.mapper.GbCommentMapper")
-    GbCommentMapper gbCommentMapper;
- 
-    	
-	//로깅을 위한 변수 logger를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GbCommentController.class);
+import com.edu.groupboard.domain.GbcommentDTO;
+import com.edu.groupboard.mapper.GbcommentMapper;
+
+@Service("com.edu.groupboard.service.GbcommentService")
+public class GbcommentService {
 	
-    
-    //댓글 목록
-    public List<GbCommentDTO> commentListService(int boardNo) throws Exception{
-    	LOGGER.info("댓글목록 서비스 Start()....");
-    	return gbCommentMapper.gbcommentList(boardNo);
-    }
-    //댓글 작성
-    public int commentInsertService(GbCommentDTO gbcomment) throws Exception{
-    	LOGGER.info("댓글작성 서비스 Start()....");
-    	return gbCommentMapper.gbcommentInsert(gbcomment);
-    }
-    
-    //댓글 수정
-    public int commentUpdateService(GbCommentDTO content) throws Exception{
-    	LOGGER.info("댓글수정 서비스 Start()....");
-        return gbCommentMapper.gbcommentUpdate(content);
-    }
-
-    //댓글 삭제
-    public int commentDeleteService(int commentNo) throws Exception{
-    	LOGGER.info("댓글삭제 서비스 Start()....");
-        return gbCommentMapper.gbcommentDelete(commentNo);
-    }
-
+	@Resource(name = "com.edu.groupboard.mapper.GbcommentMapper")
+	GbcommentMapper gbcommentMapper;
+	
+	// 댓글 목록 보기
+	public List<GbcommentDTO> commentList(int boardNo) throws Exception {
+		return gbcommentMapper.commentList(boardNo);
+	}
+	
+	// 댓글 작성
+	public int commentInsert(GbcommentDTO comment) throws Exception {
+		return gbcommentMapper.commentInsert(comment);
+	}
+	
+	// 댓글 수정
+	public int commentUpdate(String content, int commentNo) throws Exception {
+		return gbcommentMapper.commentUpdate(content, commentNo);
+	}
+	
+	// 댓글 삭제
+	public int commentDelete(int commentNo) throws Exception {
+		return gbcommentMapper.commentDelete(commentNo);
+	}
+	
 }

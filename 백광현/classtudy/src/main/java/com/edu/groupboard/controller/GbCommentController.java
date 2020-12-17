@@ -1,66 +1,71 @@
 package com.edu.groupboard.controller;
 
 import java.util.List;
-import javax.annotation.Resource;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.groupboard.domain.GbCommentDTO;
-import com.edu.groupboard.service.GbCommentService;
+import com.edu.common.CommonUtils;
+import com.edu.groupboard.domain.GbcommentDTO;
+import com.edu.groupboard.service.GbcommentService;
 
-@Controller
-@RequestMapping("/gbcomment")
-public class GbCommentController {	
-	//로깅을 위한 변수 logger를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GbCommentController.class);
+@Controller // 컨트롤러 빈으로 등록하는 어노테이션
+@RequestMapping("/gbcomment/*")
+public class GbcommentController {
 	
-    @Resource(name="com.edu.groupboard.service.GbCommentService")
-    GbCommentService gbCommentService;
-    
-    //댓글 작성 
-    @RequestMapping("/insert") 
-    @ResponseBody
-    private int gbCommentServiceInsert(GbCommentDTO gbcomment) throws Exception{
-        
-    	//LOGGER.info("댓글작성() Start......");
-    	//LOGGER.info("이름 "+gbcomment.getWriter());
-    	//LOGGER.info("게시판 번호 :"+gbcomment.getBoardNo() );
-    	//LOGGER.info("댓글 내용 :"+gbcomment.getContent());
-        return gbCommentService.commentInsertService(gbcomment);
-    }
-    
-    //댓글 리스트
-    @RequestMapping(value="/list/{boardNo}") 
-    @ResponseBody
-    private List<GbCommentDTO> commentList(@PathVariable int boardNo, Model model) throws Exception{        
-    	LOGGER.info("댓글 리스트");
-    	
-    	return gbCommentService.commentListService(boardNo);
-    }
-    //댓글 수정
-    @RequestMapping("/update/")   
-    @ResponseBody
-    private int gbCommentServiceUpdateProc(@RequestParam int commentNo, @RequestParam String content) throws Exception{
-    	LOGGER.info("댓글 수정 Start()....");
-    	GbCommentDTO gbcomment = new GbCommentDTO();
-    	gbcomment.setCommentNo(commentNo);
-    	gbcomment.setContent(content);
-    	LOGGER.info("댓글 수정 commentNo : " + commentNo);
-    	LOGGER.info("댓글 수정 content : " + content);
-        
-        return gbCommentService.commentUpdateService(gbcomment);
-    }
-       
-    @RequestMapping("/delete/{commentNo}") //댓글 삭제  
-    @ResponseBody
-    private int gbCommentServiceDelete(@PathVariable int commentNo) throws Exception{
-        
-        return gbCommentService.commentDeleteService(commentNo);
-    }
- 
-} // End - public class GroupCommentController
+	//로깅을 위한 변수 logger를 선언한다.
+	private static final Logger logger = LoggerFactory.getLogger(GbcommentController.class);
+	
+	@Inject
+	GbcommentService gbcommentService;
+	
+	@Inject
+	CommonUtils commonUtils;
+	
+	// 댓글 목록 보기
+	@ResponseBody
+	@RequestMapping(value="/list/{boardNo}")
+	private List<GbcommentDTO> commentList(@PathVariable int boardNo, Model model) throws Exception {
+		logger.info("GbcommentController commentList()....");
+		return gbcommentService.commentList(boardNo);
+	}
+	
+	// 댓글 작성
+	@ResponseBody
+	@RequestMapping(value="/insert")
+	private int commentInsert(String writer, String content, int boardNo) throws Exception {
+		logger.info("GbcommentController commentInsert()....");
+		
+		GbcommentDTO comment = new GbcommentDTO();
+		comment.setWriter(writer);
+		comment.setContent(commonUtils.htmlConverter(content));
+		comment.setBoardNo(boardNo);
+		
+		return gbcommentService.commentInsert(comment);
+	}
+	
+	// 댓글 수정
+	@ResponseBody
+	@RequestMapping(value="/update")
+	private int commentUpdate(String content, int commentNo) throws Exception {
+		logger.info("GbcommentController commentUpdate()....");
+		content = commonUtils.htmlConverter(content);
+		return gbcommentService.commentUpdate(content, commentNo);
+	}
+	
+	// 댓글 삭제
+	@ResponseBody
+	@RequestMapping(value="/delete/{commentNo}")
+	private int commentDelete(@PathVariable int commentNo) throws Exception {
+		logger.info("GbcommentController commentDelete()....");
+		return gbcommentService.commentDelete(commentNo);
+	}
+	
+}

@@ -1,157 +1,144 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>회원 탈퇴</title>	
+	<title>회원 탈퇴</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
 	<%@ include file="../include/topmenu.jsp" %>
-	<div class="container">
+	<div class="container" style="padding-bottom: 20px;">
 		<form class="form-horizontal" action="/member/memberDelete" method="post">
 			<div class="form-group">
-				<div class="col-sm-2"></div>
-				<div class="col-sm-6">
-					<h2 align="left">회원탈퇴</h2>
-					<h5><span class="label label-warning">회원 탈퇴 진행을 위해 비밀번호를 다시 한 번 입력해주세요.</span></h5>
+				<div class="col-sm-12">
+					<h2 align="center">회원 탈퇴</h2>
+					<b>회원 탈퇴를 하시려면 비밀번호와 비밀번호확인을 입력해주세요.</b>
 				</div>
 			</div>
+			<!-- 탈퇴 버튼을 눌렀는데 비밀번호가 맞지 않으면 메시지를 보여준다. -->
+			<div class="col-sm-offset-3 col-sm-6" align="center">
+				<c:if test="${msgDelete == 'fail'}">
+					<div class="alert alert-danger"
+						>회원 탈퇴에 실패했습니다.<br>비밀번호 확인 후 다시 시도해주세요.
+					</div>
+				</c:if>
+			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">아이디</label>
+				<label class="control-label col-sm-4">아이디</label>
 				<div class="col-sm-3">
-					<input type="text" id="userid" name="userid" class="form-control" value="${member.userid}" readonly="readonly" maxlength=16 placeholder="아이디를 입력하세요."/>
-					<div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
+					<input type="text" id="memberId" name="memberId" class="form-control" value="${member.memberId}" readonly="readonly" maxlength=16/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">비밀번호</label>
+				<label class="control-label col-sm-4">비밀번호</label>
 				<div class="col-sm-3">
 					<input type="password" id="passwd" name="passwd" class="form-control" placeholder="비밀번호를 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">비밀번호확인</label>
+				<label class="control-label col-sm-4">비밀번호확인</label>
 				<div class="col-sm-3">
 					<input type="password" id="passwdCheck" name="passwdCheck" class="form-control" placeholder="비밀번호를 한 번 더 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">이  름</label>
+				<label class="control-label col-sm-4">이&nbsp;&nbsp;&nbsp;&nbsp;름</label>
 				<div class="col-sm-3">
-					<input type="text" id="name" name="name" class="form-control" value="${member.name}" readonly="readonly" maxlength=16 placeholder="이름을 입력하세요."/>
+					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 readonly/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">생년월일</label>
+				<label class="control-label col-sm-4">생년월일</label>
 				<div class="col-sm-3">
-					<input type="text" id="dateOfBirth" name="dateOfBirth" class="form-control" value="${member.dateOfBirth}" readonly="readonly" maxlength=16 placeholder="이름을 입력하세요."/>
+					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" value="${member.dateOfBirth}" maxlength=10 readonly/>
 				</div>
 			</div>
 			<div class="form-group">
-		   		<label class="control-label col-sm-2">성  별</label>
+				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
 					<c:if test="${member.gender == 'M'}">
-				   		<div class="control-form col-sm-3">		   				
-						   <label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/>남성</label>
-						   <label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/>여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked disabled/> 남성</label
+							>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" disabled/> 여성</label>
 						</div>
 					</c:if>
 					<c:if test="${member.gender == 'F'}">
-						<div class="control-form col-sm-3">
-						   <label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/>남성</label>
-						   <label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/>여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" disabled/> 남성</label>&nbsp;
+							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked disabled/> 여성</label>
 						</div>
-					</c:if>					   
-			</div>			
+					</c:if>
+			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">전화번호</label>
+				<label class="control-label col-sm-4">전화번호</label>
 				<div class="col-sm-3">
-					<input type="text" id="tel" name="tel" class="form-control" value="${member.tel}" readonly="readonly" maxlength=16 placeholder="전화번호를 입력하세요."/>
+					<input type="text" id="tel" name="tel" class="form-control" value="${member.tel}" readonly="readonly" maxlength=16/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">우편번호</label>
-				<div class="col-sm-5">
+				<label class="control-label col-sm-4">우편번호</label>
+				<div class="col-sm-2">
 					<input type="text" class="form-control" name="zipcode" id="zipcode" value="${member.zipcode}" readonly/>
-					<input type="button" class="form-control" onclick="daumZipCode()" value="우편번호검색"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">주  소</label>
+				<label class="control-label col-sm-4">주&nbsp;&nbsp;&nbsp;&nbsp;소</label>
 				<div class="col-sm-5">
 					<input type="text" class="form-control" value="${member.address}" readonly="readonly" name="address" id="address"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">상세 주소</label>
+				<label class="control-label col-sm-4">상세 주소</label>
 				<div class="col-sm-5">
 					<input type="text" class="form-control" value="${member.addressDetail}" readonly="readonly" name="addressDetail" id="addressDetail"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">이메일</label>
-				<div class="col-sm-3">
+				<label class="control-label col-sm-4">이메일</label>
+				<div class="col-sm-4">
 					<input type="text" id="email" name="email" class="form-control" value="${member.email}" readonly="readonly" placeholder="이메일을 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-4">
-					<button type="submit" class="btn btn-danger" id="memberDelete">회원탈퇴</button>
-					<button type="button" class="btn btn-info cancel">취소</button>
+				<label class="control-label col-sm-4">강의이름</label>
+				<div class="col-sm-4">
+					<!-- 강의번호가 NULL일 때(int형이라 0으로 비교) -->
+					<c:if test="${member.lectureNo == '0'}">
+						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="종료된 강의" readonly/>
+					</c:if>
+					<!-- 강의번호가 있을 때 -->
+					<c:if test="${member.lectureNo != '1' && member.lectureNo != '0'}">
+						<input type="hidden" id="lectureNo" name="lectureNo" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureName" name="lectureName" class="form-control" value="${member.lectureName}" readonly/>
+					</c:if>
 				</div>
 			</div>
-			<!-- 회원탈퇴 버튼을 눌렀는데 비밀번호가 맞지 않으면 메시지를 보여준다. -->
-			<c:if test="${msg == false}">
-				<div class="form-group">
-					<div class="col-sm-8">
-						<h3><span class="label label-danger">회원탈퇴를 실패하였습니다. 비밀번호와 비밀번호확인을 확인하신 후에 다시 시도해 주세요.</span></h3>
-					</div>
+			<div class="form-group">
+				<div class="col-sm-12" style="text-align: center;">
+					<button type="button" class="btn btn-danger" onclick="deleteCheckForm(this.form)">탈퇴하기</button>&nbsp;
+					<button type="button" class="btn btn-default cancel">취소</button>
 				</div>
-			</c:if>
-		</form>		
-	</div>	
+			</div>
+		</form>
+	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>
-
-		$(document).ready(function() {			
-			// 취소 버튼이 눌렸을 경우
-			$(".cancel").on("click", function() {
-				location.href ="/member/login";
-			});			
-		});	
-	
-		//회원탈퇴 버튼을 눌렀을 경우 => 비밀번호가 비어있는지 검사한다.
-		$("#submit").on("click", function() {			
-			if($("#passwd").val() == "") {
-				alert("비밀번호를 입력하십시오.");
-				$("#passwd").focus();
+	$(document).ready(function() {
+		
+		// 취소 버튼이 눌렸을 경우 => OK하면 메인으로 이동
+		$(".cancel").on("click", function() {
+			if(confirm("정말 취소하시겠습니까?") == false){
 				return false;
+			} else {
+				location.href ="/";
 			}
-			if($("#passwdCheck").val() == "") {
-				alert("비밀번호확인을 입력하십시오.");
-				$("#passwd").focus();
-				return false;
-			}
-
-		// 회원정보탈퇴 버튼을 눌렀을 경우
-		$("#memberDelete").on("click", function() {
-			location.href="/member/memberDelete";
 		});
 		
+	});
 	</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

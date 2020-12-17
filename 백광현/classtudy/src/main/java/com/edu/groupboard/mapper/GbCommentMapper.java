@@ -1,27 +1,24 @@
 package com.edu.groupboard.mapper;
 
 import java.util.List;
-import org.springframework.stereotype.*;
 
-import com.edu.groupboard.domain.GbCommentDTO;
+import org.springframework.stereotype.Repository;
 
+import com.edu.groupboard.domain.GbcommentDTO;
 
-@Repository("com.edu.groupboard.mapper.GbCommentMapper")
-public interface GbCommentMapper {
-	//댓글 갯수 구하기
-	public int gbcommentCount() throws Exception;
+@Repository("com.edu.groupboard.mapper.GbcommentMapper")
+public interface GbcommentMapper {
 	
-	//댓글 목록
-	public List<GbCommentDTO> gbcommentList(int boardNo) throws Exception;
-
-	//댓글 작성
-	public int gbcommentInsert(GbCommentDTO gbcomment) throws Exception; 
+	// 댓글 목록 보기
+	public List<GbcommentDTO> commentList(int boardNo) throws Exception;
 	
-	//댓글 수정
-	public int gbcommentUpdate(GbCommentDTO content) throws Exception;
-
-	//댓글 삭제
-	public int gbcommentDelete(int commentNo) throws Exception;
-
+	// 댓글 작성
+	public int commentInsert(GbcommentDTO comment) throws Exception;
+	
+	// 댓글 수정
+	public int commentUpdate(String content, int commentNo) throws Exception;
+	
+	// 댓글 삭제
+	public int commentDelete(int commentNo) throws Exception;
 	
 }
