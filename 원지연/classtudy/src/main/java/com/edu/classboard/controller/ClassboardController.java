@@ -288,8 +288,6 @@ public class ClassboardController {
 		logger.info("ClassboardController searchTIL() lectureNo : " + lectureNo + ", " + memberId);
 		// 검색한 키워드를 뷰 페이지로 보내준다.
 		model.addAttribute("nowKeyword", keyword);
-		// 키워드에 특수문자가 있으면 치환
-		keyword = commonUtils.htmlConverter(keyword);
 		// 현재 페이지의 번호를 저장하는 변수
 		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;

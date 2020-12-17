@@ -14,14 +14,14 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.admin.domain.LectureDTO;
 import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.common.CommonUtils;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
-import com.edu.member.domain.GrouplistDTO;
-import com.edu.member.domain.LectureDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
 import com.edu.member.service.MemberService;

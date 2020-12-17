@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 강의번호 검색 -->
-	<select id="search" resultType="com.edu.member.domain.LectureDTO">
+	<select id="search" resultType="com.edu.admin.domain.LectureDTO">
 	SELECT 	lec.*, aca.academyName lectureAcademy 
 	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
 	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 

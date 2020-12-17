@@ -28,7 +28,6 @@ public class ClasstudyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ClasstudyApplication.class, args);
 	}
-	
 	/*
 	 * SqlSessionFactory 설정을 한다.
 	 * sqlSessionFactory(DataSource dataSource)

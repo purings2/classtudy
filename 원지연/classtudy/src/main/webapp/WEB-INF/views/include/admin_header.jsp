@@ -7,6 +7,8 @@
 <!-- Chart -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body .container, body .container-fluid {
 	text-align: 	center;
@@ -57,7 +59,10 @@ body .container, body .container-fluid {
 div.content {
   margin-left: 200px;
   padding: 1px 16px;
-  height: 1000px;
+  height: 600px;
+}
+div .container-fluid {
+  padding: 20px 20px 30px 20px;
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */

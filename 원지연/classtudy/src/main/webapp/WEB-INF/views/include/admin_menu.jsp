@@ -13,7 +13,7 @@
 		강의 관리 <span class="caret"></span>
 	</a>
 	<div class="collapse" id="lecture_submenu">
-		<a class="submenu" href="${path}/admin/lecture">강의 목록</a>
+		<a class="submenu" href="${path}/admin/lecture/all">강의 목록</a>
 		<a class="submenu" href="${path}/admin/academy">학원 목록</a>
 	</div>
 	<a data-toggle="collapse" data-target="#board_submenu">

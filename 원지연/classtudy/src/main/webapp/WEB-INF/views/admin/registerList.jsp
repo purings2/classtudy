@@ -32,7 +32,7 @@
 	String paging = "admin/register/" + (String)request.getAttribute("viewStatus");
 	%>
 <div class="content">
-	<div class="container-fluid" style="padding: 20px 20px;">
+	<div class="container-fluid">
 		<header>
 			<h2>회원가입 승인</h2><br>
 		</header>
@@ -78,7 +78,7 @@
 			<tbody>
 				<c:if test="${empty registerList}">
 					<tr style="background-color: #FFFFFF;">
-						<td colspan="4">내역이 없습니다.</td>
+						<td colspan="4">신청 내역이 없습니다.</td>
 					</tr>
 				</c:if>
 				<c:forEach var="list" items="${registerList}">

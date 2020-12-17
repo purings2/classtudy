@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>클래스룸 :: 게시글 상세 정보</title>
+	<title>클래스룸 :: 게시글 상세정보</title>
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
@@ -15,7 +15,7 @@
 
 <div class="container">
 	<header>
-		<h1>게시글 상세 정보</h1><br>
+		<h1>게시글 상세정보</h1><br>
 	</header>
 	<form class="form-horizontal" action="/class/classboard/update/{boardNo}" method="post">
 		<!-- 숨겨서 넘길 정보들 -->
