@@ -11,10 +11,9 @@
 </head>
 <body>
 <%@ include file="../include/topmenu.jsp" %>
-	<div class="container">
+	<div class="container" style="padding-bottom: 20px;">
 		<form class="form-horizontal" action="/member/register" method="post">
 			<div class="form-group">
-				<div class="col-sm-0"></div>
 				<div class="col-sm-12">
 					<h2 align="center">회원가입</h2>
 				</div>
@@ -43,17 +42,16 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">이  름</label>
+				<label class="control-label col-sm-4">이&nbsp;&nbsp;&nbsp;&nbsp;름</label>
 				<div class="col-sm-3">
 					<input type="text" id="name" name="name" class="form-control" maxlength=16 placeholder="이름을 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" 
-						min="1900-01-01" max="" value="1990-01-01" 
-						maxlength="10" placeholder="생년월일을 선택하세요."/>
+						min="1900-01-01" max="" value="1990-01-01" maxlength="10" placeholder="생년월일을 1990-01-01 형식으로 입력해주세요."/>
 				</div>
 				<%-- 
 				<div class="col-sm-2">
@@ -89,15 +87,15 @@
 				 --%>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">성  별</label>
-					<div class="control-form col-sm-3">
-						<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked> 남성</label>
-						<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"> 여성</label>
+				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
+					<div class="control-form col-sm-2">
+						<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"> 남성</label
+						>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"> 여성</label>
 					</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">전화번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">전화번호</label>
+				<div class="col-sm-2 col-xs-4">
 					<select class="form-control" name="tel1" id="tel1">
 						<option value="010">010</option>
 						<option value="011">011</option>
@@ -106,10 +104,10 @@
 						<option value="019">019</option>
 					</select>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 col-xs-4">
 					<input type="text" class="form-control" name="tel2" id="tel2" maxlength="4">
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 col-xs-4">
 					<input type="text" class="form-control" name="tel3" id="tel3" maxlength="4">
 				</div>
 				<!-- 
@@ -119,24 +117,25 @@
 				 -->
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">우편번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">우편번호</label>
+				<div class="col-sm-2 col-xs-6">
 					<input type="text" class="form-control" name="zipcode" id="zipcode" readonly="readonly"/>
 				</div>
-				<div class="col-sm-3">
-					<input type="button" class="form-control" onclick="daumZipCode()" value="우편번호 찾기"/>
+				<div class="col-sm-3 col-xs-6">
+					<button class="form-control" type="button" onclick="daumZipCode()" 
+						style="background-color: #dddddd"><b>우편번호 찾기</b></button>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">주  소</label>
+				<label class="control-label col-sm-4">주&nbsp;&nbsp;&nbsp;&nbsp;소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" name="address" id="address"/>
+					<input type="text" class="form-control" name="address" id="address" placeholder="우편번호 찾기 버튼을 이용해주세요." readonly/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">상세 주소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" name="addressDetail" id="addressDetail"/>
+					<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -146,13 +145,18 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">강의번호</label>
+				<label class="control-label col-sm-4">강의이름</label>
 				<div class="col-sm-4">
-					<input type="text" id="lectureId" name="lectureId" class="form-control" placeholder="강의번호를 입력하세요."/>
+					<input type="hidden" id="lectureNo" name="lectureNo" readonly/>
+					<input type="text" id="lectureName" name="lectureName" class="form-control" placeholder="검색 버튼을 이용해주세요." readonly/>
+				</div>
+				<div class="col-sm-2">
+					<button class="form-control" type="button" onclick="openLecturePopup()" 
+						style="background-color: #dddddd"><b>검색</b></button>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
+				<div class="col-sm-12" style="text-align: center;">
 					<button type="button" class="btn btn-success"
 						onclick="registerCheckForm(this.form)">회원가입</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>
@@ -184,8 +188,7 @@
 
 		// 생년월일 입력란에 max 값을 오늘날짜로 설정
 		var today = new Date().toISOString().substring(0, 10);
-		document.getElementById("dateOfBirth")
-			.setAttribute("max", today);
+		document.getElementById("dateOfBirth").setAttribute("max", today);
 		
 	});
 

@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+/* Banner*/
+	 .banner{
+	 	display: flex;
+	 	align-items: center;
+	 	justify-content: center;
+	 	background-color: #32A2ED;
+	 	color: white;
+	 	width: 100%;
+	 	height: 200px;
+	 	
+	 }
+	 
+	 .More{
+	 	display: flex;
+	 	align-items: center;
+	 	justify-content: center;
+	 	background-color: #32A2ED;
+	 	color: white;
+	 }
+	 .ulList{
+	 	list-style: none;
+	 }
+/*-----------------------------------------------*/
+/* Nav */
+	#navList{
+		display:flex;
+		background-color: #495B64;
+		justify-content: center;
+		align-items: center;
+		font-size: 23px;
+	}
+	.nav-item{
+		padding-right: 30px;
+	}
+	.navbar{
+		margin: 0px;
+	}
+
+/*-----------------------------------------------*/ 
+/* Box */
+	.boxArea {
+		display: -moz-flex;
+		display: -webkit-flex;
+		display: -ms-flex;
+		display: flex;
+		-moz-align-items: stretch;
+		-webkit-align-items: stretch;
+		-ms-align-items: stretch;
+		align-items: stretch;
+		-moz-justify-content: center;
+		-webkit-justify-content: center;
+		-ms-justify-content: center;
+		justify-content: center;
+		-moz-flex-wrap: wrap;
+		-webkit-flex-wrap: wrap;
+		-ms-flex-wrap: wrap;
+		flex-wrap: wrap;
+	}
+	.boxArea .box {
+		margin: 2em 3em 2em 3em;
+		width: 30%;
+	}
+
+	@media screen and (max-width: 1280px) {
+		.boxArea .box {
+			width: 45%;
+		}
+	}
+	@media screen and (max-width: 736px) {
+		.boxArea .box {
+			width: 80%;
+		}
+	}
+	
+	@media screen and (max-width: 480px) {
+		
+	}
+
+	.boxArea{
+	 background-color: white;
+	}
+
+	.box {
+		margin-bottom: 10px 0px 10px 0px;
+	}
+
+	.box .box-inner {
+		width: 100% !important;
+	}
+/*-----------------------------------------------*/
+/* inner-top*/	
+	.box-inner{
+		border: solid;
+		border-radius: 10px;
+		border-color: #32A2ED;
+		
+	}
+	.inner-top{
+		display: flex;
+		border : solid;
+		border-color : white;
+		border-top-left-radius : 10px;
+		border-top-right-radius : 10px;
+		width:100%;
+		justify-content: space-between;
+		padding: 0px 6px 0px 6px;
+		align-items: center;
+		background-color: white;
+		height: 38px;
+		
+	}
+	.title{
+		color : #32A2ED;
+		font-size: 21px; 
+	}
+	#modalDelBtn{
+		display: flex;
+	}
+	.writeDate{
+		font-size: 10px;
+		margin : 2px 6px 0px 0px;
+		
+	}
+	.writer{
+		font-weight: bold;
+		
+		
+	}
+/*-----------------------------------------------*/	
+/* inner-body */	
+	.inner-body{
+		/*border: solid red;*/
+		padding-top: 7px;
+		display: flex;
+		width:100%;
+		justify-content: space-between;
+		align-items: center;
+		background-color: white;
+		border-top :solid;
+		border-color: #32A2ED;
+			border-bottom-left-radius : 10px;
+		border-bottom-right-radius : 10px;
+	}
+	.inner-body1{
+		padding-top: 7px;
+		display: flex;
+		width:100%;
+		justify-content: space-between;
+		align-items: center;
+		background-color: white;
+		
+	}
+	.startStudyDate{
+		 display : flex;
+		 background-color: white;
+		 margin : 0px 8px;
+	}
+	
+	.startStudyDate__day{
+		font-weight: bold;
+	}
+	.MMdd{
+		width: 51px;
+		height : 17px;
+		font-size: 12px;
+	}
+	.Ebody{
+		display: flex;
+	}
+	.Ebody span{
+		padding-top: 18px;
+		font-size : 12px;
+	}
+	.E{
+		font-size: 30px;
+	}
+	#viewBtn{
+		margin-right: 12px;
+		margin-bottom: 5px;
+	}
+/*-----------------------------------------------*/
+/* Modal */	
+	.modal-header{
+		padding:10px;
+	}
+	
+	.commentBody{
+	margin: 0px;
+	display: flex;
+	align-items: center;
+	justify-content:center;
+	}
+	
+/*-----------------------------------------------*/
+/* groupInsert Pag */
+	.insert-banner{
+		display: flex;
+	 	align-items: center;
+	 	justify-content:center;
+		background-color: #32A2ED;
+	 	color: white;
+	 	width: 100%;
+	 	height: 200px;
+	 	position: relative;
+	}
+	.banner__top{
+		margin-bottom: 0px;
+		font-size: 40px;
+	}
+	.container {
+		margin-top :20px;
+		width: 500px;
+		justify-content: center;
+		
+		}
+
+	 .startStudy{
+		border:0px;
+		cursor: pointer;
+	}
+	.writer{
+		border:0px;
+		cursor: default;
+	}	
+	.flex{
+		display: flex;
+	}
+	.flex-writer{
+	display:flex; 
+	}
+	.bodyblock{
+		margin-bottom: 100px;
+	}
+	.labelTag{
+		display: flex;
+	}
+	.tagForm{
+		margin: 0px;
+	}
+/*-----------------------------------------------*/
+
+	.commentInfo{
+		display: flex;
+	}
+	.commentArea{
+
+	}
+	
