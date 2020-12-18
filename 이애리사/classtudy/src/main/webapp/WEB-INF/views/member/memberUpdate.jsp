@@ -1,24 +1,6 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.edu.domain.MemberDTO" %>
-<%
-	// MemberDTO를 저장하기 위한 변수 선언
-	MemberDTO memberDTO = null;
-	String tel = "", tel1 = "", tel2 = "", tel3 = "";
-	// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
-	if(session.getAttribute("member") != null) {
-		memberDTO = (MemberDTO)session.getAttribute("member");
-		// member에 담긴 전화번호를 저장
-		tel = memberDTO.getTel();
-		// 전화번호를 tel1, tel2, tel3로 나눠서 저장
-		tel1 = tel.substring(0, 3); //첫 세자리 저장
-		tel = tel.substring(4); //뒷 번호들만 남기기
-		tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
-		tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
-	} else {
-		response.sendRedirect("/member/login");
-	}
-%>
+<%@ page import="com.edu.member.domain.MemberDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,11 +9,10 @@
 	<%@ include file="../include/header.jsp" %>
 </head>
 <body>
-<%@ include file="../include/topmenu.jsp" %>
-	<div class="container">
+	<%@ include file="../include/topmenu.jsp" %>
+	<div class="container" style="padding-bottom: 20px;">
 		<form class="form-horizontal" action="/member/memberUpdate" method="post">
 			<div class="form-group">
-				<div class="col-sm-0"></div>
 				<div class="col-sm-12">
 					<h2 align="center">회원정보 수정</h2>
 				</div>
@@ -55,36 +36,83 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">이  름</label>
+				<label class="control-label col-sm-4">이&nbsp;&nbsp;&nbsp;&nbsp;름</label>
 				<div class="col-sm-3">
-					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 placeholder="이름을 입력하세요."/>
+					<input type="text" id="name" name="name" class="form-control" value="${member.name}" maxlength=16 readonly/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-4">생년월일</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" value="${member.dateOfBirth}" 
-						min="1900-01-01" max="" value="1990-01-01" maxlength=16 placeholder="생년월일을 선택하세요."/>
+						min="1900-01-01" max="" value="1990-01-01" maxlength=10 placeholder="생년월일을 선택하세요."/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">성  별</label>
+				<label class="control-label col-sm-4">성&nbsp;&nbsp;&nbsp;&nbsp;별</label>
 					<c:if test="${member.gender == 'M'}">
-						<div class="control-form col-sm-3">		   				
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/>남성</label>
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/>여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M" checked/> 남성</label
+							>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F"/> 여성</label>
 						</div>
 					</c:if>
 					<c:if test="${member.gender == 'F'}">
-						<div class="control-form col-sm-3">
-							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/>남성</label>
-							<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/>여성</label>
+						<div class="control-form col-sm-2">
+							<label for="gender-M"><input type="radio" id="gender" name="gender" value="M"/> 남성</label
+							>&nbsp;&nbsp;<label for="gender-F"><input type="radio" id="gender" name="gender" value="F" checked/> 여성</label>
 						</div>
 					</c:if>
-			</div>			
+			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">전화번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">전화번호</label>
+				<div class="col-sm-2 col-xs-4">
+					<!-- tel1의 값에 맞게 selected 표시 -->
+					<c:if test="${tel1 == '010'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010" selected>010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '011'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011" selected>011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '017'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017" selected>017</option>
+							<option value="018">018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '018'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018" selected>018</option>
+							<option value="019">019</option>
+						</select>
+					</c:if>
+					<c:if test="${tel1 == '019'}">
+						<select class="form-control" name="tel1" id="tel1">
+							<option value="010">010</option>
+							<option value="011">011</option>
+							<option value="017">017</option>
+							<option value="018">018</option>
+							<option value="019" selected>019</option>
+						</select>
+					</c:if>
+					<!-- 
 					<select class="form-control" name="tel1" id="tel1">
 						<option value="010">010</option>
 						<option value="011">011</option>
@@ -92,12 +120,13 @@
 						<option value="018">018</option>
 						<option value="019">019</option>
 					</select>
+					 -->
 				</div>
-				<div class="col-sm-2">
-					<input type="text" class="form-control" name="tel2" id="tel2" value="<%=tel2%>" maxlength="4">
+				<div class="col-sm-2 col-xs-4">
+					<input type="text" class="form-control" name="tel2" id="tel2" value="${tel2}" maxlength="4">
 				</div>
-				<div class="col-sm-2">
-					<input type="text" class="form-control" name="tel3" id="tel3" value="<%=tel3%>" maxlength="4">
+				<div class="col-sm-2 col-xs-4">
+					<input type="text" class="form-control" name="tel3" id="tel3" value="${tel3}" maxlength="4">
 				</div>
 				<!-- 
 				<div class="col-sm-3">
@@ -106,18 +135,19 @@
 				 -->
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">우편번호</label>
-				<div class="col-sm-2">
+				<label class="control-label col-sm-4 col-xs-12">우편번호</label>
+				<div class="col-sm-2 col-xs-6">
 					<input type="text" class="form-control" name="zipcode" id="zipcode" value="${member.zipcode}" readonly/>
 				</div>
-				<div class="col-sm-3">
-					<input type="button" class="form-control" onclick="daumZipCode()" value="우편번호 찾기"/>
+				<div class="col-sm-3 col-xs-6">
+					<button class="form-control" type="button" onclick="daumZipCode()" 
+						style="background-color: #dddddd"><b>우편번호 찾기</b></button>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">주  소</label>
+				<label class="control-label col-sm-4">주&nbsp;&nbsp;&nbsp;&nbsp;소</label>
 				<div class="col-sm-5">
-					<input type="text" class="form-control" value="${member.address}" name="address" id="address"/>
+					<input type="text" class="form-control" value="${member.address}" name="address" id="address" readonly/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -133,15 +163,24 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4">강의번호</label>
+				<label class="control-label col-sm-4">강의이름</label>
 				<div class="col-sm-4">
-					<input type="text" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+					<!-- 강의번호가 NULL일 때(int형이라 0으로 비교) -->
+					<c:if test="${member.lectureNo == '0'}">
+						<input type="hidden" id="lectureNo" name="lectureNo" class="form-control" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureNoState" name="lectureNoState" class="form-control" placeholder="종료된 강의" readonly/>
+					</c:if>
+					<!-- 강의번호가 있을 때 -->
+					<c:if test="${member.lectureNo != '0'}">
+						<input type="hidden" id="lectureNo" name="lectureNo" value="${member.lectureNo}" readonly/>
+						<input type="text" id="lectureName" name="lectureName" class="form-control" value="${member.lectureName}" readonly/>
+					</c:if>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-0 col-sm-12" style="text-align: center;">
-					<button type="button" class="btn btn-success" 
-						onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
+				<div class="col-sm-12" style="text-align: center;">
+					<!-- alert('회원정보 수정 버튼'); -->
+					<button type="button" class="btn btn-success" onclick="updateCheckForm(this.form)">정보수정</button>&nbsp;
 					<button type="button" class="btn btn-warning cancel">취소</button>
 				</div>
 			</div>
@@ -151,7 +190,6 @@
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script src="/static/js/csfunction.js"></script>
 	<script>
 	$(document).ready(function() {
 		

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.member.mapper.PointMapper">
+	
+	<!-- 오늘 중복된 포인트 지급 내역이 있는지 확인 -->
+	<select id="isTodayPointCheck" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	AND 	content = #{pointContent} 
+	AND 	DATE_FORMAT(accrDate, "%Y-%m-%d") = CURDATE()<!-- CURDATE()는 오늘날짜를 의미 -->
+	</select>
+	<!-- 중복된 포인트 지급 내역이 있는지 확인 -->
+	<select id="getNumOfSearchPointContent" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	point 
+	WHERE 	member = #{member} 
+	AND 	content = #{content} 
+	</select>
+	<!-- 포인트 지급 -->
+	<insert id="addPoint">
+	INSERT 	INTO point 
+			(member, content, changeVal, accrDate) 
+	VALUES 	(#{member}, #{content}, #{changeVal}, SYSDATE()) 
+	</insert>
+	
+</mapper>

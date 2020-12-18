@@ -17,7 +17,6 @@
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
- * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
   src: url("../fonts/fontawesome-webfont.eot?v=4.3.0");
@@ -25,6 +24,7 @@
   font-weight: normal;
   font-style: normal;
 }
+ * -------------------------- */
 .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
