@@ -35,10 +35,9 @@
 			<table class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<th style="text-align: center; width: 70px;" >번호</th>
-						<th style="text-align: center; width: 70px;" >작성자</th>
-						<th style="text-align: center; width: 100px;">이력서 제목</th>
-						<th style="text-align: center; width: 100px;">작성일</th>
+						<th style="text-align: center; width: 25%;">작성자</th>
+						<th style="text-align: center; width: 50%;">이력서 제목</th>
+						<th style="text-align: center; width: 25%;">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,7 +48,6 @@
 					</c:if>
 					<c:forEach var="resume" items="${list}">
 						<tr>
-							<td>${resume.boardNo}</td>
 							<td>${resume.writerName}</td>
 							<td>
 								<a href="${path}/member/resumeView/${resume.boardNo}">${resume.title}</a></td>
