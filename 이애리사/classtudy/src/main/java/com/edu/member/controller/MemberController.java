@@ -420,7 +420,7 @@ public class MemberController {
 	// 이력서 & portfolio main
 	@RequestMapping(value={"/portfolio/{memberId}"})
 	private String portfolioList(@PathVariable String memberId, HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
-		LOGGER.info("FreeboardController Freeboard().....");
+		LOGGER.info("MemberController portfolioList().....");
 		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
 		if(session.getAttribute("member") != null) {
 			session.getAttribute("member");
