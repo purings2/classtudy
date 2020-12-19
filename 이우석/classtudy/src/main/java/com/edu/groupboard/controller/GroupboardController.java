@@ -19,8 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.common.CommonUtils;
 import com.edu.groupboard.domain.GroupboardDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.groupboard.service.GroupboardService;
-import com.edu.member.domain.GrouplistDTO;
 import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록

@@ -22,20 +22,6 @@
 	views DESC LIMIT 5;
 	</select>
 	
-	<!-- 게시글 작성 -->
-	<insert id="write" parameterType="com.edu.freeboard.domain.FreeboardDTO">
-	INSERT	INTO freeboard
-			(WRITER, TITLE, CONTENT, writeDate, category, tags) 
-	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category}, #{tags})
-	</insert>
-	
-	<!-- 게시글 상세 보기 -->
-	<select id="boardDetail" resultType="com.edu.freeboard.domain.FreeboardDTO">
-	SELECT 	f.*, m.name writerName 
-	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
-	WHERE 	boardNo = #{boardNo} 
-	</select>
-	
 	<!-- 게시글 제목+내용 검색 -->
 	<select id="searchAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
 	SELECT	f.*, m.name writerName 
@@ -83,42 +69,20 @@
 	
 	<!-- 자유 + 그룹 게시글 목록 - 선택된 태그만 -->
 	<select id="boardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
-	(SELECT	f.boardNo, f.writer, f.title, f.content, f.views, f.likes, f.writeDate, f.tags, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName
-	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId
-	WHERE 	f.tags LIKE CONCAT('%',#{tags},'%'))
+	(SELECT f.boardNo, f.writer, f.title, f.content, <!-- f.views, f.likes, --> f.writeDate, f.tags, m.name writerName, 
+	        (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM    freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE   f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	
 	UNION ALL
-	(SELECT	g.boardNo, g.writer, g.title, g.content, g.views, g.likes, g.writeDate, g.tags, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupboard' as tblName
-	FROM	groupboard g INNER JOIN member m on g.writer = m.memberId 
-	WHERE	g.tags LIKE CONCAT('%',#{tags},'%'))
+	
+	(SELECT g.boardNo, g.writer, g.title, g.content, <!-- g.views, g.likes, --> g.writeDate, g.tags, m.name writerName, 
+	        (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM    groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE   g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	
 	ORDER BY writeDate desc LIMIT #{startNo}, #{numOfPage} 
-	</select>
-
-	<!-- 공지사항 목록 보기 -->
-	<select id="boardListNotice" resultType="com.edu.freeboard.domain.FreeboardDTO">
-	SELECT	f.*, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
-	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
-	AND		f.category = '공지사항' 
-	ORDER BY boardNo DESC LIMIT #{numOfNotice}, #{noticeCount}
-	</select>
-	<!-- 공지사항 목록 보기 - 첫번째 -->
-	<select id="boardListNoticeFirst" resultType="com.edu.freeboard.domain.FreeboardDTO">
-	SELECT	f.*, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
-	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
-	AND		f.category = '공지사항' 
-	ORDER BY boardNo DESC LIMIT 0, #{numOfNotice}
-	</select>
-	
-	<!-- 공지사항 게시글 개수 추출 -->
-	<select id="getNoticeCount" resultType="Integer">
-	SELECT 	COUNT(boardNo) 
-	FROM 	freeboard 
-	WHERE 	category = '공지사항' 
-	</select>
-	
+   </select>
 	<!-- 화면에 보여줄 게시글 개수 추출 -->
 	<select id="getBoardCountAll" resultType="Integer">
 	(SELECT 	COUNT(boardNo) 
@@ -126,31 +90,26 @@
 	UNION ALL
 	SELECT 	COUNT(boardNo) 
 	FROM 	groupboard)
-	
-	
-	(SELECT	f.boardNo, f.writer, f.title, f.content, f.views, f.likes, f.writeDate, f.tags, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName
-	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId
-	WHERE 	f.tags LIKE CONCAT('%',#{tags},'%'))
-	UNION ALL
-	(SELECT	g.boardNo, g.writer, g.title, g.content, g.views, g.likes, g.writeDate, g.tags, m.name writerName, 
-			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupboard' as tblName
-	FROM	groupboard g INNER JOIN member m on g.writer = m.memberId 
-	WHERE	g.tags LIKE CONCAT('%',#{tags},'%'))
-	ORDER BY writeDate desc LIMIT #{startNo}, #{numOfPage} 
 	</select>
+	
 	<!-- 화면에 보여줄 게시글 개수 추출 - 선택된 태그만 -->
 	<select id="getBoardCount" resultType="Integer">
-	SELECT 	COUNT(boardNo) 
-	FROM 	freeboard 
-	WHERE 	tags LIKE #{tags} 
+	SELECT 	(SELECT COUNT(f.boardNo) FROM freeboard f 
+			WHERE 	f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+			OR 		f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) + 
+			(SELECT COUNT(g.boardNo) FROM groupboard g 
+			WHERE 	g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+			OR 		g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags})
 	</select>
 	<!-- 화면에 보여줄 게시글 개수 추출 (제목+내용 검색시) -->
 	<select id="getSearchCountAll" resultType="Integer">
-	SELECT 	COUNT(boardNo) 
-	FROM 	freeboard 
-	WHERE 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
-	AND 	category LIKE #{viewCategory} 
+	SELECT COUNT(*) AS getSearchCountAll
+	FROM
+	(
+	    SELECT * FROM freeboard
+	    UNION ALL
+	    SELECT * FROM groupsearch
+	) t;
 	</select>
 	<!-- 화면에 보여줄 게시글 개수 추출 (제목 검색시) -->
 	<select id="getSearchCountTitle" resultType="Integer">
@@ -173,49 +132,6 @@
 	WHERE 	(f.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
 	AND 	f.category LIKE #{viewCategory} 
 	</select>
-	<!-- 게시글 좋아요수 증가 -->
-	<update id="addLikes">
-	UPDATE 	freeboard 
-	SET 	likes = likes + 1 
-	WHERE 	boardNo = #{boardNo}
-	</update>
-	
-	<!-- 좋아요 내용 기록 -->
-	<insert id="writeLikes">
-	INSERT INTO fblikes 
-			(memberId, boardNo) 
-	VALUES 	(#{memberId}, #{boardNo})
-	</insert>
-	
-	<!-- 게시글 좋아요수 가져오기 -->
-	<select id="getLikes" resultType="int">
-	SELECT 	likes 
-	FROM 	freeboard 
-	WHERE 	boardNo = #{boardNo} 
-	</select>
-	
-	<!-- 게시글 좋아요 여부 검사 -->
-	<select id="likeCheck" resultType="int">
-	SELECT 	COUNT(*) 
-	FROM 	fblikes 
-	WHERE 	boardNo = #{boardNo} 
-	AND 	memberId = #{memberId} 
-	</select>
-	
-	<!-- 게시글 좋아요수 감소 -->
-	<update id="subtractLikes">
-	UPDATE 	freeboard 
-	SET 	likes = likes - 1 
-	WHERE 	boardNo = #{boardNo}
-	</update>
-	
-	<!-- 좋아요 내용 삭제 -->
-	<delete id="deleteLikes">
-	DELETE 
-	FROM 	fblikes 
-	WHERE 	boardNo = #{boardNo} 
-	AND 	memberId = #{memberId} 
-	</delete>
 	
 	<!-- 방문자수 -->
 	<!-- 메인 페이지 방문자수(오늘) -->
@@ -254,5 +170,6 @@
 	limit 1
 	</select>
 	
+
 	
 </mapper>

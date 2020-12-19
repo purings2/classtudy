@@ -26,7 +26,8 @@ public class FreeboardDTO {
 	private int 	commentNum;
 	
 	// main/list.jsp 에 쓰일 조회 컬럼
-	private String	tblName;		// 게시판이름 (groupboard, freeboard)
-	
+	private String	tblName;		// 게시판이름 (groupsearch, freeboard)
 	public FreeboardDTO() {}
+	
+
 }

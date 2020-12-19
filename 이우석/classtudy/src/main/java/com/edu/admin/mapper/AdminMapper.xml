@@ -5,59 +5,389 @@
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
 <mapper namespace="com.edu.admin.mapper.AdminMapper">
-
-	<!-- 아이디 중복 검사 -->
-	<select id="idCheck" resultType="int">
-		SELECT COUNT(*)
-		FROM admin
-		WHERE adminId = #{adminId}	
-	</select>
-
-	<!-- 게시판 자료 등록 -->
-	<!-- <insert id="adminInsert" parameterType="com.edu.admin.domain.AdminDTO" > -->
-	<insert id="adminInsert">
-		INSERT INTO admin 
-				(adminId, passwd)
-		VALUES	(#{adminId}, #{passwd})
-	</insert>
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="com.edu.admin.domain.AdminDTO">
-		SELECT adminId, passwd
-		FROM admin
-		WHERE adminId = #{adminId}
-		AND passwd = #{passwd}
+	SELECT 	adminId, passwd 
+	FROM 	admin 
+	WHERE 	adminId = #{adminId} 
+	AND 	passwd = #{passwd}
 	</select>
 	
-	<!-- 회원 정보 수정 -->
-	<update id="adminUpdate">
-		UPDATE	admin
-		SET		adminId = #{adminId}, passwd = #{passwd}
-		WHERE	adminId = #{adminId}
+	<!-- 전체 회원 명수 추출 -->
+	<select id="getMemberListCountAll" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	member 
+	</select>
+	<!-- 전체 회원 목록 - 페이징 -->
+	<select id="memberListAll" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	ORDER BY m.regDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원 검색 개수 추출 - 이름+아이디 -->
+	<select id="getSearchMemberAllCount" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	member 
+	WHERE 	(name LIKE #{keyword} OR memberId LIKE #{keyword}) 
+	</select>
+	<!-- 회원 검색 개수 추출 - 이름 -->
+	<select id="getSearchMemberNameCount" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	member 
+	WHERE 	(name LIKE #{keyword}) 
+	</select>
+	<!-- 회원 검색 개수 추출 - 아이디 -->
+	<select id="getSearchMemberIdCount" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	member 
+	WHERE 	(memberId LIKE #{keyword}) 
+	</select>
+	<!-- 회원 검색 - 이름+아이디 -->
+	<select id="searchMemberAll" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	WHERE 	(m.name LIKE #{keyword} OR m.memberId LIKE #{keyword}) 
+	ORDER BY m.regDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원 검색 - 이름 -->
+	<select id="searchMemberName" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	WHERE 	(m.name LIKE #{keyword}) 
+	ORDER BY m.regDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원 검색 - 아이디 -->
+	<select id="searchMemberId" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	WHERE 	(m.memberId LIKE #{keyword}) 
+	ORDER BY m.regDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원 상세정보 -->
+	<select id="memberDetail" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	WHERE 	m.memberId = #{memberId} 
+	</select>
+	
+	<!-- 회원가입 개수 추출 - 전체 -->
+	<select id="getRegisterListCountAll" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	registerlist 
+	</select>
+	<!-- 회원가입 개수 추출 - 선택된 상태 -->
+	<select id="getRegisterListCount" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	registerlist 
+	WHERE 	checked = #{viewStatus} 
+	</select>
+	<!-- 회원가입 목록 - 전체 -->
+	<select id="registerListAll" resultType="com.edu.admin.domain.RegisterlistDTO">
+	SELECT 	r.*, l.lectureName lectureName 
+	FROM 	registerlist r INNER JOIN lecture l ON r.lectureNo = l.lectureNo 
+	ORDER BY r.listNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원가입 목록 - 선택된 상태 -->
+	<select id="registerList" resultType="com.edu.admin.domain.RegisterlistDTO">
+	SELECT 	r.*, l.lectureName lectureName 
+	FROM 	registerlist r INNER JOIN lecture l ON r.lectureNo = l.lectureNo 
+	WHERE 	checked = #{viewStatus} 
+	ORDER BY r.listNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 회원가입 내역 listNo의 최댓값 -->
+	<select id="getRegisterListNoMAX" resultType="Integer">
+	SELECT 	MAX(listNo) 
+	FROM 	registerlist 
+	</select>
+	<!-- 모든 회원가입 내역 승인 -->
+	<update id="registerCheckAll">
+	UPDATE 	registerlist 
+	SET 	checked = true 
+	WHERE 	listNo > 0 
 	</update>
-
-	<!-- 회원 탈퇴 -->
-	<delete id="adminDelete">
-		DELETE 
-		FROM admin
-		WHERE adminId = #{adminId}
-		AND passwd = #{passwd}
+	<!-- 선택한 회원가입 내역 승인 -->
+	<update id="registerCheck">
+	UPDATE 	registerlist 
+	SET 	checked = true 
+	WHERE 	listNo = #{listNo} 
+	</update>
+	<!-- 선택한 내역의 강의번호를 회원정보에 반영 -->
+	<update id="updateLectureNo">
+	UPDATE member 
+	SET lectureNo = (SELECT lectureNo FROM registerlist WHERE listNo = #{listNo}) 
+	WHERE memberId = (SELECT member FROM registerlist WHERE listNo = #{listNo}) 
+	</update>
+	
+	<!-- 전체 강의 개수 추출 -->
+	<select id="getLectureListCountAll" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	lecture 
+	</select>
+	<!-- 선택한 학원의 강의 개수 추출 -->
+	<select id="getLectureListCount" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	lecture 
+	WHERE 	academyNo = #{viewAcademy} 
+	</select>
+	<!-- 전체 강의 목록 -->
+	<select id="lectureListAll" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	ORDER BY lec.lectureNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 선택한 학원의 강의 목록 -->
+	<select id="lectureList" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	lec.academyNo = #{viewAcademy} 
+	ORDER BY lec.lectureNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 강의 검색 개수 추출 - 강의+학원이름 -->
+	<select id="getSearchLectureAllCount" resultType="Integer">
+	SELECT 	COUNT(lec.lectureNo) 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
+	AND 	lec.academyNo LIKE #{viewAcademy} 
+	</select>
+	<!-- 강의 검색 개수 추출 - 강의이름 -->
+	<select id="getSearchLectureNameCount" resultType="Integer">
+	SELECT 	COUNT(lectureNo) 
+	FROM 	lecture 
+	WHERE 	(lectureName LIKE #{keyword}) 
+	AND 	academyNo LIKE #{viewAcademy} 
+	</select>
+	<!-- 강의 검색 개수 추출 - 학원이름 -->
+	<select id="getSearchLectureAcademyCount" resultType="Integer">
+	SELECT 	COUNT(lec.lectureNo) 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(aca.academyName LIKE #{keyword}) 
+	AND 	lec.academyNo LIKE #{viewAcademy} 
+	</select>
+	<!-- 강의 검색 - 강의+학원이름 -->
+	<select id="searchLectureAll" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
+	AND 	lec.academyNo LIKE #{viewAcademy} 
+	ORDER BY lec.lectureNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 강의 검색 - 강의이름 -->
+	<select id="searchLectureName" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword}) 
+	AND 	lec.academyNo LIKE #{viewAcademy} 
+	ORDER BY lec.lectureNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 강의 검색 - 학원이름 -->
+	<select id="searchLectureAcademy" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(aca.academyName LIKE #{keyword}) 
+	AND 	lec.academyNo LIKE #{viewAcademy} 
+	ORDER BY lec.lectureNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 새로운 강의 등록 -->
+	<insert id="writeLecture" parameterType="com.edu.admin.domain.LectureDTO">
+	INSERT INTO lecture 
+			(lectureName, academyNo) 
+	VALUES 	(#{lectureName}, #{academyNo}) 
+	</insert>
+	<!-- 선택된 강의 삭제 -->
+	<delete id="deleteLecture">
+	DELETE 
+	FROM 	lecture 
+	WHERE 	lectureNo = #{lectureNo} 
+	</delete>
+	
+	<!-- 전체 학원 개수 추출 -->
+	<select id="getAcademyListCountAll" resultType="Integer">
+	SELECT 	COUNT(*) 
+	FROM 	academy 
+	</select>
+	<!-- 전체 학원 목록 -->
+	<select id="academyListAll" resultType="com.edu.admin.domain.AcademyDTO">
+	SELECT 	* 
+	FROM 	academy 
+	ORDER BY academyNo DESC 
+	</select>
+	<!-- 학원 목록 - 페이징 -->
+	<select id="academyList" resultType="com.edu.admin.domain.AcademyDTO">
+	SELECT 	* 
+	FROM 	academy 
+	ORDER BY academyNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 학원 목록 - 강의 검색(강의+학원이름) -->
+	<select id="academyListSearchLectureAll" resultType="com.edu.admin.domain.AcademyDTO">
+	SELECT 	DISTINCT aca.* 
+	FROM 	academy aca INNER JOIN lecture lec ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
+	ORDER BY aca.academyNo DESC 
+	</select>
+	<!-- 학원 목록 - 강의 검색(강의이름) -->
+	<select id="academyListSearchLectureName" resultType="com.edu.admin.domain.AcademyDTO">
+	SELECT 	DISTINCT aca.* 
+	FROM 	academy aca INNER JOIN lecture lec ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword}) 
+	ORDER BY aca.academyNo DESC 
+	</select>
+	<!-- 학원 목록 - 강의 검색(학원이름) -->
+	<select id="academyListSearchLectureAcademy" resultType="com.edu.admin.domain.AcademyDTO">
+	SELECT 	DISTINCT * 
+	FROM 	academy 
+	WHERE 	(academyName LIKE #{keyword}) 
+	ORDER BY academyNo DESC 
+	</select>
+	<!-- 새로운 학원 등록 -->
+	<insert id="writeAcademy" parameterType="com.edu.admin.domain.AcademyDTO">
+	INSERT INTO academy 
+			(academyName) 
+	VALUES 	(#{academyName}) 
+	</insert>
+	<!-- 선택된 학원 삭제 -->
+	<delete id="deleteAcademy">
+	DELETE 
+	FROM 	academy 
+	WHERE 	academyNo = #{academyNo} 
 	</delete>
 	
 	<!-- 여성 회원 조회 -->
-	<select id = "getWomenCount" resultType="String">
+	<select id = "getWomenCount" resultType="Integer">
 	select count(*) from member where gender = "F";
 	</select>
-	
 	<!-- 남성 회원 조회 -->
-	<select id = "getMenCount" resultType="String">
+	<select id = "getMenCount" resultType="Integer">
 	select count(*) from member where gender = "M";
 	</select>
 	
-	<insert id="adminWrite">
-		INSERT INTO adminwrite 
-				(adminId, passwd)
-		VALUES	(#{adminId}, #{passwd})
-	</insert>
+	<!-- freeboardCount -->
+	<select id = "freeboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM freeBoard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupsearchCount -->
+	<select id = "groupsearchCount" resultType="Integer">
+	SELECT count(*)
+	FROM groupsearch
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- classboardCount -->
+	<select id = "classboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM classboard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupboardCount -->
+	<select id = "groupboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM groupboard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
 	
+   	<!-- freeboardComment -->
+	<select id = "freeboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM fbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupsearchComment -->
+	<select id = "groupsearchComment" resultType="Integer">
+	SELECT count(*)
+	FROM gscomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- classboardComment -->
+	<select id = "classboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM cbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupboardComment -->
+	<select id = "groupboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM gbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	
+	<!-- memberCount -->
+	<select id = "memberCount" resultType="Integer">
+	SELECT count(*)
+	FROM member
+	WHERE 	DATE(regDate) = DATE(now());
+	</select>
+	
+	<!--  요읾별 날짜 -->
+	<select id="getCountday" resultType="String">
+	SELECT DATE_FORMAT(hitDate, '%W') AS date , count(*)
+	FROM visit 
+	where hit
+	GROUP BY DATE_FORMAT(hitDate, '%W') 
+	ORDER BY date DESC;
+	</select>
+	
+	<!-- 요일별 카운트 수 -->
+	<select id="getMonday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Monday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getTuesday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Tuesday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getWednesday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Wednesday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getThursday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Thursday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getFriday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Friday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getSaturday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Saturday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getSunday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Sunday');
+	</select>
+	    
 </mapper>

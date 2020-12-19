@@ -14,16 +14,18 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.admin.domain.LectureDTO;
 import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.common.CommonUtils;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
-import com.edu.member.domain.GrouplistDTO;
-import com.edu.member.domain.LectureDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.member.domain.MemberDTO;
+import com.edu.member.domain.PointDTO;
 import com.edu.member.service.MemberService;
+import com.edu.member.service.PointService;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/member/*") // MemberController에서 공통적으로 사용될 url mapping
@@ -40,6 +42,10 @@ public class MemberController {
 	// 공통으로 사용하는 메서드가 들어있는 클래스
 	@Inject
 	CommonUtils commonUtils;
+	
+	// 로그인에 따른 포인트 지급을 위해 pointService를 주입시킨다.
+	@Inject
+	PointService pointService;
 	
 	// 회원가입 GET : 회원가입 화면을 보려고 요청이 들어오면
 	// 웹 브라우저에서 http://localhost:8071/member/register으로 호출한다.
@@ -156,6 +162,23 @@ public class MemberController {
 		} else {
 			//해당하는 회원의 정보가 있으면
 			session.setAttribute("member", login);
+			// 넘겨받은 회원정보에서 memberId값을 추출한다.
+			String memberId = login.getMemberId();
+			// 오늘 로그인으로 포인트를 지급 받았는지 확인하는 작업을 서비스에게 의뢰한다.
+			String loginPointContent = "출석 포인트";
+			int loginPointCheck = pointService.isTodayPointCheck(memberId, loginPointContent);
+			// 오늘 로그인으로 포인트를 지급 받지 않았다면
+			// 아래와 같은 내용으로 1포인트 지급해준다.
+			// (count값이 0보다 크면 이미 포인트를 지급 받은 것)
+			if (loginPointCheck == 0) {
+				// 포인트 객체에 내용 입력
+				PointDTO pointDTO = new PointDTO();
+				pointDTO.setContent(loginPointContent);
+				pointDTO.setMember(memberId);
+				pointDTO.setChangeVal(1);
+				// pointDTO 내용으로 포인트 지급
+				pointService.addPoint(pointDTO);
+			}
 		}
 		return "redirect:/member/login";
 	}

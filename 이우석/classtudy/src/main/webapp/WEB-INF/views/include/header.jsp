@@ -31,7 +31,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
 body {
 	font-family: 	'IBMPlexSansKR-Regular', sans-serif;
 	font-size: 		15px;
@@ -39,7 +38,7 @@ body {
 	background: 	#FFFFFF;
 	text-align: 	center;
 }
-.table > tbody > tr > td {
+.table > tbody > tr > td, .table > thead > tr > td, .table > tr > td {
 	vertical-align: middle;
 }
 .glyphicon {

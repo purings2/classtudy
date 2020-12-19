@@ -14,6 +14,14 @@
 #tags {
   text-align: left;
 }
+#tagstyle{
+    display:block;
+	height: 200px;
+	margin-top: 14px;
+	padding: 70px 100px;
+	border-radius: 15px 15px 15px 15px;
+}
+
 </style>
 </head>
 <body>
@@ -47,10 +55,12 @@
 
 
 	%>
-	<div class="container">
+	<div class="container" >
+	<div class="container" id="tagstyle">
 		<header>
 			<h1><%=tags %></h1>
 		</header>
+	</div>
 		<!-- 상단 부분 테이블 형태로 구성 -->
 	<table style="width: 100%;">
 		<tr>
@@ -69,65 +79,11 @@
 					<th style="text-align: center; width: 90px;">태그</th>
 					<th style="text-align: center; width: 90px;">작성자</th>
 					<th style="text-align: center; width: 80px;">작성일</th>
-					<th style="text-align: center; width: 40px;">조회</th>
+					<!-- <th style="text-align: center; width: 40px;">조회</th>
 					<th style="text-align: center; width: 40px;"><span
-						class="glyphicon glyphicon-thumbs-up"></span></th>
+						class="glyphicon glyphicon-thumbs-up"></span></th> -->
 				</tr>
 			</thead>
-			<tbody>
-				<!-- 먼저 보여질 공지사항 목록 -->
-				<c:forEach var="board" items="${noticeListFirst}">
-					<tr style="background-color: #f2f2f2;">
-						<td>${board.boardNo}</td>
-						<td><span class="glyphicon glyphicon-info-sign"></span></td>
-						<td><b><a
-								href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
-							<a
-							href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span
-								class="badge">${board.commentNum}</span></a></td>
-						<td>${board.writerName}(${board.writer})</td>
-						<td><fmt:formatDate value="${board.writeDate}"
-								pattern="yyyy-MM-dd" /></td>
-						<td>${board.views}</td>
-						<td>${board.likes}</td>
-					</tr>
-				</c:forEach>
-				<!-- 더보기 버튼 : 총 개수가 보여질 개수보다 많으면 표시 -->
-				<c:if test="${noticeCount+0 > numOfNotice+0}">
-					<tr>
-						<td colspan="7">
-							<div class="accordion-heading"
-								style="height: 10px; position: relative; top: -3px;">
-								<a class="accordion-toggle" data-toggle="collapse"
-									href="#accordion_notice"
-									onclick="viewSecondList('#accordion_notice', '#viewNoticeBtn');"
-									style="color: #444444"><span id="viewNoticeBtn"
-									class="glyphicon glyphicon-chevron-down"></span></a>
-							</div>
-						</td>
-					</tr>
-				</c:if>
-			</tbody>
-			<!-- 더보기 누르면 나오는 공지사항 목록 -->
-			<tbody id="accordion_notice" class="accordion-body collapse">
-				<c:forEach var="board" items="${noticeList}">
-					<tr style="background-color: #f2f2f2;">
-						<td>${board.boardNo}</td>
-						<td><span class="glyphicon glyphicon-info-sign"></span></td>
-						<td><b><a
-								href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}</a></b>&nbsp;
-							<a
-							href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span
-								class="badge">${board.commentNum}</span></a></td>
-						<td>${board.writerName}(${board.writer})</td>
-						<td><fmt:formatDate value="${board.writeDate}"
-								pattern="yyyy-MM-dd" /></td>
-						<td>${board.views}</td>
-						<td>${board.likes}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-			<!-- 그외 게시글 목록 -->
 			<tbody>
 				<c:if test="${empty list}">
 					<tr style="background-color: #FFFFFF;">
@@ -137,34 +93,34 @@
 				
 				<c:forEach var="board" items="${list}">
 					<tr>
-						<c:if test= "${board.tblName == 'groupboard'}">
+						<c:if test= "${board.tblName == 'groupsearch'}">
 						<td>그룹찾기</td>
 						</c:if>
 						<c:if test= "${board.tblName == 'freeboard'}">
 						<td>자유게시판</td>
 						</c:if>
-						<td style="text-align:left; ">
+						<td style="text-align:left; padding-left: 14px;">
 							<c:if test= "${board.tblName == 'freeboard'}">
-								<a href="${path}/community/freeboard/detail/${board.boardNo}">&nbsp;&nbsp;&nbsp;${board.title}
+								<a href="${path}/community/freeboard/detail/${board.boardNo}">${board.title}
 								</a>&nbsp;
 							</c:if>
-							<c:if test= "${board.tblName == 'groupboard'}">
-								<a href="${path}/community/groupboard/detail/${board.boardNo}">&nbsp;&nbsp;&nbsp;${board.title}
+							<c:if test= "${board.tblName == 'groupsearch'}">
+								<a href="${path}/community/groupsearch/searchList">${board.title}
 								</a>&nbsp;
 							</c:if>
 							<c:if test= "${board.tblName == 'freeboard'}">
 								<a href="${path}/community/freeboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
 							</c:if>
-							<c:if test= "${board.tblName == 'groupboard'}">
-								<a href="${path}/community/groupboard/detail/${board.boardNo}/comment"><span class="badge">${board.commentNum}</span></a>
+							<c:if test= "${board.tblName == 'groupsearch'}">
+								<a href="${path}/community/groupsearch/searchList"><span class="badge">${board.commentNum}</span></a>
 							</c:if>
 								<input  type="hidden" id="isDetail" name="isDetail" value="yes"/>
 						</td>
 						<td style="font-size: 10px; !important;"><input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" value="${board.tags}" disabled/></td>
 						<td>${board.writerName}(${board.writer})</td>
 						<td><fmt:formatDate value="${board.writeDate}" pattern="yyyy-MM-dd" /></td>
-						<td>${board.views}</td>
-						<td>${board.likes}</td>
+						<%-- <td>${board.views}</td>
+						<td>${board.likes}</td> --%>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -267,21 +223,10 @@
 	</div>
 	
 	<%@ include file="../include/footer.jsp"%>
+	<% 	session.setAttribute("tags", tags); %>
 	<script>
 	$(document).ready(function() {
 		
-		/*
-		// 검색 버튼이 눌렸을 경우
-		$("#searchBtn").on("click", function() {
-			// 검색어가 입력되었는지 확인
-			if($("#keyword").val() != ""){
-				location.href="/community/search/"  + $("#keyword").val() + "/" + $("#searchCategory").val();
-			} else {
-				alert("검색어를 입력해주세요.");
-				return false;
-			}
-		});
-		 */
 		// 검색 버튼이 눌렸을 경우
 		$("#searchBtn").on("click", function() {
 			searchfTagBoard($("#keyword").val(), $("#searchCode").val(), $("#tags").val());
@@ -292,6 +237,18 @@
 		}});
 		
 	});
+	</script>
+	<script>
+	let colors = ["#ffd0d2","#fffdd0","#d0fffd","#d0d2ff"];
+    $(".container").children('div').each(function(){   
+        let firstGradient = randomNumber(10,90);
+        $(this).css(
+            "background", "linear-gradient(141deg, "+colors[randomNumber(0,4)]+" "+firstGradient+"%, "+colors[randomNumber(0,4)] + ")"
+        );
+    });
+    function randomNumber(min,max){
+        return Math.floor((Math.random() * max) + min);
+    }
 	</script>
 </body>
 </html>

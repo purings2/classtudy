@@ -10,12 +10,12 @@ import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.admin.domain.LectureDTO;
 import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
-import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
 import com.edu.member.domain.RewardDTO;

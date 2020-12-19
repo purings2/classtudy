@@ -23,7 +23,10 @@ $(document).ready(function(){
 		e.preventDefault();
 	});
 	
-	$(window).on("load", notiLoad());
+	$(window).on("load", function(){
+		// 알림 새로 읽어오기
+		notiLoad();
+	});
 	
 });
 </script>

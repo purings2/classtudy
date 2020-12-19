@@ -37,18 +37,6 @@ public class MainService {
 	public List<FreeboardDTO> boardList(String tags, int startNo, int numOfPage) throws Exception {
 		return mainMapper.boardList(tags, startNo, numOfPage);
 	}
-	// 공지사항 목록 보기 - 첫번째
-	public List<FreeboardDTO> boardListNoticeFirst(int numOfNotice) throws Exception {
-		return mainMapper.boardListNoticeFirst(numOfNotice);
-	}
-	// 공지사항 목록 보기 - 첫번째
-	public List<FreeboardDTO> boardListNotice(int numOfNotice, int noticeCount) throws Exception {
-		return mainMapper.boardListNotice(numOfNotice, noticeCount);
-	}
-	// 공지사항 게시글 개수 추출
-	public int getNoticeCount() throws Exception {
-		return mainMapper.getNoticeCount();
-	}
 	// 화면에 보여줄 게시글 개수 추출
 	public int getBoardCountAll() throws Exception {
 		return mainMapper.getBoardCountAll();
@@ -80,20 +68,20 @@ public class MainService {
 	}
 	
 	// 화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 했을 때
-	public int getSearchCountAll(String keyword, String tags) throws Exception {
-		return mainMapper.getSearchCountAll(keyword, tags);
+	public int getSearchCountAll(String keyword) throws Exception {
+		return mainMapper.getSearchCountAll(keyword);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 제목 검색 했을 때
-	public int getSearchCountTitle(String keyword, String tags) throws Exception {
-		return mainMapper.getSearchCountTitle(keyword, tags);
+	public int getSearchCountTitle(String keyword) throws Exception {
+		return mainMapper.getSearchCountTitle(keyword);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 내용 검색 했을 때
-	public int getSearchCountContent(String keyword, String tags) throws Exception {
-		return mainMapper.getSearchCountContent(keyword, tags);
+	public int getSearchCountContent(String keyword) throws Exception {
+		return mainMapper.getSearchCountContent(keyword);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 작성자 검색 했을 때
-	public int getSearchCountWriter(String keyword, String tags) throws Exception {
-		return mainMapper.getSearchCountWriter(keyword, tags);
+	public int getSearchCountWriter(String keyword) throws Exception {
+		return mainMapper.getSearchCountWriter(keyword);
 	}
 	// 메인 페이지 방문자수(오늘)
 	public String getMainhits() throws Exception {
@@ -115,6 +103,5 @@ public class MainService {
 	public String getRegdate() throws Exception{
 		return mainMapper.getRegdate();
 	}
-	
 	
 }

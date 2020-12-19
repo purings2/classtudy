@@ -1,206 +1,203 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
 <mapper namespace="com.edu.member.mapper.MemberMapper">
-
-<!-- 아이디 중복 검사 -->
-<select id="idCheck" resultType="int">
-SELECT COUNT(*)
-FROM member
-WHERE memberId = #{memberId}
-</select>
-
-<!-- 강의번호 검색 -->
-<select id="search" resultType="com.edu.member.domain.LectureDTO">
-SELECT lec.*, aca.academyName lectureAcademy
-FROM lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo
-WHERE (lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword})
-ORDER BY lectureNo DESC
-</select>
-
-<!-- 회원 가입 -->
-<!-- <insert id="memberInsert" parameterType="com.edu.domain.MemberDTO" > -->
-<insert id="memberInsert">
-INSERT INTO member
-(memberId, passwd, name, dateOfBirth, gender, tel,
-zipcode, address, addressDetail, email, regDate, lectureNo)
-VALUES (#{memberId}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel},
-#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE(), #{lectureNo})
-</insert>
-
-<!-- 강의번호 확인 신청 -->
-<insert id="registerLecture">
-INSERT INTO registerlist
-(member, lectureNo)
-VALUES (#{memberId}, #{lectureNo})
-</insert>
-
-<!-- 로그인 -->
-<select id="login" resultType="com.edu.member.domain.MemberDTO">
-SELECT m.*, lec.lectureName lectureName,
-g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3
-FROM member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo
-INNER JOIN grouplist g1 ON m.group1 = g1.groupNo
-INNER JOIN grouplist g2 ON m.group2 = g2.groupNo
-INNER JOIN grouplist g3 ON m.group3 = g3.groupNo
-WHERE m.memberId = #{memberId}
-AND m.passwd = #{passwd}
-</select>
-
-<!-- 회원 정보 수정 -->
-<update id="memberUpdate">
-UPDATE member
-SET passwd = #{passwd}, name = #{name}, email = #{email},
-dateOfBirth = #{dateOfBirth}, gender = #{gender}, tel = #{tel},
-zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail}
-WHERE memberId = #{memberId}
-</update>
-
-<!-- 회원 탈퇴 -->
-<delete id="memberDelete">
-DELETE
-FROM member
-WHERE memberId = #{memberId}
-AND passwd = #{passwd}
-</delete>
-
-<!-- 강의 번호에 해당하는 회원 찾기 -->
-<select id="getLectureMembers" resultType="String">
-SELECT memberId
-FROM member
-WHERE lectureNo = #{lectureNo}
-</select>
-
-<!-- 마이페이지 활동내역 - 출석여부 확인 -->
-<select id="checkTodayStatus" resultType="Integer">
-SELECT COUNT(pointNo)
-FROM point
-WHERE member = #{memberId}
-AND accrDate LIKE #{today}
-</select>
-<!-- 마이페이지 활동내역 - 클래스게시판 -->
-<select id="classboardToday" resultType="com.edu.classboard.domain.ClassboardDTO">
-SELECT c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum
-FROM classboard c
-WHERE writer = #{memberId}
-AND writeDate LIKE #{today}
-ORDER BY boardNo DESC
-</select>
-<!-- 마이페이지 활동내역 - 자유게시판 -->
-<select id="freeboardToday" resultType="com.edu.freeboard.domain.FreeboardDTO">
-SELECT f.*, (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum
-FROM freeboard f
-WHERE writer = #{memberId}
-AND writeDate LIKE #{today}
-ORDER BY boardNo DESC
-</select>
-<!-- 마이페이지 활동내역 - 그룹게시판 -->
-<select id="groupboardToday" resultType="com.edu.groupboard.domain.GroupboardDTO">
-SELECT g.*, (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum
-FROM groupboard g
-WHERE writer = #{memberId}
-AND writeDate LIKE #{today}
-ORDER BY boardNo DESC
-</select>
-<!-- 마이페이지 활동내역 - 클래스게시판 댓글 -->
-<select id="classboardCommentToday" resultType="com.edu.classboard.domain.CbcommentDTO">
-SELECT *
-FROM cbcomment
-WHERE writer = #{memberId}
-AND writeDate LIKE #{today}
-ORDER BY commentNo
-</select>
-<!-- 마이페이지 활동내역 - 자유게시판 댓글 -->
-<select id="freeboardCommentToday" resultType="com.edu.freeboard.domain.FbcommentDTO">
-SELECT *,
-(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo AND memberId = #{memberId}) commentLikesNum
-FROM fbcomment
-WHERE writer = #{memberId}
-AND writeDate LIKE #{today}
-ORDER BY commentNo
-</select>
-
-<!-- 마이페이지 포인트 내역 개수 추출 -->
-<select id="getPointListCount" resultType="Integer">
-SELECT COUNT(pointNo)
-FROM point
-WHERE member = #{memberId}
-</select>
-<!-- 마이페이지 포인트 내역 -
-처음 -->
-<select id="pointListFirst" resultType="com.edu.member.domain.PointDTO">
-SELECT *
-FROM point
-WHERE member = #{memberId}
-ORDER BY pointNo DESC LIMIT 0, #{numOfList}
-</select>
-<!-- 마이페이지 포인트 내역 - 더보기 아래 -->
-<select id="pointListSecond" resultType="com.edu.member.domain.PointDTO">
-SELECT *
-FROM point
-WHERE member = #{memberId}
-ORDER BY pointNo DESC LIMIT #{numOfList}, #{listCount}
-</select>
-<!-- 마이페이지 포인트 총 합계 추출 -->
-<select id="getMyPointSum" resultType="Integer">
-SELECT IFNULL(SUM(changeVal), 0)
-FROM point
-WHERE member = #{memberId}
-</select>
-
-<!-- 마이페이지 적립금 내역 개수 추출 -->
-<select id="getRewardListCount" resultType="Integer">
-SELECT COUNT(rewardNo)
-FROM reward
-WHERE member = #{memberId}
-</select>
-<!-- 마이페이지 적립금 내역 - 처음 -->
-<select id="rewardListFirst" resultType="com.edu.member.domain.RewardDTO">
-SELECT *
-FROM reward
-WHERE member = #{memberId}
-ORDER BY rewardNo DESC LIMIT 0, #{numOfList}
-</select>
-<!-- 마이페이지 적립금 내역 - 더보기 아래 -->
-<select id="rewardListSecond" resultType="com.edu.member.domain.RewardDTO">
-SELECT *
-FROM reward
-WHERE member = #{memberId}
-ORDER BY rewardNo DESC LIMIT #{numOfList}, #{listCount}
-</select>
-<!-- 마이페이지 적립금 총 합계 추출 -->
-<select id="getMyRewardSum" resultType="Integer">
-SELECT IFNULL(SUM(changeVal), 0)
-FROM reward
-WHERE member = #{memberId}
-</select>
-
-<!-- 마이페이지 내가 쓴 글 - 클래스게시판 -->
-<select id="classboardList" resultType="com.edu.classboard.domain.ClassboardDTO">
-SELECT c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum
-FROM classboard c
-WHERE writer = #{memberId}
-ORDER BY boardNo DESC
-</select>
-<!-- 마이페이지 내가 쓴 글 - 자유게시판 -->
-<select id="freeboardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
-SELECT f.*, (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum
-FROM freeboard f
-WHERE writer = #{memberId}
-ORDER BY boardNo DESC
-</select>
-<!-- 마이페이지 내가 쓴 글 - 그룹게시판 -->
-<select id="groupboardList" resultType="com.edu.groupboard.domain.GroupboardDTO">
-SELECT g.*, gl.groupName groupName,
-
-(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum
-FROM groupboard g INNER JOIN grouplist gl ON g.groupNo = gl.groupNo
-
-WHERE writer = #{memberId}
-ORDER BY boardNo DESC
-</select>
-
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="idCheck" resultType="int">
+	SELECT COUNT(*)
+	FROM member
+	WHERE memberId = #{memberId}
+	</select>
+	
+	<!-- 강의번호 검색 -->
+	<select id="search" resultType="com.edu.admin.domain.LectureDTO">
+	SELECT 	lec.*, aca.academyName lectureAcademy 
+	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
+	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
+	ORDER BY lectureNo DESC 
+	</select>
+	
+	<!-- 회원 가입 -->
+	<!-- <insert id="memberInsert" parameterType="com.edu.domain.MemberDTO" > -->
+	<insert id="memberInsert">
+	INSERT INTO member 
+			(memberId, passwd, name, dateOfBirth, gender, tel, 
+			zipcode, address, addressDetail, email, regDate)
+	VALUES	(#{memberId}, #{passwd}, #{name}, #{dateOfBirth}, #{gender}, #{tel}, 
+			#{zipcode}, #{address}, #{addressDetail}, #{email}, SYSDATE())
+	</insert>
+	
+	<!-- 강의번호 확인 신청 -->
+	<insert id="registerLecture">
+	INSERT INTO registerlist 
+			(member, lectureNo) 
+	VALUES	(#{memberId}, #{lectureNo}) 
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="com.edu.member.domain.MemberDTO">
+	SELECT 	m.*, lec.lectureName lectureName, 
+			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
+	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
+			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
+			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
+			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	WHERE 	m.memberId = #{memberId} 
+	AND 	m.passwd = #{passwd} 
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="memberUpdate">
+		UPDATE 	member
+		SET 	passwd = #{passwd}, name = #{name}, email = #{email}, 
+				dateOfBirth = #{dateOfBirth}, gender = #{gender}, tel = #{tel}, 
+				zipcode = #{zipcode}, address = #{address}, addressDetail = #{addressDetail} 
+		WHERE 	memberId = #{memberId}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="memberDelete">
+		DELETE 
+		FROM member
+		WHERE memberId = #{memberId}
+		AND passwd = #{passwd}
+	</delete>
+	
+	<!-- 강의 번호에 해당하는 회원 찾기 -->
+	<select id="getLectureMembers" resultType="String">
+		SELECT 	memberId 
+		FROM 	member 
+		WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	
+	<!-- 마이페이지 활동내역 - 출석여부 확인 -->
+	<select id="checkTodayStatus" resultType="Integer">
+	SELECT 	COUNT(pointNo) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	AND 	accrDate LIKE #{today}
+	</select>
+	<!-- 마이페이지 활동내역 - 클래스게시판 -->
+	<select id="classboardToday" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 자유게시판 -->
+	<select id="freeboardToday" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT 	f.*, (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM 	freeboard f 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 그룹게시판 -->
+	<select id="groupboardToday" resultType="com.edu.groupboard.domain.GroupboardDTO">
+	SELECT 	g.*, (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupboard g 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 활동내역 - 클래스게시판 댓글 -->
+	<select id="classboardCommentToday" resultType="com.edu.classboard.domain.CbcommentDTO">
+	SELECT 	* 
+	FROM 	cbcomment 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY commentNo 
+	</select>
+	<!-- 마이페이지 활동내역 - 자유게시판 댓글 -->
+	<select id="freeboardCommentToday" resultType="com.edu.freeboard.domain.FbcommentDTO">
+	SELECT 	*, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo AND memberId = #{memberId}) commentLikesNum 
+	FROM 	fbcomment 
+	WHERE 	writer = #{memberId} 
+	AND 	writeDate LIKE #{today} 
+	ORDER BY commentNo 
+	</select>
+	
+	<!-- 마이페이지 포인트 내역 개수 추출 -->
+	<select id="getPointListCount" resultType="Integer">
+	SELECT 	COUNT(pointNo) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	</select>
+	<!-- 마이페이지 포인트 내역 - 처음 -->
+	<select id="pointListFirst" resultType="com.edu.member.domain.PointDTO">
+	SELECT 	* 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	ORDER BY pointNo DESC LIMIT 0, #{numOfList} 
+	</select>
+	<!-- 마이페이지 포인트 내역 - 더보기 아래 -->
+	<select id="pointListSecond" resultType="com.edu.member.domain.PointDTO">
+	SELECT 	* 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	ORDER BY pointNo DESC LIMIT #{numOfList}, #{listCount} 
+	</select>
+	<!-- 마이페이지 포인트 총 합계 추출 -->
+	<select id="getMyPointSum" resultType="Integer">
+	SELECT 	IFNULL(SUM(changeVal), 0) 
+	FROM 	point 
+	WHERE 	member = #{memberId} 
+	</select>
+	
+	<!-- 마이페이지 적립금 내역 개수 추출 -->
+	<select id="getRewardListCount" resultType="Integer">
+	SELECT 	COUNT(rewardNo) 
+	FROM 	reward 
+	WHERE 	member = #{memberId} 
+	</select>
+	<!-- 마이페이지 적립금 내역 - 처음 -->
+	<select id="rewardListFirst" resultType="com.edu.member.domain.RewardDTO">
+	SELECT 	* 
+	FROM 	reward 
+	WHERE 	member = #{memberId} 
+	ORDER BY rewardNo DESC LIMIT 0, #{numOfList} 
+	</select>
+	<!-- 마이페이지 적립금 내역 - 더보기 아래 -->
+	<select id="rewardListSecond" resultType="com.edu.member.domain.RewardDTO">
+	SELECT 	* 
+	FROM 	reward 
+	WHERE 	member = #{memberId} 
+	ORDER BY rewardNo DESC LIMIT #{numOfList}, #{listCount} 
+	</select>
+	<!-- 마이페이지 적립금 총 합계 추출 -->
+	<select id="getMyRewardSum" resultType="Integer">
+	SELECT 	IFNULL(SUM(changeVal), 0) 
+	FROM 	reward 
+	WHERE 	member = #{memberId} 
+	</select>
+	
+	<!-- 마이페이지 내가 쓴 글 - 클래스게시판 -->
+	<select id="classboardList" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	writer = #{memberId} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 내가 쓴 글 - 자유게시판 -->
+	<select id="freeboardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT 	f.*, (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum 
+	FROM 	freeboard f 
+	WHERE 	writer = #{memberId} 
+	ORDER BY boardNo DESC 
+	</select>
+	<!-- 마이페이지 내가 쓴 글 - 그룹게시판 -->
+	<select id="groupboardList" resultType="com.edu.groupboard.domain.GroupboardDTO">
+	SELECT 	g.*, gl.groupName groupName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupboard g INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	writer = #{memberId} 
+	ORDER BY boardNo DESC 
+	</select>
+	
 </mapper>
