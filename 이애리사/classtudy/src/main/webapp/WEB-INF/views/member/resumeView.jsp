@@ -13,7 +13,7 @@
 <body>
 	<%@ include file="../include/topmenu.jsp" %>
 <div class="container" style="padding-bottom: 30px">
-	<form class="form-horizontal "action="/member/resumeView/${resume.boardNo}">
+	<form class="form-horizontal "action="/member/resumeView/${resume.resumeNo}">
 		<div class="form-group">
 			<header>
 				<h1><b>이&nbsp;&nbsp;력&nbsp;&nbsp;서</b></h1>
