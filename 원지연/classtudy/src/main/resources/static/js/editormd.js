@@ -158,7 +158,7 @@
         imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp"],
         imageUploadURL       : "http://www.ipandao.com/editor.md/examples/php/cross-domain-upload.php",
         crossDomainUpload    : true,
-        uploadCallbackURL    : "http://localhost:8071/static/php/upload_callback.html",
+        uploadCallbackURL    : "http://localhost:8071/static/js/php/upload_callback.html",
         
         toc                  : true,           // Table of contents
         tocm                 : false,           // Using [TOCM], auto create ToC dropdown menu

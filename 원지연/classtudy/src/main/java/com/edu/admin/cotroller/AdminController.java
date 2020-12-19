@@ -46,6 +46,16 @@ public class AdminController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/admin/login";
 		}
+		// 각 항목 보여줄 개수
+		int numOfPage = 7;
+		// 최근에 가입한 회원 목록
+		model.addAttribute("memberList", adminService.memberListAll(0, numOfPage));
+		// 최근에 추가된 강의 목록
+		model.addAttribute("lectureList", adminService.lectureListAll(0, numOfPage));
+		// 최근에 올라온 게시글
+		model.addAttribute("boardList", adminBoardService.adminBoardList(0, numOfPage));
+		// 최근에 올라온 댓글
+		model.addAttribute("commentList", adminBoardService.adminCommentList(0, numOfPage));
 		return "/admin/main";
 	}
 	
@@ -102,7 +112,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -131,7 +141,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -193,7 +203,7 @@ public class AdminController {
 		}
 		model.addAttribute("totalCount", totalCount);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -244,7 +254,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -285,7 +295,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -363,7 +373,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -416,8 +426,6 @@ public class AdminController {
 		int menCount = adminService.getMenCount();
 		model.addAttribute("menCount", menCount);
 		model.addAttribute("womenCount", womenCount);
-		////////////
-		model.addAttribute("board", adminBoardService.boardListService());
 		return "/admin/statistics";
 	}
 	

@@ -167,15 +167,16 @@ public class MemberController {
 			// 오늘 로그인으로 포인트를 지급 받았는지 확인하는 작업을 서비스에게 의뢰한다.
 			String loginPointContent = "출석 포인트";
 			int loginPointCheck = pointService.isTodayPointCheck(memberId, loginPointContent);
+			LOGGER.info("loginPointCheck: " + loginPointCheck);
 			// 오늘 로그인으로 포인트를 지급 받지 않았다면
-			// 아래와 같은 내용으로 1포인트 지급해준다.
+			// 아래와 같은 내용으로 10포인트 지급해준다.
 			// (count값이 0보다 크면 이미 포인트를 지급 받은 것)
 			if (loginPointCheck == 0) {
 				// 포인트 객체에 내용 입력
 				PointDTO pointDTO = new PointDTO();
 				pointDTO.setContent(loginPointContent);
 				pointDTO.setMember(memberId);
-				pointDTO.setChangeVal(1);
+				pointDTO.setChangeVal(10);
 				// pointDTO 내용으로 포인트 지급
 				pointService.addPoint(pointDTO);
 			}
@@ -301,9 +302,9 @@ public class MemberController {
 		List<GrouplistDTO> groupList = new ArrayList<GrouplistDTO>();
 		if (member.getGroup1() != 1 && member.getGroup1() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup1(), member.getGroupName1())); }
-		if (member.getGroup2() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup2() != 1 && member.getGroup2() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup2(), member.getGroupName2())); }
-		if (member.getGroup3() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup3() != 1 && member.getGroup3() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup3(), member.getGroupName3())); }
 		model.addAttribute("groupList", groupList);
 		LOGGER.info("groupList: " + groupList);

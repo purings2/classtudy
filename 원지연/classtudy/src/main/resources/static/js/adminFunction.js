@@ -103,3 +103,84 @@ function academyDelete(academyNo) {
 		location.href = path + "/admin/academy/delete/" + academyNo;
 	}
 }
+
+//---------------------------------------------------------------------
+// 클래스게시판 게시글 삭제
+//---------------------------------------------------------------------
+function classboardDelete(boardNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/delete/classboard/" + boardNo;
+	}
+}
+//---------------------------------------------------------------------
+// 자유게시판 게시글 삭제
+//---------------------------------------------------------------------
+function freeboardDelete(boardNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/delete/freeboard/" + boardNo;
+	}
+}
+//---------------------------------------------------------------------
+// 그룹게시판 게시글 삭제
+//---------------------------------------------------------------------
+function groupboardDelete(boardNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/delete/groupboard/" + boardNo;
+	}
+}
+
+//---------------------------------------------------------------------
+// 자유게시판 공지사항 등록/수정 검사
+//---------------------------------------------------------------------
+function freeboardNoticeFormCheck(freeboardForm) {
+	// 제목 검사
+	if(freeboardForm.title.value == "") {
+		alert("제목을 입력하세요.");
+		freeboardForm.title.focus();
+		return false;
+	}
+	// 내용 검사
+	if(document.getElementById("content").value.length == 0) {
+		alert("내용을 입력하세요.");
+		freeboardForm.content.focus();
+		return false;
+	}
+	freeboardForm.submit();
+}
+
+//---------------------------------------------------------------------
+// 클래스게시판 댓글 삭제
+//---------------------------------------------------------------------
+function classboardCommentDelete(commentNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/deleteComment/classboard/" + commentNo;
+	}
+}
+//---------------------------------------------------------------------
+// 자유게시판 댓글 삭제
+//---------------------------------------------------------------------
+function freeboardCommentDelete(commentNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/deleteComment/freeboard/" + commentNo;
+	}
+}
+//---------------------------------------------------------------------
+// 그룹게시판 댓글 삭제
+//---------------------------------------------------------------------
+function groupboardCommentDelete(commentNo) {
+	if(confirm("정말 삭제 하시겠습니까?") == false){
+		return false;
+	} else {
+		location.href = path + "/adboard/deleteComment/groupboard/" + commentNo;
+	}
+}

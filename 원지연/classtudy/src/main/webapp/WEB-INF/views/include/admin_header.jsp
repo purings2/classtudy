@@ -4,6 +4,12 @@
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!-- Bootstrap -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- Markdown Editor & View -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/css/editormd.css" />
+<link rel="stylesheet" href="/static/css/editormd.preview.css" />
+<!-- Bootstrap Tags Input -->
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
 <!-- Chart -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
@@ -11,7 +17,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body .container, body .container-fluid {
-	text-align: 	center;
+	text-align: center;
+	padding: 	30px 40px;
 }
 .table > tbody > tr > td, .table > thead > tr > td, .table > tr > td {
 	vertical-align: middle;
@@ -60,9 +67,6 @@ div.content {
   margin-left: 200px;
   padding: 1px 16px;
   height: 600px;
-}
-div .container-fluid {
-  padding: 20px 20px 30px 20px;
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */

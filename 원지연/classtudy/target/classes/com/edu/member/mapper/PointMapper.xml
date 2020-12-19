@@ -27,5 +27,11 @@
 			(member, content, changeVal, accrDate) 
 	VALUES 	(#{member}, #{content}, #{changeVal}, SYSDATE()) 
 	</insert>
+	<!-- 멤버 등급 업데이트 -->
+	<update id="setMemberGrade">
+	UPDATE 	member 
+	SET 	grade = #{memberGrade} 
+	WHERE 	memberId = #{member} 
+	</update>
 	
 </mapper>

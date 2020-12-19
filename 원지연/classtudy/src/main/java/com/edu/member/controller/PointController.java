@@ -23,8 +23,8 @@ public class PointController {
 	
 	// 포인트 지급
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	private int addLikesPoint(String pointContent, String member, int changeVal) throws Exception {
-		logger.info("PointController addViewsPoint()....");
+	private int addNewPoint(String pointContent, String member, int changeVal, int workDay) throws Exception {
+		logger.info("PointController addNewPoint()....");
 		// 포인트 객체 만들어 전달 받은 내용 입력
 		PointDTO pointDTO = new PointDTO();
 		pointDTO.setContent(pointContent);
@@ -36,7 +36,9 @@ public class PointController {
 		if (numOfSearchPointContent > 0) {
 			return -1;
 		} else { // 결과값이 없을 경우 포인트를 지급한다.
-			return pointService.addPoint(pointDTO);
+			pointService.addPoint(pointDTO);
+			//포인트에 변화가 있으므로 등급을 새로 산정한다.
+			return pointService.setMemberGrade(member, workDay);
 		}
 	}
 	
