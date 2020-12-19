@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ResumeDTO {
 
-	private int 	boardNo;
+	private int 	resumeNo;
 	private String	writer;
 	private	String 	schoolName;			// 학교이름
 	private String	schoolLevel;		// 학력구분
