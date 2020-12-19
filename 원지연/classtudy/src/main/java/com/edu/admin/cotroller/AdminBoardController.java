@@ -21,6 +21,7 @@ import com.edu.admin.domain.AdminBoardDTO;
 import com.edu.admin.domain.PagingDTO;
 import com.edu.admin.service.AdminBoardService;
 import com.edu.common.CommonUtils;
+import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/adboard/*") // AdminController에서 공통적으로 사용될 url mapping
@@ -110,6 +111,117 @@ public class AdminBoardController {
 			adminBoardService.groupboardDelete(boardNo);
 		}
 		return "redirect:/adboard/all";
+	}
+	// 게시글 키워드 검색
+	@RequestMapping(value={"/search/{searchCode}/{keyword}/{viewTable}", "/search/{searchCode}/{keyword}/{viewTable}/{pageNum}"})
+	private String searchAdminBoard(@PathVariable int searchCode, @PathVariable String keyword, @PathVariable String viewTable,
+				@PathVariable Optional<Integer> pageNum, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
+		logger.info("AdminController searchMember().....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("admin") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/admin/login";
+		}
+		// 검색한 키워드를 뷰 페이지로 보내준다.
+		model.addAttribute("nowKeyword", keyword);
+		// 키워드에 특수문자가 있으면 치환
+		keyword = commonUtils.htmlConverter(keyword);
+		// 현재 페이지의 번호를 저장하는 변수
+		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
+		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
+		model.addAttribute("pageNumber", pageNumber);
+		// 화면에 보여줄 게시글의 수
+		int numOfPage = 13;
+		model.addAttribute("numOfPage", numOfPage);
+		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
+		int startNo = (pageNumber-1) * numOfPage;
+		// viewTable에 따라 검색 테이블을 다르게한다.
+		if (viewTable.equals("all")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //제목+내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminboardCountAll(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminBoardAll(keyword, startNo, numOfPage));
+				break;
+			case 2: //제목 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminboardCountTitle(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminBoardTitle(keyword, startNo, numOfPage));
+				break;
+			case 3: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminboardCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminBoardContent(keyword, startNo, numOfPage));
+				break;
+			case 4: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminboardCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminBoardWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("classboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //제목+내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassboardCountAll(keyword));
+				model.addAttribute("list", adminBoardService.searchClassBoardAll(keyword, startNo, numOfPage));
+				break;
+			case 2: //제목 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassboardCountTitle(keyword));
+				model.addAttribute("list", adminBoardService.searchClassBoardTitle(keyword, startNo, numOfPage));
+				break;
+			case 3: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassboardCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchClassBoardContent(keyword, startNo, numOfPage));
+				break;
+			case 4: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassboardCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchClassBoardWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("freeboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //제목+내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeboardCountAll(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeBoardAll(keyword, startNo, numOfPage));
+				break;
+			case 2: //제목 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeboardCountTitle(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeBoardTitle(keyword, startNo, numOfPage));
+				break;
+			case 3: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeboardCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeBoardContent(keyword, startNo, numOfPage));
+				break;
+			case 4: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeboardCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeBoardWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("groupboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //제목+내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupboardCountAll(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupBoardAll(keyword, startNo, numOfPage));
+				break;
+			case 2: //제목 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupboardCountTitle(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupBoardTitle(keyword, startNo, numOfPage));
+				break;
+			case 3: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupboardCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupBoardContent(keyword, startNo, numOfPage));
+				break;
+			case 4: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupboardCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupBoardWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		}
+		return "/adboard/boardList";
 	}
 	
 	// 자유게시판 공지사항 목록
@@ -236,6 +348,85 @@ public class AdminBoardController {
 			adminBoardService.gbCommentDelete(commentNo);
 		}
 		return "redirect:/adboard/comment/all";
+	}
+	// 댓글 키워드 검색
+	@RequestMapping(value={"/comment/search/{searchCode}/{keyword}/{viewTable}", "/comment/search/{searchCode}/{keyword}/{viewTable}/{pageNum}"})
+	private String searchAdminComment(@PathVariable int searchCode, @PathVariable String keyword, @PathVariable String viewTable,
+				@PathVariable Optional<Integer> pageNum, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
+		logger.info("AdminController searchAdminComment().....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("admin") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/admin/login";
+		}
+		// 검색한 키워드를 뷰 페이지로 보내준다.
+		model.addAttribute("nowKeyword", keyword);
+		// 키워드에 특수문자가 있으면 치환
+		keyword = commonUtils.htmlConverter(keyword);
+		// 현재 페이지의 번호를 저장하는 변수
+		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
+		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
+		model.addAttribute("pageNumber", pageNumber);
+		// 화면에 보여줄 게시글의 수
+		int numOfPage = 13;
+		model.addAttribute("numOfPage", numOfPage);
+		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
+		int startNo = (pageNumber-1) * numOfPage;
+		// viewTable에 따라 검색 테이블을 다르게한다.
+		if (viewTable.equals("all")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminCommentCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminCommentContent(keyword, startNo, numOfPage));
+				break;
+			case 2: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchAdminCommentCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchAdminCommentWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("classboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassCommentCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchClassCommentContent(keyword, startNo, numOfPage));
+				break;
+			case 2: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchClassCommentCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchClassCommentWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("freeboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeCommentCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeCommentContent(keyword, startNo, numOfPage));
+				break;
+			case 2: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchFreeCommentCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchFreeCommentWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		} else if (viewTable.equals("groupboard")) {
+			// 검색 결과의 전체 게시글 건수를 구하고
+			// 목록 화면에 보여줄 데이터만 검색해와서 담는다.
+			switch (searchCode) {
+			case 1: //내용 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupCommentCountContent(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupCommentContent(keyword, startNo, numOfPage));
+				break;
+			case 2: //작성자 검색
+				model.addAttribute("totalCount", adminBoardService.getSearchGroupCommentCountWriter(keyword));
+				model.addAttribute("list", adminBoardService.searchGroupCommentWriter(keyword, startNo, numOfPage));
+				break;
+			}
+		}
+		return "/adboard/commentList";
 	}
 	
 }

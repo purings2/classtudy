@@ -72,6 +72,352 @@
 	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	
+	<!-- 전체 게시판에서 검색한 게시글 개수 - 제목+내용 -->
+	<select id="getSearchAdminboardCountAll" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 검색한 게시글 개수 - 제목 -->
+	<select id="getSearchAdminboardCountTitle" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 검색한 게시글 개수 - 내용 -->
+	<select id="getSearchAdminboardCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 검색한 게시글 개수 - 작성자 -->
+	<select id="getSearchAdminboardCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(c.boardNo) 
+		FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+		WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(f.boardNo) 
+		FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+		WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(g.boardNo) 
+		FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+		WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 검색 - 제목+내용 -->
+	<select id="searchAdminBoardAll" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.title LIKE CONCAT('%',#{keyword},'%') OR c.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.title LIKE CONCAT('%',#{keyword},'%') OR f.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.title LIKE CONCAT('%',#{keyword},'%') OR g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 전체 게시판에서 검색 - 제목 -->
+	<select id="searchAdminBoardTitle" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.title LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.title LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.title LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 전체 게시판에서 검색 - 내용 -->
+	<select id="searchAdminBoardContent" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 전체 게시판에서 검색 - 작성자 -->
+	<select id="searchAdminBoardWriter" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 클래스게시판에서 검색한 게시글 개수 - 제목+내용 -->
+	<select id="getSearchClassboardCountAll" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 검색한 게시글 개수 - 제목 -->
+	<select id="getSearchClassboardCountTitle" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 검색한 게시글 개수 - 내용 -->
+	<select id="getSearchClassboardCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	classboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 검색한 게시글 개수 - 작성자 -->
+	<select id="getSearchClassboardCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(c.boardNo) 
+		FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+		WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 검색 - 제목+내용 -->
+	<select id="searchClassBoardAll" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.title LIKE CONCAT('%',#{keyword},'%') OR c.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 클래스게시판에서 검색 - 제목 -->
+	<select id="searchClassBoardTitle" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.title LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 클래스게시판에서 검색 - 내용 -->
+	<select id="searchClassBoardContent" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 클래스게시판에서 검색 - 작성자 -->
+	<select id="searchClassBoardWriter" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum,
+			m.name writerName, c.category specialInfo, '' tags 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%'))
+	</select>
+	
+	<!-- 자유게시판에서 검색한 게시글 개수 - 제목+내용 -->
+	<select id="getSearchFreeboardCountAll" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 검색한 게시글 개수 - 제목 -->
+	<select id="getSearchFreeboardCountTitle" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 검색한 게시글 개수 - 내용 -->
+	<select id="getSearchFreeboardCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	freeboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 검색한 게시글 개수 - 작성자 -->
+	<select id="getSearchFreeboardCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(f.boardNo) 
+		FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+		WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 검색 - 제목+내용 -->
+	<select id="searchFreeBoardAll" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.title LIKE CONCAT('%',#{keyword},'%') OR f.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 자유게시판에서 검색 - 제목 -->
+	<select id="searchFreeBoardTitle" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.title LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 자유게시판에서 검색 - 내용 -->
+	<select id="searchFreeBoardContent" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 자유게시판에서 검색 - 작성자 -->
+	<select id="searchFreeBoardWriter" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'freeboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = f.boardNo) commentNum,
+			m.name writerName, f.category specialInfo, tags 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%'))
+	</select>
+	
+	<!-- 그룹게시판에서 검색한 게시글 개수 - 제목+내용 -->
+	<select id="getSearchGroupboardCountAll" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%') OR content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 검색한 게시글 개수 - 제목 -->
+	<select id="getSearchGroupboardCountTitle" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(title LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 검색한 게시글 개수 - 내용 -->
+	<select id="getSearchGroupboardCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(boardNo) 
+		FROM 	groupboard 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 검색한 게시글 개수 - 작성자 -->
+	<select id="getSearchGroupboardCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(g.boardNo) 
+		FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+		WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 검색 - 제목+내용 -->
+	<select id="searchGroupBoardAll" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.title LIKE CONCAT('%',#{keyword},'%') OR g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 그룹게시판에서 검색 - 제목 -->
+	<select id="searchGroupBoardTitle" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.title LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 그룹게시판에서 검색 - 내용 -->
+	<select id="searchGroupBoardContent" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 그룹게시판에서 검색 - 작성자 -->
+	<select id="searchGroupBoardWriter" resultType="com.edu.admin.domain.AdminBoardDTO">
+	SELECT 	'groupboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum,
+			m.name writerName, gl.groupName specialInfo, tags 
+	FROM 	groupboard g INNER JOIN member m ON g.writer = m.memberId 
+			INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
+	WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
 	<!-- 클래스게시판 게시글 상세정보 -->
 	<select id="classboardDetail" resultType="com.edu.admin.domain.AdminBoardDTO">
 	SELECT 	'classboard' tableName, boardNo, writer, title, content, views, likes, writeDate,
@@ -202,6 +548,170 @@
 	SELECT 	'groupboard' tableName, commentNo, boardNo, writer, content, writeDate,
 			m.name writerName, 0 likes, 0 commentLikesNum 
 	FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 전체 게시판에서 검색한 댓글 개수 - 내용 -->
+	<select id="getSearchAdminCommentCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(commentNo) 
+		FROM 	cbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(commentNo) 
+		FROM 	fbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(commentNo) 
+		FROM 	gbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 검색한 댓글 개수 - 작성자 -->
+	<select id="getSearchAdminCommentCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(c.boardNo) 
+		FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+		WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(f.boardNo) 
+		FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+		WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+		) + (
+		SELECT 	COUNT(g.boardNo) 
+		FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+		WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 전체 게시판에서 댓글 검색 - 내용 -->
+	<select id="searchAdminCommentContent" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'classboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, likes, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo) commentLikesNum 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.content LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	(g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 전체 게시판에서 댓글 검색 - 작성자 -->
+	<select id="searchAdminCommentWriter" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'classboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'freeboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, likes, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo) commentLikesNum 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	UNION 
+	SELECT 	'groupboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 클래스게시판에서 검색한 댓글 개수 - 내용 -->
+	<select id="getSearchClassCommentCountContent" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(commentNo) 
+		FROM 	cbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 검색한 댓글 개수 - 작성자 -->
+	<select id="getSearchClassCommentCountWriter" resultType="int">
+	SELECT ( 
+		SELECT 	COUNT(c.boardNo) 
+		FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+		WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 클래스게시판에서 댓글 검색 - 내용 -->
+	<select id="searchClassCommentContent" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'classboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 클래스게시판에서 댓글 검색 - 작성자 -->
+	<select id="searchClassCommentWriter" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'classboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	cbcomment c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	(c.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 자유게시판에서 검색한 댓글 개수 - 내용 -->
+	<select id="getSearchFreeCommentCountContent" resultType="int">
+	SELECT (
+		SELECT 	COUNT(commentNo) 
+		FROM 	fbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 검색한 댓글 개수 - 작성자 -->
+	<select id="getSearchFreeCommentCountWriter" resultType="int">
+	SELECT (
+		SELECT 	COUNT(f.boardNo) 
+		FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+		WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 자유게시판에서 댓글 검색 - 내용 -->
+	<select id="searchFreeCommentContent" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'freeboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, likes, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo) commentLikesNum 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 자유게시판에서 댓글 검색 - 작성자 -->
+	<select id="searchFreeCommentWriter" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'freeboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, likes, 
+			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo) commentLikesNum 
+	FROM 	fbcomment f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	(f.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 그룹게시판에서 검색한 댓글 개수 - 내용 -->
+	<select id="getSearchGroupCommentCountContent" resultType="int">
+	SELECT (
+		SELECT 	COUNT(commentNo) 
+		FROM 	gbcomment 
+		WHERE 	(content LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 검색한 댓글 개수 - 작성자 -->
+	<select id="getSearchGroupCommentCountWriter" resultType="int">
+	SELECT (
+		SELECT 	COUNT(g.boardNo) 
+		FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+		WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) )
+	</select>
+	<!-- 그룹게시판에서 댓글 검색 - 내용 -->
+	<select id="searchGroupCommentContent" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'groupboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	(g.content LIKE CONCAT('%',#{keyword},'%')) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 그룹게시판에서 댓글 검색 - 작성자 -->
+	<select id="searchGroupCommentWriter" resultType="com.edu.admin.domain.AdminCommentDTO">
+	SELECT 	'groupboard' tableName, commentNo, boardNo, writer, content, writeDate,
+			m.name writerName, 0 likes, 0 commentLikesNum 
+	FROM 	gbcomment g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	(g.writer LIKE CONCAT('%',#{keyword},'%') OR m.name LIKE CONCAT('%',#{keyword},'%')) 
 	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
 	</select>
 	

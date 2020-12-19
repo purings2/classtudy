@@ -12,6 +12,7 @@ import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
+import com.edu.member.domain.ResumeDTO;
 import com.edu.member.domain.RewardDTO;
 
 @Repository("com.edu.member.mapper.MemberMapper")
@@ -78,5 +79,14 @@ public interface MemberMapper {
 	public List<FreeboardDTO> freeboardList(String memberId) throws Exception;
 	// 마이페이지 내가 쓴 글 - 그룹게시판
 	public List<GroupboardDTO> groupboardList(String memberId) throws Exception;
+	
+	// 이력서 작성
+	public int resumeWriter(ResumeDTO resumeDTO) throws Exception;
+	// 이력서 resumeNo찾기
+	public int selectResumeNo(String writer) throws Exception;
+	// 이력서 보기
+	public ResumeDTO resumeView(int resumeNo) throws Exception;
+	// 내가 쓴 이력서 목록 보기
+	public List<ResumeDTO> resumeList(String memberId) throws Exception;
 	
 }

@@ -184,3 +184,28 @@ function groupboardCommentDelete(commentNo) {
 		location.href = path + "/adboard/deleteComment/groupboard/" + commentNo;
 	}
 }
+
+//---------------------------------------------------------------------
+// 게시글 목록 키워드 검색
+//---------------------------------------------------------------------
+function searchAdminBoard(keyword, viewTable, searchCode) {
+	// 검색어가 입력되었는지 확인
+	if(keyword != ""){
+		location.href=path+"/adboard/search/"+searchCode+"/"+keyword+"/"+viewTable;
+	} else {
+		alert("검색어를 입력해주세요.");
+		return false;
+	}
+}
+//---------------------------------------------------------------------
+// 댓글 목록 키워드 검색
+//---------------------------------------------------------------------
+function searchAdminComment(keyword, viewTable, searchCode) {
+	// 검색어가 입력되었는지 확인
+	if(keyword != ""){
+		location.href=path+"/adboard/comment/search/"+searchCode+"/"+keyword+"/"+viewTable;
+	} else {
+		alert("검색어를 입력해주세요.");
+		return false;
+	}
+}

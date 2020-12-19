@@ -47,7 +47,7 @@
 	<div class="container">
 		<header>
 			<h1><%=tags %></h1>
-			<input type="hidden" id="thisTag" name="thisTag" value="<%=tags%>">
+			<input type="hidden" id="thisTag" name="thisTag" value="">
 		</header>
 		<!-- 상단 부분 테이블 형태로 구성 -->
 		<table style="width: 100%;">

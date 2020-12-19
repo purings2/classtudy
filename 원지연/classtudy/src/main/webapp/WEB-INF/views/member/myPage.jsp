@@ -58,14 +58,13 @@
 						<tbody>
 							<tr>
 								<td style="border: none;"
-									><%=name%>님은 현재 <b style="font-size: 20px;"><%=grade%>등급 <img src="/static/img/icon/level_<%=grade%>.png" 
+									><b><%=name%></b>님은 현재 <b style="font-size: 20px;"><%=grade%>등급 <img src="/static/img/icon/level_<%=grade%>.png" 
 										alt="<%=grade%>" width="22" height="22"></b>입니다.</td>
 							</tr>
 							<tr>
 								<td style="border: none;"><small
-									>게시글과 댓글에 좋아요를 많이 받거나
-									<br>하루 한 번 출석과 TIL 작성으로 포인트를 얻으면
-									<br>더 높은 등급으로 올라갈 수 있습니다.</small></td>
+									>회원등급은 하루 평균 포인트를 기준으로 선정됩니다.
+									<br>매일 꾸준한 활동으로 높은 등급에 도전해보세요!</small></td>
 							</tr>
 						</tbody>
 					</table>

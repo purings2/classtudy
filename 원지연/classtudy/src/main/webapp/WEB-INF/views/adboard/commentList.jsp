@@ -31,7 +31,7 @@
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
 	String paging = "adboard/comment/" + (String)request.getAttribute("viewTable");
 	if (request.getAttribute("nowKeyword") != null) {
-		paging  = "adboard/searchComment/" + (int)request.getAttribute("searchCode") + "/";
+		paging  = "adboard/comment/search/" + (int)request.getAttribute("searchCode") + "/";
 		paging += (String)request.getAttribute("nowKeyword") + "/" + (String)request.getAttribute("viewTable");
 	}
 	%>
@@ -50,7 +50,7 @@
 							<c:set var="changePath" value="'${path}/adboard/comment/' + this.value"/>
 						</c:if>
 						<c:if test="${!empty nowKeyword}">
-							<c:set var="changePath" value="'${path}/adboard/searchComment/${searchCode}/${nowKeyword}/' + this.value"/>
+							<c:set var="changePath" value="'${path}/adboard/comment/search/${searchCode}/${nowKeyword}/' + this.value"/>
 						</c:if>
 						<select class="form-control" id="viewTable" name="viewTable" onchange="location.href=${changePath}">
 							<c:if test="${viewTable == 'all'}">

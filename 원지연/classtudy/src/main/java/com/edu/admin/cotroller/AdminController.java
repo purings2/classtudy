@@ -47,7 +47,7 @@ public class AdminController {
 			return "redirect:/admin/login";
 		}
 		// 각 항목 보여줄 개수
-		int numOfPage = 7;
+		int numOfPage = 8;
 		// 최근에 가입한 회원 목록
 		model.addAttribute("memberList", adminService.memberListAll(0, numOfPage));
 		// 최근에 추가된 강의 목록
