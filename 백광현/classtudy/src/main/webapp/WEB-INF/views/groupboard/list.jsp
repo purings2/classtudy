@@ -53,7 +53,7 @@
 					<c:if test="${empty nowKeyword}">
 						<c:set var="changePath" value="'${path}/community/groupboard/' + this.value"/>
 					</c:if>
-					<!-- 검색 상태일 때는 검색 결과 내의 말머리 선택 -->
+					<!-- 검색 상태일 때는 검색 결과 내의 그룹 선택 -->
 					<c:if test="${!empty nowKeyword}">
 						<c:set var="changePath" value="'${path}/community/groupboard/search/${searchCode}/${nowKeyword}/' + this.value"/>
 					</c:if>

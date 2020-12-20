@@ -343,8 +343,8 @@ function commentDelete(commentNo, writer) {
 // 게시글 조회수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiToViews(views) {
-	var NUM1 = 100;
-	var NUM2 = 500;
+	var NUM1 = 50;
+	var NUM2 = 100;
 	// 조회수가 NUM이면 알림을 보낸다. 
 	if (views == NUM1 || views == NUM2) {
 		// ----- 알림 보내기 -----
@@ -372,9 +372,9 @@ function notiToViews(views) {
 // 게시글 좋아요수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiToLikes(likes) {
-	var NUM1 = 10;
-	var NUM2 = 50;
-	// 좋아요수가 NUM이면 알림을 보낸다. 
+	var NUM1 = 5;
+	var NUM2 = 10;
+	// 좋아요수가 NUM이면 알림을 보내고 포인트를 지급한다.
 	if (likes == NUM1 || likes == NUM2) {
 		// ----- 알림 보내기 -----
 		// 게시글 번호와 작성자 저장
@@ -393,6 +393,19 @@ function notiToLikes(likes) {
 			dataType: "json",
 			data: 	{"notiContent" : notiContent, "receiver" : writer},
 			success: function(data) { notiLoad(); }
+		});
+		// ----- 포인트 지급 -----
+		// 작성자에게 보낼 포인트 텍스트를 만든다.
+		var pointContent = '';
+		pointContent += '<a href="' + path + '/class/classboard/detail/' + boardNo + '">게시글</a> 좋아요 ' + likes + ' 돌파';
+		// 게시글 작성자에게 포인트를 지급한다.
+		var changeVal = 1;
+		$.ajax({
+			url: 	"/point/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"pointContent" : pointContent, "member" : writer, "changeVal" : changeVal},
+			success: function(data) { }
 		});
 	}
 }

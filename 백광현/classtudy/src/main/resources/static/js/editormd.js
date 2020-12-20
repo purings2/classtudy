@@ -92,8 +92,7 @@
             "h1", "h2", "h3", "h4", "h5", "h6", "|", 
             "list-ul", "list-ol", "hr", "|",
             "code", "code-block", "image", "html-entities", "|",
-            "watch", "preview", "|",
-            "help"
+            "watch", "preview"
         ]
     };
     
@@ -155,11 +154,11 @@
         onscroll             : function() {},
         onpreviewscroll      : function() {},
         
-        imageUpload          : false,
-        imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-        imageUploadURL       : "",
-        crossDomainUpload    : false,
-        uploadCallbackURL    : "",
+        imageUpload          : true,
+        imageFormats         : ["jpg", "jpeg", "gif", "png", "bmp"],
+        imageUploadURL       : "http://www.ipandao.com/editor.md/examples/php/cross-domain-upload.php",
+        crossDomainUpload    : true,
+        uploadCallbackURL    : "http://localhost:8071/static/php/upload_callback.html",
         
         toc                  : true,           // Table of contents
         tocm                 : false,           // Using [TOCM], auto create ToC dropdown menu
@@ -307,10 +306,10 @@
                     url      : "URL",
                     link     : "링크",
                     alt      : "설명",
-                    uploadButton     : "로컬 업로드",
+                    uploadButton     : "업로드",
                     imageURLEmpty    : "이미지 URL은 비워 둘 수 없습니다.",
-                    uploadFileEmpty  : "업로드된 사진은 비워 둘 수 없습니다.",
-                    formatNotAllowed : "이미지 파일만 업로드 할 수 있습니다. 허용되는 이미지 파일 형식 : "
+                    uploadFileEmpty  : "업로드할 사진이 없습니다.",
+                    formatNotAllowed : "이미지 파일만 업로드 할 수 있습니다.\n허용되는 파일 형식 : "
                 },
                 preformattedText : {
                     title             : "添加预格式文本或代码块", 

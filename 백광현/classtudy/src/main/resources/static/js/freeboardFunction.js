@@ -114,7 +114,8 @@ function likefBoard(boardForm) {
 					document.getElementById("likeBtn").style.color = "#ffffff";
 					document.getElementById("likeBtn").innerHTML
 						= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;좋아요&nbsp;' + data + '';
-					notiToLikes(data);
+					// 좋아요수를 확인해서 알림을 보낸다.
+					notiTofbLikes(data);
 				}
 		});
 	}
@@ -146,10 +147,10 @@ function checkfbLikes(boardNo, memberId) {
 //---------------------------------------------------------------------
 // freeboard 게시글 검색 - 제목 및 내용
 //---------------------------------------------------------------------
-function searchfBoard(keyword, searchCategory) {
+function searchfBoard(keyword, searchCode, searchCategory) {
 	// 검색어가 입력되었는지 확인
 	if(keyword != ""){
-		location.href=path + "/community/freeboard/search/" + keyword + "/" + searchCategory;
+		location.href=path + "/community/freeboard/search/" + searchCode + "/" + keyword + "/" + searchCategory;
 	} else {
 		alert("검색어를 입력해주세요.");
 		return false;
@@ -187,9 +188,13 @@ function fbcommentList() {
 						str += '<div class="col-sm-2" align="right">';
 					}
 					if (value.commentLikesNum > 0) {
-						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="Y" onclick="likeComment(' + value.commentNo + ',\'' + value.writer + '\')" style="background-color: #888888; color: #ffffff">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
+						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="Y" onclick="';
+						str += 'likeComment(' + value.commentNo + ',\'' + value.writer + '\')" style="background-color: #888888; color: #ffffff">';
+						str += '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
 					} else {
-						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="N" onclick="likeComment(' + value.commentNo + ',\'' + value.writer + '\')">'+'<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
+						str += '<button class="btn btn-sm btn-default" id="likefcBtn' + value.commentNo + '" value="N" onclick="';
+						str += 'likeComment(' + value.commentNo + ',\'' + value.writer + '\')">';
+						str += '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;'+value.likes+'</button></div>';
 					}
 					str += '</div>';
 				});
@@ -218,23 +223,6 @@ function fbcommentInsert(content){
 				}
 			}
 		});
-		// ----- 알림 보내기 -----
-		// 자신이 작성한 글은 알림을 보내지 않는다.
-		if (boardWriter != loginId) {
-			// 작성자에게 보낼 알림 텍스트를 만든다.
-			var notiContent = '';
-			notiContent += loginName + '(' + loginId + ')님이 회원님의 ';
-			notiContent += '게시글에 ';
-			notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '/comment">댓글</a>을 남겼습니다.';
-			// 게시글 작성자에게 알림을 보낸다.
-			$.ajax({
-				url: 	"/noti/insert/",
-				type: 	"post",
-				dataType: "json",
-				data: 	{"notiContent" : notiContent, "receiver" : boardWriter},
-				success: function(data) { }
-			});
-		}
 	}
 }
 
@@ -312,8 +300,7 @@ function likeComment(commentNo, writer) {
 						document.getElementById(btnName).value = "N";
 						document.getElementById(btnName).style.backgroundColor = "#ffffff";
 						document.getElementById(btnName).style.color = "#000000";
-						document.getElementById(btnName).innerHTML
-							= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;' + data + '';
+						document.getElementById(btnName).innerHTML = '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;' + data + '';
 					}
 			});
 		}
@@ -328,8 +315,9 @@ function likeComment(commentNo, writer) {
 					document.getElementById(btnName).value = "Y";
 					document.getElementById(btnName).style.backgroundColor = "#888888";
 					document.getElementById(btnName).style.color = "#ffffff";
-					document.getElementById(btnName).innerHTML
-						= '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;' + data + '';
+					document.getElementById(btnName).innerHTML = '<span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;' + data + '';
+					// 좋아요수를 확인해서 알림을 보낸다.
+					notiTofbcLikes(data, writer);
 				}
 		});
 		// ----- 알림 보내기 -----
@@ -383,8 +371,8 @@ function checkCommentLikes(commentNo, memberId) {
 // freeboard 게시글 조회수 확인 후 알림 발송
 //---------------------------------------------------------------------
 function notiTofbViews(views) {
-	var NUM1 = 10;
-	var NUM2 = 50;
+	var NUM1 = 100;
+	var NUM2 = 200;
 	// 조회수가 NUM이면 알림을 보낸다. 
 	if (views == NUM1 || views == NUM2) {
 		// ----- 알림 보내기 -----
@@ -413,8 +401,8 @@ function notiTofbViews(views) {
 //---------------------------------------------------------------------
 function notiTofbLikes(likes) {
 	var NUM1 = 10;
-	var NUM2 = 50;
-	// 좋아요수가 NUM이면 알림을 보낸다. 
+	var NUM2 = 20;
+	// 좋아요수가 NUM이면 알림을 보내고 포인트를 지급한다.
 	if (likes == NUM1 || likes == NUM2) {
 		// ----- 알림 보내기 -----
 		// 게시글 번호와 작성자 저장
@@ -434,34 +422,59 @@ function notiTofbLikes(likes) {
 			data: 	{"notiContent" : notiContent, "receiver" : writer},
 			success: function(data) { notiLoad(); }
 		});
+		// ----- 포인트 지급 -----
+		// 작성자에게 보낼 포인트 텍스트를 만든다.
+		var pointContent = '';
+		pointContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '">게시글</a> 좋아요 ' + likes + ' 돌파';
+		// 게시글 작성자에게 포인트를 지급한다.
+		var changeVal = 1;
+		$.ajax({
+			url: 	"/point/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"pointContent" : pointContent, "member" : writer, "changeVal" : changeVal},
+			success: function(data) { }
+		});
 	}
 }
 
 //---------------------------------------------------------------------
 // freeboard 댓글 좋아요수 확인 후 알림 발송
 //---------------------------------------------------------------------
-function notiTofbcLikes(likes) {
+function notiTofbcLikes(likes, commentWriter) {
 	var NUM1 = 5;
-	var NUM2 = 20;
-	// 좋아요수가 NUM이면 알림을 보낸다. 
+	var NUM2 = 10;
+	// 좋아요수가 NUM이면 알림을 보내고 포인트를 지급한다.
 	if (likes == NUM1 || likes == NUM2) {
 		// ----- 알림 보내기 -----
-		// 게시글 번호와 작성자 저장
+		// 게시글 번호 저장
 		var boardNo = document.getElementById("boardNo").value;
-		var writer = document.getElementById("writer").value;
-		// 작성자에게 보낼 알림 텍스트를 만든다.
+		// 댓글 작성자에게 보낼 알림 텍스트를 만든다.
 		var notiContent = '';
 		notiContent += '회원님의 ';
 		notiContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '/comment">댓글</a>을 ';
 		notiContent += likes + '명 이상 좋아합니다.';
 		//alert(notiContent);
-		// 게시글 작성자에게 알림을 보낸다.
+		// 댓글 작성자에게 알림을 보낸다.
 		$.ajax({
 			url: 	"/noti/insert/",
 			type: 	"post",
 			dataType: "json",
-			data: 	{"notiContent" : notiContent, "receiver" : writer},
+			data: 	{"notiContent" : notiContent, "receiver" : commentWriter},
 			success: function(data) { notiLoad(); }
+		});
+		// ----- 포인트 지급 -----
+		// 댓글 작성자에게 보낼 포인트 텍스트를 만든다.
+		var pointContent = '';
+		pointContent += '<a href="' + path + '/community/freeboard/detail/' + boardNo + '/comment">댓글</a> 좋아요 ' + likes + ' 돌파';
+		// 댓글 작성자에게 포인트를 지급한다.
+		var changeVal = 1;
+		$.ajax({
+			url: 	"/point/insert/",
+			type: 	"post",
+			dataType: "json",
+			data: 	{"pointContent" : pointContent, "member" : commentWriter, "changeVal" : changeVal},
+			success: function(data) { }
 		});
 	}
 }

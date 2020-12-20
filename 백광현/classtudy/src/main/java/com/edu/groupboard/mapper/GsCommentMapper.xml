@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.groupboard.mapper.GsCommentMapper">
+	
+	<!-- 댓글의 개수를 구한다. -->
+	<select id="gscommentCount" resultType="int">
+	SELECT	COUNT(*) FROM gscomment
+	</select>
+	
+	<!-- 댓글 리스트-->
+	<select id="gscommentList" resultType="com.edu.groupboard.domain.GsCommentDTO">	
+		SELECT * 
+		FROM gscomment WHERE boardNo = #{boardNo}
+	</select>
+	
+	<!-- 댓글 입력 -->
+	<insert id="gscommentInsert" parameterType="com.edu.groupboard.domain.GsCommentDTO">
+		INSERT INTO 
+		gscomment (commentNo, boardNo, writer, content, writeDate)
+		VALUES(#{commentNo},#{boardNo},#{writer},#{content},SYSDATE())
+	</insert>
+	
+ 	<!-- 댓글 수정 -->
+	<update id="gscommentUpdate" parameterType="com.edu.groupboard.domain.GsCommentDTO">
+        UPDATE gscomment
+            SET
+            content = #{content}
+        WHERE commentNo = #{commentNo}
+    </update>
+
+  
+    <!-- 댓글 삭제  --> 
+    <delete id="gscommentDelete" parameterType="int">
+        DELETE FROM gscomment WHERE commentNo = #{commentNo} 
+    </delete>
+
+  
+</mapper>
+

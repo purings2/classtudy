@@ -27,12 +27,12 @@
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle"
 					data-toggle="collapse" data-target="#myNavbar">
-					<span class="icon-bar"></span>	
-					<span class="icon-bar"></span>	
-					<span class="icon-bar"></span>	
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="/${path}">
-					<img src="/static/img/classtudy_logo2.png" alt="classtydy_logo2" width="110" height="40">
+					<span class="glyphicon glyphicon-education"></span>&nbsp;<span>클래스터디</span>
 				</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
@@ -47,7 +47,7 @@
 									그룹 <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="${path}/community/groupsearch/List">그룹찾기</a></li>
+									<li><a href="${path}/community/groupsearch/searchList">그룹찾기</a></li>
 									<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 								</ul>
 							</li>
@@ -106,7 +106,7 @@
 					<span class="icon-bar"></span>	
 				</button>
 				<a class="navbar-brand" href="/${path}">
-					<img src="/static/img/classtudy_logo2.png" alt="classtydy_logo2" width="110" height="40">
+					<span class="glyphicon glyphicon-education"></span>&nbsp;<span>클래스터디</span>
 				</a>
 			</div>
 			<div>
@@ -122,7 +122,7 @@
 										그룹 <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href="${path}/community/group">그룹찾기</a></li>
+										<li><a href="${path}/community/groupsearch/">그룹찾기</a></li>
 										<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 									</ul>
 								</li>

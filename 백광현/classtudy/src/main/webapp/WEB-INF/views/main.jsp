@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,10 +201,9 @@ h3 {
 		<!-- 카테고리 및 상단 메뉴  끝-->
 
 	</div>
-<!-- 
 	<br>
-	<br> -->
-	<%-- <!-- 게시판 랭킹 -->
+	<br>
+	<!-- 게시판 랭킹 -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
@@ -258,7 +256,7 @@ h3 {
 			</div>
 		</div>
 	</div>
-	<!-- 게시판 랭킹 --> --%>
+	<!-- 게시판 랭킹 -->
 	
 	<!-- 태그 목록 -->
 	<div class="container">
@@ -274,7 +272,7 @@ h3 {
 			</c:forEach> --%>
 			<form method="post" action="${path}/tags/Java">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Java" />
+			<input type="hidden" id="tags_Java" name= "tags_Java" value="Java" />
 			<input type="image" src="/static/img/java.png" ></input>
 				<figcaption>Java</figcaption>
 			</figure>
@@ -282,7 +280,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Spring">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Spring" />
+			<input type="hidden" id="tags_Spring" name= "tags_Spring" value="Spring" />
 			<input type="image" src="/static/img/Spring.png" ></input>
 				<figcaption>Spring</figcaption>
 			</figure>
@@ -290,7 +288,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/SpringBoot">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Spring Boot" />
+			<input type="hidden" id="tags_SpringBoot" name= "tags_SpringBoot" value="Spring Boot" />
 			<input type="image" src="/static/img/SpringBoot.png" ></input>
 				<figcaption>Spring Boot</figcaption>
 			</figure>
@@ -298,7 +296,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/JDBC">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="JDBC" />
+			<input type="hidden" id="tags_JDBC" name= "tags_JDBC" value="JDBC" />
 			<input type="image" src="/static/img/JDBC.png" ></input>
 				<figcaption>JDBC</figcaption>
 			</figure>
@@ -306,7 +304,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/JSTL">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="JSTL" />
+			<input type="hidden" id="tags_JSTL" name= "tags_JSTL" value="JSTL" />
 			<input type="image" src="/static/img/JSTL.png" ></input>
 				<figcaption>JSTL</figcaption>
 			</figure>
@@ -314,7 +312,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Front-End">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Front-End" />
+			<input type="hidden" id="tags_Front-End" name= "tags_Front-End" value="Front-End" />
 			<input type="image" src="/static/img/frontend.png" ></input>
 				<figcaption>Front-End</figcaption>
 			</figure>
@@ -322,7 +320,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Back-End">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Back-End" />
+			<input type="hidden" id="tags_Back-End" name= "tags_Back-End" value="Back-End" />
 			<input type="image" src="/static/img/backend.png" ></input>
 				<figcaption>Back-End</figcaption>
 			</figure>
@@ -330,7 +328,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/웹-개발">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="웹 개발" />
+			<input type="hidden" id="tags_웹-개발" name= "tags_웹-개발" value="웹 개발" />
 			<input type="image" src="/static/img/webdevelop.png" ></input>
 				<figcaption>웹 개발</figcaption>
 			</figure>
@@ -338,7 +336,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/앱-개발">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="앱 개발" />
+			<input type="hidden" id="tags_앱-개발" name= "tags_앱-개발" value="앱 개발" />
 			<input type="image" src="/static/img/appdevelop.png" ></input>
 				<figcaption>앱 개발</figcaption>
 			</figure>
@@ -346,7 +344,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/HTML&CSS">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="HTML/CSS" />
+			<input type="hidden" id="tags_HTMLCSS" name= "tags_HTMLCSS" value="HTML/CSS" />
 			<input type="image" src="/static/img/htmlcss.png" ></input>
 				<figcaption>HTML/CSS</figcaption>
 			</figure>
@@ -362,7 +360,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/JavaScript">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="JavaScript" />
+			<input type="hidden" id="tags_JavaScript" name= "tags_JavaScript" value="JavaScript" />
 			<input type="image" src="/static/img/JavaScript.png" ></input>
 				<figcaption>JavaScript</figcaption>
 			</figure>
@@ -370,7 +368,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/jQuery">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="jQuery" />
+			<input type="hidden" id="tags_jQuery" name= "tags_jQuery" value="jQuery" />
 			<input type="image" src="/static/img/jQuery.png" ></input>
 				<figcaption>jQuery</figcaption>
 			</figure>
@@ -378,7 +376,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/JSP">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="JSP" />
+			<input type="hidden" id="tags_JSP" name= "tags_JSP" value="JSP" />
 			<input type="image" src="/static/img/jsp.png" ></input>
 				<figcaption>JSP</figcaption>
 			</figure>
@@ -386,7 +384,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Bootstrap">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Bootstrap" />
+			<input type="hidden" id="tags_Bootstrap" name= "tags_Bootstrap" value="Bootstrap" />
 			<input type="image" src="/static/img/bootstrap.png" ></input>
 				<figcaption>Bootstrap</figcaption>
 			</figure>
@@ -394,7 +392,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Python">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Python" />
+			<input type="hidden" id="tags_Python" name= "tags_Python" value="Python" />
 			<input type="image" src="/static/img/python.png" ></input>
 				<figcaption>Python</figcaption>
 			</figure>
@@ -402,7 +400,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Django">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Django" />
+			<input type="hidden" id="tags_Django" name= "tags_Django" value="Django" />
 			<input type="image" src="/static/img/django.png" ></input>
 				<figcaption>Django</figcaption>
 			</figure>
@@ -410,7 +408,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Flask">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Flask" />
+			<input type="hidden" id="tags_Flask" name= "tags_Flask" value="Flask" />
 			<input type="image" src="/static/img/Flask.png" ></input>
 				<figcaption>Flask</figcaption>
 			</figure>
@@ -418,7 +416,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/게임-개발">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="게임 개발" />
+			<input type="hidden" id="tags_게임-개발" name= "tags_게임-개발" value="게임 개발" />
 			<input type="image" src="/static/img/gamedevelop.png" ></input>
 				<figcaption>게임 개발</figcaption>
 			</figure>
@@ -426,7 +424,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Unity">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Unity" />
+			<input type="hidden" id="tags_Unity" name= "tags_Unity" value="Unity" />
 			<input type="image" src="/static/img/Unity.png" ></input>
 				<figcaption>Unity</figcaption>
 			</figure>
@@ -434,7 +432,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Android">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Android" />
+			<input type="hidden" id="tags_Android" name= "tags_Android" value="Android" />
 			<input type="image" src="/static/img/Android.png" ></input>
 				<figcaption>Android</figcaption>
 			</figure>
@@ -442,7 +440,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/iOS">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="iOS" />
+			<input type="hidden" id="tags_iOS" name= "tags_iOS" value="iOS" />
 			<input type="image" src="/static/img/ios.png" ></input>
 				<figcaption>iOS</figcaption>
 			</figure>
@@ -450,7 +448,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Swift">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Swift" />
+			<input type="hidden" id="tags_Swift" name= "tags_Swift" value="Swift" />
 			<input type="image" src="/static/img/swift.png" ></input>
 				<figcaption>Swift</figcaption>
 			</figure>
@@ -458,7 +456,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Nodejs">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Node.js" />
+			<input type="hidden" id="tags_Node-js" name= "tags_Node-js" value="Node.js" />
 			<input type="image" src="/static/img/nodejs.png" ></input>
 				<figcaption>Node.js</figcaption>
 			</figure>
@@ -466,7 +464,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/알고리즘">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="알고리즘" />
+			<input type="hidden" id="tags_알고리즘" name= "tags_알고리즘" value="알고리즘" />
 			<input type="image" src="/static/img/Algorithmus.png" ></input>
 				<figcaption>알고리즘</figcaption>
 			</figure>
@@ -474,7 +472,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/React">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="React" />
+			<input type="hidden" id="tags_React" name= "tags_React" value="React" />
 			<input type="image" src="/static/img/react.png" ></input>
 				<figcaption>React</figcaption>
 			</figure>
@@ -482,7 +480,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/클라우드">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="클라우드" />
+			<input type="hidden" id="tags_클라우드" name= "tags_클라우드" value="클라우드" />
 			<input type="image" src="/static/img/cloud.png" ></input>
 				<figcaption>클라우드</figcaption>
 			</figure>
@@ -490,7 +488,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Linux">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Linux" />
+			<input type="hidden" id="tags_Linux" name= "tags_Linux" value="Linux" />
 			<input type="image" src="/static/img/Linux.png" ></input>
 				<figcaption>Linux</figcaption>
 			</figure>
@@ -498,7 +496,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Git">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Git" />
+			<input type="hidden" id="tags_Git" name= "tags_Git" value="Git" />
 			<input type="image" src="/static/img/Git.png" ></input>
 				<figcaption>Git</figcaption>
 			</figure>
@@ -516,7 +514,7 @@ h3 {
 		
 			<form method="post" action="${path}/tags/정보보안">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="정보보안" />
+			<input type="hidden" id="tags_정보보안" name= "tags_정보보안" value="정보보안" />
 			<input type="image" src="/static/img/info_security.png" ></input>
 				<figcaption>정보보안</figcaption>
 			</figure>
@@ -524,7 +522,7 @@ h3 {
 		
 			<form method="post" action="${path}/tags/블록체인">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="블록체인" />
+			<input type="hidden" id="tags_블록체인" name= "tags_블록체인" value="블록체인" />
 			<input type="image" src="/static/img/blockchain.png" ></input>
 				<figcaption>블록체인</figcaption>
 			</figure>
@@ -532,7 +530,7 @@ h3 {
 		
 			<form method="post" action="${path}/tags/DevOps">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="DevOps" />
+			<input type="hidden" id="tags_DevOps" name= "tags_DevOps" value="DevOps" />
 			<input type="image" src="/static/img/DevOps.png" ></input>
 				<figcaption>DevOps</figcaption>
 			</figure>
@@ -540,7 +538,7 @@ h3 {
 		
 			<form method="post" action="${path}/tags/hacking">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="hacking" />
+			<input type="hidden" id="tags_hacking" name= "tags_hacking" value="hacking" />
 			<input type="image" src="/static/img/hacking.png" ></input>
 				<figcaption>해킹</figcaption>
 			</figure>
@@ -555,7 +553,7 @@ h3 {
 		
 			<form method="post" action="${path}/tags/데이터베이스">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="데이터베이스" />
+			<input type="hidden" id="tags_데이터베이스" name= "tags_데이터베이스" value="데이터베이스" />
 			<input type="image" src="/static/img/database.png" ></input>
 				<figcaption>데이터베이스</figcaption>
 			</figure>
@@ -563,7 +561,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/인공지능">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="인공지능" />
+			<input type="hidden" id="tags_인공지능" name= "tags_인공지능" value="인공지능" />
 			<input type="image" src="/static/img/AI.png" ></input>
 				<figcaption>인공지능</figcaption>
 			</figure>
@@ -571,7 +569,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/SQL">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="SQL" />
+			<input type="hidden" id="tags_SQL" name= "tags_SQL" value="SQL" />
 			<input type="image" src="/static/img/sql.png" ></input>
 				<figcaption>SQL</figcaption>
 			</figure>
@@ -579,7 +577,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/머신러닝">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="머신러닝" />
+			<input type="hidden" id="tags_머신러닝" name= "tags_머신러닝" value="머신러닝" />
 			<input type="image" src="/static/img/m_learning.png" ></input>
 				<figcaption>머신러닝</figcaption>
 			</figure>
@@ -587,7 +585,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/R">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="R" />
+			<input type="hidden" id="tags_R" name= "tags_R" value="R" />
 			<input type="image" src="/static/img/R.png" ></input>
 				<figcaption>R</figcaption>
 			</figure>
@@ -602,7 +600,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/UIUX">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="UI/UX" />
+			<input type="hidden" id="tags_UIUX" name= "tags_UIUX" value="UI/UX" />
 			<input type="image" src="/static/img/uiux.png" ></input>
 				<figcaption>UI/UX</figcaption>
 			</figure>
@@ -610,7 +608,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/3D모델링">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="3D 모델링" />
+			<input type="hidden" id="tags_3D모델링" name= "tags_3D모델링" value="3D 모델링" />
 			<input type="image" src="/static/img/3D.png" ></input>
 				<figcaption>3D 모델링</figcaption>
 			</figure>
@@ -618,7 +616,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/After-Effects">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="After Effects" />
+			<input type="hidden" id="tags_After-Effects" name= "tags_After-Effects" value="After Effects" />
 			<input type="image" src="/static/img/AE.png" ></input>
 				<figcaption>After Effects</figcaption>
 			</figure>
@@ -626,7 +624,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Premiere-Pro">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Premiere Pro" />
+			<input type="hidden" id="tags_Premiere-Pro" name= "tags_Premiere-Pro" value="Premiere Pro" />
 			<input type="image" src="/static/img/Pr.png" ></input>
 				<figcaption>Premiere Pro</figcaption>
 			</figure>
@@ -634,7 +632,7 @@ h3 {
 
 			<form method="post" action="${path}/tags/Photoshop">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Photoshop" />
+			<input type="hidden" id="tags_Photoshop" name= "tags_Photoshop" value="Photoshop" />
 			<input type="image" src="/static/img/Ps.png" ></input>
 				<figcaption>Photoshop</figcaption>
 			</figure>
@@ -647,7 +645,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/Illustrator">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="Illustrator" />
+			<input type="hidden" id="tags_Illustrator" name= "tags_Illustrator" value="Illustrator" />
 			<input type="image" src="/static/img/il.png" ></input>
 				<figcaption>Illustrator</figcaption>
 			</figure>
@@ -655,7 +653,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/편집-디자인">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="편집 디자인" />
+			<input type="hidden" id="tags_편집-디자인" name= "tags_편집-디자인" value="편집 디자인" />
 			<input type="image" src="/static/img/edit-design.png" ></input>
 				<figcaption>편집 디자인</figcaption>
 			</figure>
@@ -663,7 +661,7 @@ h3 {
 			
 			<form method="post" action="${path}/tags/InDesign">
 			<figure>
-			<input type="hidden" id="tags" name= "tags" value="InDesign" />
+			<input type="hidden" id="tags_InDesign" name= "tags_InDesign" value="InDesign" />
 			<input type="image" src="/static/img/InDesign.png" ></input>
 				<figcaption>InDesign</figcaption>
 			</figure>

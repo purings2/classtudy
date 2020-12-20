@@ -2,21 +2,22 @@ package com.edu.member.service;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import javax.annotation.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.admin.domain.LectureDTO;
 import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
-import com.edu.member.domain.LectureDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
-import com.edu.member.domain.ResumeDTO;
 import com.edu.member.domain.RewardDTO;
 import com.edu.member.mapper.MemberMapper;
 
@@ -70,6 +71,7 @@ public class MemberService {
 	public void memberDelete(MemberDTO memberDTO) throws Exception {
 		LOGGER.info("MemberService memberDelete().....");
 		memberMapper.memberDelete(memberDTO);
+		
 	}
 	
 	// 강의 번호에 해당하는 회원 찾기
@@ -151,27 +153,6 @@ public class MemberService {
 	// 마이페이지 내가 쓴 글 - 그룹게시판
 	public List<GroupboardDTO> groupboardList(String memberId) throws Exception {
 		return memberMapper.groupboardList(memberId);
-	}
-
-	// 이력서 작성
-	public int resumeWriter(ResumeDTO resumeDTO) throws Exception {
-		LOGGER.info("Service resumeWriter resumeDTO : " + resumeDTO);
-		return memberMapper.resumeWriter(resumeDTO);
-	}
-	// 이력서 boardNo찾기
-	public int selectBoardNo(String writer) throws Exception {
-		LOGGER.info("Service selectBoardNo writer : " + writer);
-		return memberMapper.selectBoardNo(writer);
-	}
-	// 이력서 보기
-	public ResumeDTO resumeView(int boardNo) throws Exception {
-		LOGGER.info("Service resumeView : " + boardNo);
-		return memberMapper.resumeView(boardNo);
-	}
-	// 내가 쓴 이력서 목록
-	public List<ResumeDTO> resumeList(String memberId) throws Exception {
-		LOGGER.info("Service resumeList : " + memberId);
-		return memberMapper.resumeList(memberId);
 	}
 	
 }

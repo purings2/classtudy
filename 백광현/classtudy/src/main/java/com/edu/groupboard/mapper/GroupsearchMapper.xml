@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.groupboard.mapper.GroupsearchMapper">
+	
+	<!-- 게시글 목록 보기 -->
+	<select id="groupList" resultType="com.edu.groupboard.domain.GroupsearchDTO">
+ 		SELECT  title, writer, content, tags, writeDate, startStudy, boardNo, groupNo, groupName
+ 		FROM groupsearch
+ 		ORDER BY  boardNo  DESC
+	</select>
+	<!-- 게시글 목록 - 제목+내용 검색
+	<select id="searchAll" resultType="com.edu.groupboard.domain.GroupsearchDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM gscomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupsearch g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	g.groupNo = #{groupNo} 
+	AND 	(g.title LIKE #{keyword} OR g.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	게시글 목록 - 제목 검색 
+	<select id="searchTitle" resultType="com.edu.groupboard.domain.GroupsearchDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM gscomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupsearch g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	g.groupNo = #{groupNo} 
+	AND 	(g.title LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	게시글 목록 - 내용 검색 
+	<select id="searchContent" resultType="com.edu.groupboard.domain.GroupsearchDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM gscomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupsearch g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	g.groupNo = #{groupNo} 
+	AND 	(g.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	게시글 목록 - 작성자 검색 
+	<select id="searchWriter" resultType="com.edu.groupboard.domain.GroupsearchDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM gscomment WHERE boardNo = g.boardNo) commentNum 
+	FROM 	groupsearch g INNER JOIN member m ON g.writer = m.memberId 
+	WHERE 	g.groupNo = #{groupNo} 
+	AND 	(g.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	화면에 보여줄 게시글 개수 추출 
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	groupsearch 
+	WHERE 	groupNo = #{groupNo} 
+	</select>
+	화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 
+	<select id="getSearchCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	groupsearch 
+	WHERE 	groupNo = #{groupNo} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	</select>
+	 화면에 보여줄 게시글 개수 추출 - 제목 검색 
+	<select id="getSearchCountTitle" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	groupsearch 
+	WHERE 	groupNo = #{groupNo} 
+	AND 	(title LIKE #{keyword}) 
+	</select>
+	화면에 보여줄 게시글 개수 추출 - 내용 검색 
+	<select id="getSearchCountContent" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	groupsearch 
+	WHERE 	groupNo = #{groupNo} 
+	AND 	(content LIKE #{keyword}) 
+	</select>
+	화면에 보여줄 게시글 개수 추출 - 작성자 검색 
+	<select id="getSearchCountWriter" resultType="Integer">
+	SELECT 	COUNT(g.boardNo) 
+	FROM 	groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE 	g.groupNo = #{groupNo} 
+	AND 	(g.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
+	</select>-->
+
+	<!-- 게시글 쓰기 -->
+	<insert id="groupInsert" >	
+		INSERT INTO groupsearch 
+				(writer, title, content, writeDate, startStudy, groupNo, tags, groupName)
+		VALUES 	(#{writer}, #{title}, #{content}, SYSDATE(), #{startStudy}, #{groupNo}, #{tags}, #{groupName})
+	</insert>
+
+	<insert id="groupListInsert" parameterType="com.edu.groupboard.domain.GrouplistDTO">
+		INSERT INTO grouplist(groupNo, groupName)VALUES (null, #{groupName}) 
+		<selectKey resultType="int" order="AFTER" keyProperty="groupNo">SELECT LAST_INSERT_ID() </selectKey>
+
+	</insert>
+
+	<!-- boardNo에 해당하는 자료를 삭제한다. -->
+	<delete id="groupDelete" parameterType="int">
+	DELETE
+	FROM	groupsearch
+	WHERE	boardNo		= #{boardNo}
+	</delete>
+	
+	<!-- member테이블의 group1를 update한다. -->
+	<update id="joinGroup1">		
+		UPDATE member
+            SET
+            group1 = #{groupNo}
+            where memberId = #{memberId}
+	</update>
+	
+	<!-- member테이블의 group2를 update한다. -->
+	<update id="joinGroup2">		
+		UPDATE member
+            SET
+            group2 = #{groupNo}
+            where memberId = #{memberId}
+	</update>
+	
+	<!-- member테이블의 group3를 update한다. -->
+	<update id="joinGroup3">		
+		UPDATE member
+            SET
+            group3 = #{groupNo}
+            where memberId = #{memberId}
+	</update>
+	
+	<!-- 게시글 join 여부 검사 -->
+	<select id="joinCheck" resultType="int">
+		SELECT 	COUNT(*) 
+		FROM 	groupsearch 
+		WHERE 	groupNo = #{groupNo} 
+		AND		memberId = #{memberId}
+	</select>
+</mapper>
+

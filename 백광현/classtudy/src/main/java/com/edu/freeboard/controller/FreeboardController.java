@@ -38,7 +38,7 @@ public class FreeboardController {
 		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
 		if (session.getAttribute("member") == null) {
 			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/lㅁㅂ12ogin";
+			return "redirect:/member/login";
 		}
 		return "/freeboard/write";
 	}

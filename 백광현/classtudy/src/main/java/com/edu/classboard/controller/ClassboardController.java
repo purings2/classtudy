@@ -19,6 +19,8 @@ import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.classboard.service.ClassboardService;
 import com.edu.common.CommonUtils;
 import com.edu.member.domain.MemberDTO;
+import com.edu.member.domain.PointDTO;
+import com.edu.member.service.PointService;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/class/classboard/*") // ClassboardController에서 공통적으로 사용될 url mapping
@@ -32,6 +34,9 @@ public class ClassboardController {
 	
 	@Inject
 	CommonUtils commonUtils;
+	
+	@Inject
+	PointService pointService;
 	
 	// 게시글 작성 GET
 	@RequestMapping(value="/write", method=RequestMethod.GET)
@@ -66,6 +71,27 @@ public class ClassboardController {
 			cbDTO.setTitle(commonUtils.htmlConverter(cbDTO.getTitle()));
 			cbDTO.setContent(commonUtils.htmlConverter(cbDTO.getContent()));
 			classboardService.write(cbDTO);
+			// 작성된 게시글이 TIL이라면 포인트를 지급한다.
+			if (cbDTO.getCategory().equals("TIL")) {
+				// session에서 memberId값을 추출한다.
+				MemberDTO member = (MemberDTO)session.getAttribute("member");
+				String memberId = member.getMemberId();
+				// 오늘 TIL 작성으로 포인트를 지급 받았는지 확인하는 작업을 서비스에게 의뢰한다.
+				String TILPointContent = "TIL 작성";
+				int TILPointCheck = pointService.isTodayPointCheck(memberId, TILPointContent);
+				// 오늘 TIL 작성으로 포인트를 지급 받지 않았다면
+				// 아래와 같은 내용으로 1포인트 지급해준다.
+				// (count값이 0보다 크면 이미 TIL 작성 포인트를 지급 받은 것)
+				if (TILPointCheck == 0) {
+					// 포인트 객체에 내용 입력
+					PointDTO pointDTO = new PointDTO();
+					pointDTO.setContent(TILPointContent);
+					pointDTO.setMember(memberId);
+					pointDTO.setChangeVal(1);
+					// pointDTO 내용으로 포인트 지급
+					pointService.addPoint(pointDTO);
+				}
+			}
 		}
 		return "redirect:/class/classboard/all";
 	}
@@ -96,7 +122,8 @@ public class ClassboardController {
 			// 현재 페이지의 번호를 저장하는 변수
 			// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 			int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
-			// 화면에 보여줄 전체 게시글 건수를 구하기. 
+			model.addAttribute("pageNumber", pageNumber);
+			// 화면에 보여줄 전체 게시글 건수를 구하기
 			// 말머리가 있으면 해당하는 게시글만 카운트한다.
 			int totalCount;
 			if (viewCategory.equals("myTIL")) {
@@ -106,11 +133,9 @@ public class ClassboardController {
 			} else {
 				totalCount = classboardService.getBoardCount(lectureNo, viewCategory);
 			}
+			model.addAttribute("totalCount", totalCount);
 			// 화면에 보여줄 게시글의 수
 			int numOfPage = 13;
-			// 구한 값을 뷰 페이지로 보내준다.
-			model.addAttribute("pageNumber", pageNumber);
-			model.addAttribute("totalCount", totalCount);
 			model.addAttribute("numOfPage", numOfPage);
 			// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 			int startNo = (pageNumber-1) * numOfPage;
@@ -263,8 +288,6 @@ public class ClassboardController {
 		logger.info("ClassboardController searchTIL() lectureNo : " + lectureNo + ", " + memberId);
 		// 검색한 키워드를 뷰 페이지로 보내준다.
 		model.addAttribute("nowKeyword", keyword);
-		// 키워드에 특수문자가 있으면 치환
-		keyword = commonUtils.htmlConverter(keyword);
 		// 현재 페이지의 번호를 저장하는 변수
 		// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;

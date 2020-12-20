@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 강의번호 검색 -->
-	<select id="search" resultType="com.edu.member.domain.LectureDTO">
+	<select id="search" resultType="com.edu.admin.domain.LectureDTO">
 	SELECT 	lec.*, aca.academyName lectureAcademy 
 	FROM 	lecture lec INNER JOIN academy aca ON lec.academyNo = aca.academyNo 
 	WHERE 	(lec.lectureName LIKE #{keyword} OR aca.academyName LIKE #{keyword}) 
@@ -199,37 +199,5 @@
 	WHERE 	writer = #{memberId} 
 	ORDER BY boardNo DESC 
 	</select>
-
-	<!--  이력서 작성하기 -->
-	<insert id="resumeWriter">
-	INSERT INTO resume
-			(writer, schoolName, schoolLevel, univMajor, schoolGrade, 
-			companyName, companyPart, position, workPeriod,	salary,	
-			license, certificateAgency, certificateDay, content1, content2, 
-			content3) 
-	VALUES	(#{writer}, #{schoolName}, #{schoolLevel}, #{univMajor}, #{schoolGrade}, 
-			#{companyName}, #{companyPart}, #{position}, #{workPeriod}, #{salary}, 
-			#{license},#{certificateAgency},#{certificateDay},#{content1}, #{content2}, 
-			#{content3}) 
-	</insert>
-	<!-- 이력서 boardNo찾기 -->
-	<select id="selectBoardNo" resultType="Integer">
-	SELECT 	r.boardNo boardNo 
-	FROM 	member m INNER JOIN resume r ON m.memberId = r.writer
-	WHERE 	(m.memberId LIKE #{memberId} OR r.writer LIKE #{writer}) 
-	ORDER BY boardNo DESC;
-	</select>
-	<!-- 이력서 보기 -->
-	<select id="resumeView" resultType="com.edu.member.domain.ResumeDTO">
-	SELECT 	r.*, m.name writerName
-	FROM 	resume r INNER JOIN member m ON r.writer = m.memberId  
-	WHERE 	boardNo = #{boardNo}
-	</select>
-	<!-- 내가 쓴 이력서 목록 -->
-	<select id="resumeList" resultType="com.edu.member.domain.ResumeDTO">
-	SELECT 	r.*, m.name writerName 
-	FROM 	member m INNER JOIN resume r ON m.memberId = r.writer 
-	WHERE 	(m.memberId LIKE #{memberId} OR r.writer LIKE #{writer}) 
-	ORDER BY boardNo DESC; 
-	</select>
+	
 </mapper>

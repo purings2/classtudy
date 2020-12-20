@@ -2,7 +2,6 @@ package com.edu.member.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +14,18 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.admin.domain.LectureDTO;
 import com.edu.classboard.domain.CbcommentDTO;
 import com.edu.classboard.domain.ClassboardDTO;
 import com.edu.common.CommonUtils;
 import com.edu.freeboard.domain.FbcommentDTO;
 import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
-import com.edu.member.domain.GrouplistDTO;
-import com.edu.member.domain.LectureDTO;
+import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.member.domain.MemberDTO;
-import com.edu.member.domain.ResumeDTO;
+import com.edu.member.domain.PointDTO;
 import com.edu.member.service.MemberService;
+import com.edu.member.service.PointService;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
 @RequestMapping("/member/*") // MemberController에서 공통적으로 사용될 url mapping
@@ -42,6 +42,10 @@ public class MemberController {
 	// 공통으로 사용하는 메서드가 들어있는 클래스
 	@Inject
 	CommonUtils commonUtils;
+	
+	// 로그인에 따른 포인트 지급을 위해 pointService를 주입시킨다.
+	@Inject
+	PointService pointService;
 	
 	// 회원가입 GET : 회원가입 화면을 보려고 요청이 들어오면
 	// 웹 브라우저에서 http://localhost:8071/member/register으로 호출한다.
@@ -158,6 +162,23 @@ public class MemberController {
 		} else {
 			//해당하는 회원의 정보가 있으면
 			session.setAttribute("member", login);
+			// 넘겨받은 회원정보에서 memberId값을 추출한다.
+			String memberId = login.getMemberId();
+			// 오늘 로그인으로 포인트를 지급 받았는지 확인하는 작업을 서비스에게 의뢰한다.
+			String loginPointContent = "출석 포인트";
+			int loginPointCheck = pointService.isTodayPointCheck(memberId, loginPointContent);
+			// 오늘 로그인으로 포인트를 지급 받지 않았다면
+			// 아래와 같은 내용으로 1포인트 지급해준다.
+			// (count값이 0보다 크면 이미 포인트를 지급 받은 것)
+			if (loginPointCheck == 0) {
+				// 포인트 객체에 내용 입력
+				PointDTO pointDTO = new PointDTO();
+				pointDTO.setContent(loginPointContent);
+				pointDTO.setMember(memberId);
+				pointDTO.setChangeVal(1);
+				// pointDTO 내용으로 포인트 지급
+				pointService.addPoint(pointDTO);
+			}
 		}
 		return "redirect:/member/login";
 	}
@@ -391,114 +412,5 @@ public class MemberController {
 		LOGGER.info("MemberController groupboardList().....");
 		return memberService.groupboardList(memberId);
 	}
-	// 이력서 
-	@RequestMapping(value={"/portfolio"})
-	private String portfolioList(ResumeDTO resumeDTO, HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
-		LOGGER.info("FreeboardController Freeboard().....");
-		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
-		if(session.getAttribute("member") != null) {
-			session.getAttribute("member");
-		} else {
-			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/login";
-		}
-		return "/member/portfolio";
-	}
-
-	// 이력서 작성  GET
-	@RequestMapping(value = "/resume", method = RequestMethod.GET)
-	private String resume(HttpSession session, RedirectAttributes rttr, Model model) throws Exception{
-		LOGGER.info("MemberController resume GET...");
-		
-		// MemberDTO를 저장하기 위한 변수 선언
-		MemberDTO memberDTO = null;
-		String tel = "", tel1 = "", tel2 = "", tel3 = "";
-		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
-		if(session.getAttribute("member") != null) {
-			memberDTO = (MemberDTO)session.getAttribute("member");
-			// member에 담긴 전화번호를 저장
-			tel = memberDTO.getTel();
-			// 전화번호를 tel1, tel2, tel3로 나눠서 저장
-			tel1 = tel.substring(0, 3); //첫 세자리 저장
-			tel = tel.substring(4); //뒷 번호들만 남기기
-			tel2 = tel.substring(0, tel.lastIndexOf("-"));  //나머지에서 '-' 앞을 저장
-			tel3 = tel.substring(tel.lastIndexOf("-") + 1); //나머지에서 '-' 뒤를 저장
-			// tel1, tel2, tel3를 model에 담아서 보낸다.
-			model.addAttribute("tel1", tel1);
-			model.addAttribute("tel2", tel2);
-			model.addAttribute("tel3", tel3);
-		} else {
-			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/login";
-		}
-		return "/member/resume";
-	}
-
-	// 이력서 작성POST
-	@RequestMapping(value = "/resume", method = RequestMethod.POST)
-	private String resume(ResumeDTO resumeDTO ,HttpSession session,Model model, HttpServletRequest request, RedirectAttributes rttr) throws Exception{
-		LOGGER.info("MemberController resume POST.....");
-				
-		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
-		if(session.getAttribute("member") != null) {
-			session.getAttribute("member");
-		} else {
-			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/login";
-		}
-		// session에서 ResumeDTO를 저장한다.
-		ResumeDTO resume = (ResumeDTO)session.getAttribute("resume");
-
-		memberService.resumeWriter(resumeDTO);
-
-		// 이력서 boardNo찾기
-		int boardNo = memberService.selectBoardNo(resumeDTO.getWriter());
-		//resume.setBoardNo(Integer.parseInt(request.getParameter("boardNo")));
-		//memberDTO에서 boardNo를 찾아 저장한다.	
-		//int boardNo = resumeDTO.getBoardNo();
-		LOGGER.info("boardNo : " + boardNo);
-
-		//return "/member/resumeView/" + request.getParameter("boardNo");
-		return "redirect:/member/resumeView/" + boardNo;
-		//return "/member/resumeView/{boardNo}";
-		//return "/member/resume";
-		//return "/member/portfolio";
-	}
-
-	// 이력서 보기
-	@RequestMapping(value = "/resumeView/{boardNo}", method = RequestMethod.GET)
-	private String resumeView(@PathVariable int boardNo ,HttpSession session, Model model, RedirectAttributes rttr) throws Exception{
-		LOGGER.info("MemberController resumeView().....");
-
-		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
-		if (session.getAttribute("member") == null) {
-			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/login";
-		}
-		LOGGER.info("resumeView() : ResumeDTO :" + 	memberService.resumeView(boardNo));
-		// boardNo에 해당하는 자료를 model에 담는다.
-		model.addAttribute("resume", memberService.resumeView(boardNo));
-		return "/member/resumeView";
-	}
-	// 내가 쓴 이력서 목록
-	@RequestMapping(value = "/resumeList/{memberId}", method = RequestMethod.GET)
-	private String resumeList(@PathVariable String memberId, HttpSession session, Model model, RedirectAttributes rttr) throws Exception{
-		LOGGER.info("MemberController resumeList().....");
-
-		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
-		if (session.getAttribute("member") == null) {
-			rttr.addFlashAttribute("msgLogin", false);
-			return "redirect:/member/login";
-		}
-		// session에서 ResumeDTO를 저장한다.
-		ResumeDTO resume = (ResumeDTO)session.getAttribute("resume");
-		// session에서 memberDTO를 저장한다.
-		MemberDTO member = (MemberDTO)session.getAttribute("member");
-		// memberDTO에서 아이디를 찾아 저장한다.
-		memberId = member.getMemberId();
-		LOGGER.info("MemberController resumeList memberId : " + memberId);
-		model.addAttribute("list", memberService.resumeList(memberId));
-
-		return "/member/resumeList";
-	}
+	
 }
