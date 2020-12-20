@@ -40,36 +40,37 @@
 			</div>
 			<br>
 			<div class="card-deck">
-				<div class="card text-black mb-4 bg-default"
+				<div class="card text-black mb-3 bg-default"
 					style="width: 300px; /* background: #A2D9CE; */">
-					<div class="card-header" style="background: #D1F2EB;">스터디</div>
+					<div class="card-header" style="background: #D1F2EB;">새로운 글</div>
 					<div class="card-body">
-						<h5 class="card-title">카드 타이틀</h5>
-						<h2 class="card-text pull-right">70</h2>
+						<h5 class="card-title"></h5>
+						<h1 class="card-text">${totalCount}</h1>
+						<p>하루</p>
 					</div>
 				</div>
-				<div class="card text-black mb-4 bg-default"
-					style="width: 300px; /* background: #F7DC6F; */">
-					<div class="card-header" style="background: #FCF3CF;">프로젝트</div>
+				<div class="card text-black mb-3 bg-default">
+					<div class="card-header" style="background: #FCF3CF;">조회수</div>
 					<div class="card-body">
-						<h5 class="card-title">카드 타이틀</h5>
-						<h2 class="card-text pull-right">30</h2>
+						<h5 class="card-title"></h5>
+						<h1 class="card-text">${getMainhits}</h1>
+						<p>하루</p>
 					</div>
 				</div>
-				<div class="card text-black mb-4 bg-default"
-					style="width: 300px; /* background: #D7BDE2; */">
-					<div class="card-header" style="background: #E8DAEF;">클래스</div>
+				<div class="card text-black mb-3 bg-default">
+					<div class="card-header" style="background: #E8DAEF;">댓글</div>
 					<div class="card-body">
-						<h5 class="card-title">카드 타이틀</h5>
-						<h2 class="card-text pull-right">200</h2>
+						<h5 class="card-title"></h5>
+						<h1 class="card-text">${totalcommentCount}</h1>
+						<p>하루</p>
 					</div>
 				</div>
-				<div class="card text-black mb-4 bg-default"
-					style="width: 300px;  /* background: #F1948A; */">
-					<div class="card-header" style="background: #FADBD8;">TIL</div>
+				<div class="card text-black mb-3 bg-default">
+					<div class="card-header" style="background: #FADBD8;">신규회원</div>
 					<div class="card-body">
-						<h5 class="card-title">카드 타이틀</h5>
-						<h2 class="card-text pull-right">1000</h2>
+						<h5 class="card-title"></h5>
+						<h1 class="card-text">${memberCount}</h1>
+						<p>하루</p>
 					</div>
 				</div>
 			</div>
@@ -87,7 +88,7 @@
 					</div>
 				</div>
 				<div class="card bg-default">
-					<div class="card-header">회원 구성</div>
+					<div class="card-header">게시판 활동량</div>
 					<div class="card-body2 text-center">
 						<canvas id="doughnutChart" height="400"></canvas>
 					</div>
@@ -107,80 +108,8 @@
 						<canvas id="logChart" height="400"></canvas>
 					</div>
 				</div>
-				<!-- 	<div class="card bg-default align-items-center">
-						<div class="card-body text-center">
-							<canvas id="doughnutChart" height="400"></canvas>
-						</div>
-					</div> -->
 			</div>
 			<br>
-			<div class="card-deck">
-				<div class="card bg-default">
-					<div class="card-header">최근 게시물</div>
-					<div class="card-body">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th class="card-title">카드 타이틀</th>
-									<th class="card-text">카드 텍스트</th>
-									<th class="card-text">카드 텍스트</th>
-									<th>Email</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- <tr>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.com</td>
-								</tr> -->
-								<c:forEach var="b" items="${board}">
-								<tr>
-									<td>${b.boardNo}</td>
-									<td>${b.title}</td>
-									<td>${b.writer}</td>
-									<td>${b.writeDate}</td>
-								</tr>
-							</c:forEach>
-								
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- <div class="card bg-default align-items-center">
-						<div class="card-body text-center">
-							<canvas id="logChart" height="400"></canvas>
-						</div>
-					</div> -->
-				<!-- 	<div class="card bg-default align-items-center">
-						<div class="card-body text-center">
-							<canvas id="doughnutChart" height="400"></canvas>
-						</div>
-					</div> -->
-			</div>
-			<div class="container-fluid">
-				<!-- Control the column width, and how they should appear on different devices -->
-				<div class="row"></div>
-				<br>
-
-				<div class="row"></div>
-				<br> <br> <br> <br> <br> <br> <br>
-				<br> <br>
-				<!-- Or let Bootstrap automatically handle the layout -->
-				<!-- 
-				<div class="row">
-					<div class="col-sm" style="background-color: lightgray;">25%</div>
-					<div class="col-sm" style="background-color: lightblue;">25%</div>
-					<div class="col-sm" style="background-color: lightgray;">25%</div>
-					<div class="col-sm" style="background-color: lightblue;">25%</div>
-				</div>
-				<div class="row">
-					<div class="col" style="background-color: lightgray;">25%</div>
-					<div class="col" style="background-color: lightblue;">25%</div>
-					<div class="col" style="background-color: lightgray;">25%</div>
-					<div class="col" style="background-color: lightblue;">25%</div>
-				</div>
-				 -->
-			</div>
 		</div>
 	</div>
 	<%@ include file="../include/admin_footer.jsp"%>
@@ -222,8 +151,9 @@
 						labels : [ '일', '월', '화', '수', '목',
 								'금', '토' ],
 						datasets : [ {
-							label : '# of Votes',
-							data : [ 12, 19, 3, 5, 7, 3, 20 ],
+							label : '조회수',
+							data : ['${getSunday}','${getMonday}','${getTuesday}','${getWednesday}',
+								'${getThursday}','${getFriday}','${getSaturday}'],
 							backgroundColor : [ 'rgba(255, 99, 132, 0.2)',
 									'rgba(54, 162, 235, 0.2)',
 									'rgba(255, 206, 86, 0.2)',
@@ -243,9 +173,11 @@
 					},
 					options : {
 						responsive : false
+
 					}
 				});
 	</script>
+	
 	<script>
 		// 도넛형 차트
 		var ctx3 = document.getElementById("doughnutChart");
@@ -255,14 +187,16 @@
 				datasets : [ {
 					backgroundColor : [ 'rgba(255, 99, 132, 0.2)',
 							'rgba(54, 162, 235, 0.2)',
-							'rgba(255, 206, 86, 0.2)' ],
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(123, 122, 255, 0.2)' ],
 					borderColor : [ 'rgba(255, 99, 132, 1)',
-							'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)' ],
+							'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+							'rgba(123, 122, 255, 1)' ],
 					borderWidth : 1,
-					data : [ '${womenCount}', '${menCount}', '${menCount}' ]
+					data : [ '${freeboardCount}', '${groupsearchCount}', '${classboardCount}', '${groupboardCount}' ]
 				} ],
 				// 라벨의 이름이 툴팁처럼 마우스가 근처에 오면 나타남
-				labels : [ '여자 회원', '남자 회원', '남자 회원' ]
+				labels : [ '프리보드 게시글', '그룹서치 게시글', '클래스보드 게시글', '그룹보드 게시글 ' ]
 			},
 			options : {
 				responsive : false,
@@ -286,5 +220,6 @@
 			}
 		});
 	</script>
+	
 </body>
 </html>

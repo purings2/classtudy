@@ -12,7 +12,6 @@
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-tagsinput.css"/>
 <!-- Calendar -->
 <link rel="stylesheet" type="text/css" href="/static/css/calendar.css"/>
-
 <style>
 @font-face {
 	font-family: 'MaplestoryOTFBold';

@@ -22,7 +22,7 @@
 			<!-- 숨겨서 넘길 정보들 -->
 			<input type="hidden" id="boardNo" name="boardNo" value="${detail.boardNo}"/>
 			<input type="hidden" id="views" name="views" value="${detail.views}"/>
-			<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>			
+			<input type="hidden" id="likes" name="likes" value="${detail.likes}"/>
 			<input type="hidden" id="memberId" name="memberId" value="${member.memberId}" maxlength="16"/>
 		</div>
 		<div class="form-group">

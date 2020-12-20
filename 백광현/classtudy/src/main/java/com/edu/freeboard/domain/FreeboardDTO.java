@@ -25,5 +25,8 @@ public class FreeboardDTO {
 	// 게시글 번호(boardNo)에 해당하는 값을 가져온다.
 	private int 	commentNum;
 	
+	// 테이블 결합해서 사용시 테이블 이름을 저장
+	private String 	tblName;
+	
 	public FreeboardDTO() {}
 }

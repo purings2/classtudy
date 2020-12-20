@@ -19,6 +19,7 @@ import com.edu.admin.domain.LectureDTO;
 import com.edu.admin.service.AdminBoardService;
 import com.edu.admin.service.AdminService;
 import com.edu.common.CommonUtils;
+import com.edu.common.service.MainService;
 import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
@@ -35,6 +36,9 @@ public class AdminController {
 	AdminBoardService adminBoardService;
 	
 	@Inject
+	MainService mainService;
+	
+	@Inject
 	CommonUtils commonUtils;
 	
 	// 메인 화면
@@ -46,6 +50,16 @@ public class AdminController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/admin/login";
 		}
+		// 각 항목 보여줄 개수
+		int numOfPage = 8;
+		// 최근에 가입한 회원 목록
+		model.addAttribute("memberList", adminService.memberListAll(0, numOfPage));
+		// 최근에 추가된 강의 목록
+		model.addAttribute("lectureList", adminService.lectureListAll(0, numOfPage));
+		// 최근에 올라온 게시글
+		model.addAttribute("boardList", adminBoardService.adminBoardList(0, numOfPage));
+		// 최근에 올라온 댓글
+		model.addAttribute("commentList", adminBoardService.adminCommentList(0, numOfPage));
 		return "/admin/main";
 	}
 	
@@ -102,7 +116,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -131,7 +145,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -193,7 +207,7 @@ public class AdminController {
 		}
 		model.addAttribute("totalCount", totalCount);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -244,7 +258,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -285,7 +299,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -363,7 +377,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -414,10 +428,62 @@ public class AdminController {
 		// 가입한 회원들의 성별을 확인한다.
 		int womenCount = adminService.getWomenCount();
 		int menCount = adminService.getMenCount();
+		// 성별 통계
 		model.addAttribute("menCount", menCount);
 		model.addAttribute("womenCount", womenCount);
-		////////////
-		model.addAttribute("board", adminBoardService.boardListService());
+		
+		// 프리보드 게시글 카운트
+		int freeboardCount = adminService.freeboardCount();
+		// 그룹서치 게시글 카운트
+		int groupsearchCount = adminService.groupsearchCount();
+		// 클래스보드 게시글 카운트
+		int classboardCount = adminService.classboardCount();
+		// 그룹보드 게시글 카운트
+		int groupboardCount = adminService.groupboardCount();
+		// (오늘) 총 게시글 수
+		int totalCount = freeboardCount + groupsearchCount + classboardCount + groupboardCount;
+		model.addAttribute("totalCount", totalCount);
+		
+		// 프리보드 댓글 카운트
+		int freeboardComment = adminService.freeboardComment();
+		// 그룹서치 댓글 카운트
+		int groupsearchComment = adminService.groupsearchComment();
+		// 클래스보드 댓글 카운트
+		int classboardComment = adminService.classboardComment();
+		// 그룹보드 댓글 카운트
+		int groupboardComment = adminService.groupboardComment();
+		// (오늘) 총 댓글 수
+		int totalcommentCount = freeboardComment + groupsearchComment + classboardComment + groupboardComment;
+		model.addAttribute("totalcommentCount", totalcommentCount);
+		
+		
+		// 신규회원
+		int memberCount = adminService.memberCount();
+		model.addAttribute("memberCount", adminService.memberCount());
+		
+		//메인 페이지 방문자수(오늘)
+		model.addAttribute("getMainhits", mainService.getMainhits());
+		// 메인 페이지 방문자수(총방문자수)
+		model.addAttribute("getMainhitsall", mainService.getMainhitsall());
+		
+		// 메인 페이지 방문자수(날짜별 카운트)
+		//model.addAttribute("getDaycount", adminService.getDaycount());
+		model.addAttribute("getMonday", adminService.getMonday());
+		String getSunday = adminService.getSunday();
+		logger.info("AdminController statistics()....." + getSunday );
+		
+		model.addAttribute("freeboardCount", adminService.freeboardCount());
+		model.addAttribute("groupsearchCount", adminService.groupsearchCount());
+		model.addAttribute("classboardCount", adminService.classboardCount());
+		model.addAttribute("groupboardCount", adminService.groupboardCount());
+		
+		model.addAttribute("getTuesday", adminService.getTuesday());
+		model.addAttribute("getWednesday", adminService.getWednesday());
+		model.addAttribute("getThursday", adminService.getThursday());
+		model.addAttribute("getFriday", adminService.getFriday());
+		model.addAttribute("getSaturday", adminService.getSaturday());
+		model.addAttribute("getSunday", adminService.getSunday());
+		
 		return "/admin/statistics";
 	}
 	

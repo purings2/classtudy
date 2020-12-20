@@ -18,6 +18,7 @@ import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
+import com.edu.member.domain.ResumeDTO;
 import com.edu.member.domain.RewardDTO;
 import com.edu.member.mapper.MemberMapper;
 
@@ -153,6 +154,26 @@ public class MemberService {
 	// 마이페이지 내가 쓴 글 - 그룹게시판
 	public List<GroupboardDTO> groupboardList(String memberId) throws Exception {
 		return memberMapper.groupboardList(memberId);
+	}
+	
+	// 이력서 작성
+	public int resumeWriter(ResumeDTO resumeDTO) throws Exception {
+		LOGGER.info("Service resumeWriter resumeDTO : " + resumeDTO);
+		return memberMapper.resumeWriter(resumeDTO);
+	}
+	// 이력서 resumeNo찾기
+	public int selectResumeNo(String writer) throws Exception {
+		LOGGER.info("Service selectResumeNo writer : " + writer);
+		return memberMapper.selectResumeNo(writer);
+	}
+	// 이력서 보기
+	public ResumeDTO resumeView(int resumeNo) throws Exception {
+		LOGGER.info("Service resumeView : " + resumeNo);
+		return memberMapper.resumeView(resumeNo);
+	}
+	// 내가 쓴 이력서 목록 보기
+	public List<ResumeDTO> resumeList(String memberId) throws Exception {
+		return memberMapper.resumeList(memberId);
 	}
 	
 }

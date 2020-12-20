@@ -24,7 +24,7 @@
 	</insert>
 	
 	<!-- 로그인 -->
-	<select id="login" resultType="com.edu.member.domain.MemberDTO">
+	<select id="login" resultType="com.edu.domain.MemberDTO">
 		SELECT memberId, passwd, name, dateOfBirth, gender, tel, 
 		zipcode, address, addressDetail, email, regDate, lectureId
 		FROM member

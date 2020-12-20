@@ -185,20 +185,76 @@ public class AdminService {
 	}
 	
 	//----------------------------------------------------------------
-	// 게시판 관리
-	//----------------------------------------------------------------
-	
-	//----------------------------------------------------------------
 	// 통계
 	//----------------------------------------------------------------
 	// 성별 통계
 	public int getMenCount() throws Exception {
-		// TODO Auto-generated method stub
 		return adminMapper.getMenCount();
 	}
 	public int getWomenCount() throws Exception {
-		// TODO Auto-generated method stub
 		return adminMapper.getWomenCount();
+	}
+	// 프리보드 게시글 카운트
+	public int freeboardCount() throws Exception {
+		return adminMapper.freeboardCount();
+	}
+	// 그룹서치 게시글 카운트
+	public int groupsearchCount() throws Exception {
+		return adminMapper.groupsearchCount();
+	}
+	// 클래스보드 게시글 카운트
+	public int classboardCount() throws Exception {
+		return adminMapper.classboardCount();
+	}
+	// 그룹보드 카운트
+	public int groupboardCount() throws Exception {
+		return adminMapper.groupboardCount();
+	}
+	
+	// freeboardComment
+	public int freeboardComment() throws Exception {
+		return adminMapper.freeboardComment();
+	}
+	// groupsearchComment
+	public int groupsearchComment() throws Exception {
+		return adminMapper.groupsearchComment();
+	}
+	// classboardComment
+	public int classboardComment() throws Exception {
+		return adminMapper.classboardComment();
+	}
+	// groupboardComment
+	public int groupboardComment() throws Exception {
+		return adminMapper.groupboardComment();
+	}
+	// memberCount
+	public int memberCount() throws Exception {
+		return adminMapper.memberCount();
+	}
+	// 날짜별 카운트 
+	public List<AdminDTO> getDaycount() throws Exception {		
+		return adminMapper.getDaycount();
+	}
+	public String getMonday() throws Exception {
+		return adminMapper.getMonday();
+	}
+	public String getTuesday() throws Exception {
+		return adminMapper.getTuesday();
+	}
+	public String getWednesday() throws Exception {
+		return adminMapper.getWednesday();
+	}
+	public String getThursday() throws Exception {
+		return adminMapper.getThursday();
+	}
+	public String getFriday() throws Exception {
+		return adminMapper.getFriday();
+	}
+	public String getSaturday() throws Exception {
+		return adminMapper.getSaturday();
+	}
+	public String getSunday() throws Exception {
+		return adminMapper.getSunday();
 	}
 	
 }

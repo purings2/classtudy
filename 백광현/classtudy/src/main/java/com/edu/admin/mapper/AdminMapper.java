@@ -95,8 +95,40 @@ public interface AdminMapper {
 	// 선택된 학원 삭제
 	public int deleteAcademy(int academyNo) throws Exception;
 	
-	// 성별 통계
-	public int getWomenCount();
-	public int getMenCount();
+	// 통계 - 성별
+	public int getWomenCount()throws Exception;
+	public int getMenCount()throws Exception;
+	
+	// 통계 - 프리보드 카운트
+	public int freeboardCount() throws Exception;
+	// 통계 - 그룹서치 카운트
+	public int groupsearchCount() throws Exception;
+	// 통계 - 클래스보드 카운트
+	public int classboardCount() throws Exception;
+	// 통계 - 그룹보드 카운트
+	public int groupboardCount() throws Exception;
+	
+	// 통계 - freeboardComment
+	public int freeboardComment() throws Exception;
+	// 통계 - groupsearchComment
+	public int groupsearchComment() throws Exception;
+	// 통계 - classboardComment
+	public int classboardComment() throws Exception;
+	// 통계 - groupboardComment
+	public int groupboardComment() throws Exception;
+	
+	// 통계 - memberCount
+	public int memberCount() throws Exception;
+	
+	public String getMonday() throws Exception;
+	public String getTuesday() throws Exception;
+	public String getWednesday() throws Exception;
+	public String getThursday() throws Exception;
+	public String getFriday() throws Exception;
+	public String getSaturday() throws Exception;
+	public String getSunday() throws Exception;
+	
+	// 날짜별 카운트
+	public List<AdminDTO> getDaycount() throws Exception;
 	
 }

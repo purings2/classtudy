@@ -11,7 +11,6 @@
 <script src="/static/js/editormd.js"></script>
 <script src="/static/js/lib/marked.min.js"></script>
 <script src="/static/js/lib/prettify.min.js"></script>
-
 <!-- Bootstrap Tags Input -->
 <script src="/static/js/bootstrap-tagsinput.js"></script>
 <script>
@@ -24,7 +23,10 @@ $(document).ready(function(){
 		e.preventDefault();
 	});
 	
-	$(window).on("load", notiLoad());
+	$(window).on("load", function(){
+		// 알림 새로 읽어오기
+		notiLoad();
+	});
 	
 });
 </script>

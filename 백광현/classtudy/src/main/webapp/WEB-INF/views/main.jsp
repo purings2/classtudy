@@ -2,204 +2,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>클래스터디</title>
-<%@ include file="include/header.jsp"%>
-<style>
-#columns {
-	column-width: 100%;
-	column-gap: 10px;
-	text-align: center;
-}
-
-#columns figure {
-/* 	display: inline-block;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 15px 15px 15px 15px;
-	margin: 0;
-	margin-bottom: 40px;
-	margin-right: 11px;
-	padding: 17px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-	width: 200px;
-	cursor: pointer;
-	transition: 0.2s; */
-}
-#columns form {
-	display: inline-block;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 15px 15px 15px 15px;
-	margin: 0;
-	margin-bottom: 40px;
-	margin-right: 11px;
-	padding: 17px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-	width: 200px;
-	cursor: pointer;
-	transition: 0.2s;
-}
-
-#columns :hover:not(img):not(figcaption):not(figure):not(input) {
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-#columns figure img,input {
-	width: 100%;
-	outline: 0;
-	/* pointer-events: none; */
-}
-
-#columns figure figcaption {
-	border-top: 1px solid rgba(0, 0, 0, 0.2);
-	padding: 14px;
-	margin-top: 11px;
-	/* pointer-events: none; */
-}
-
-#nav a {
-	color: #777;
-}
-
-#nav a:focus {
-	color: #494949;
-	/*  background-color: #5c8a36; */
-}
-
-#btn {
-	display: inline-block;
-	margin: 0 auto;
-	text-align: center;
-}
-
-#btn label:active {
-	color: #777;
-}
-
-#main {
-	background-color: #8EC5FC;
-	background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-}
-
-#footer {
-	padding: 60px;
-}
-
-.accordion {
-	background-color: #ECF0F1;
-	color: #444;
-	cursor: pointer;
-	padding: 10px;
-	width: 150px;
-	height: 40px;
-	border: none;
-	text-align: center;
-	outline: none;
-	font-size: 12px;
-	transition: 0.4s;
-	border: none;
-}
-
-.active, .accordion:hover {
-	background-color: #ccc;
-}
-
-.panel {
-	padding: 0 18px;
-	display: none;
-	background-color: white;
-	overflow: hidden;
-}
-
-h3 {
-	background-color: #F8F9F9;
-	padding: 5px;
-}
-
-.BackToTop {
-   z-index:    20;
-   position:    fixed;
-   bottom:    40px;
-   right: 	8%;
-   opacity: 50%
-}
-@media (max-width: 992px) {
-   .BackToTop {
-      z-index:    5;
-      position:    fixed;
-      bottom:    40px;
-  	  right:    30px;
-  	  opacity: 50%;
-  	  
-   }
-}
-</style>
-
-
-
+	<meta charset="UTF-8">
+	<title>클래스터디</title>
+	<%@ include file="include/header.jsp"%>
+	<!-- MAIN CSS-->
+	<link rel="stylesheet" href="/static/css/main.css"/>
 </head>
 <body>
 	<%@ include file="include/topmenu.jsp"%>
-
+	<!-- (오늘) 새로운 방문자 컬럼 추가 -->
+	<input type="hidden" value="${ insertMainhits}">
+	<!-- 방문자수(오늘) 증가 -->
+	<input type="hidden" value="${ addMainhits}">
 	<div class="container-fluid" id="main" style="text-align: center;">
-		<br> <br> <br> <br>
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 		<!-- 로고 -->
-		<img src="/static/img/logo.png" alt="logo"
-			style="width: 180px; height: 180px;">
+		<img src="/static/img/classtudy_logo.png" alt="classtydy_logo" width="320" height="90">
+		<!-- <img src="/static/img/logo.png" alt="logo" style="width: 180px; height: 180px;"> -->
 		<!-- 로고 -->
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 		<!-- 검색창 -->
-		<div class="container-fluid" style="width: 440px;">
-			<br>
-			<form action="" class="search-form">
-				<div class="form-group has-feedback">
-					<label for="search" class="sr-only">Search</label> <input
-						type="text" class="form-control" name="search" id="search"
-						placeholder="search"> <span
-						class="glyphicon glyphicon-search form-control-feedback"></span>
-				</div>
-			</form>
-		</div>
+		<table style="width: 100%;">
+			<tr>
+				<!-- 검색 -->
+				<td align=center style="padding-bottom: 15px;">
+					<div class="input-group col-sm-5">
+						<div class="input-group-btn btn-group">
+							<!-- 검색 범위 선택 : 제목+내용, 제목, 내용, 작성자 -->
+							<select class="form-control" id="searchCode" name="searchCode"
+								style="width: 110px;">
+								<c:if test="${searchCode == '1' || empty searchCode}">
+									<option value="1" selected>제목+내용</option>
+									<option value="2">제목</option>
+									<option value="3">내용</option>
+									<option value="4">작성자</option>
+								</c:if>
+								<c:if test="${searchCode == '2'}">
+									<option value="1">제목+내용</option>
+									<option value="2" selected>제목</option>
+									<option value="3">내용</option>
+									<option value="4">작성자</option>
+								</c:if>
+								<c:if test="${searchCode == '3'}">
+									<option value="1">제목+내용</option>
+									<option value="2">제목</option>
+									<option value="3" selected>내용</option>
+									<option value="4">작성자</option>
+								</c:if>
+								<c:if test="${searchCode == '4'}">
+									<option value="1">제목+내용</option>
+									<option value="2">제목</option>
+									<option value="3">내용</option>
+									<option value="4" selected>작성자</option>
+								</c:if>
+							</select>
+						</div>
+						<input type="text" id="keyword" name="keyword"
+							class="form-control" value="${nowKeyword}"
+							placeholder="검색어를 입력하세요." maxlength=50 /> <span
+							class="input-group-btn">
+							<button class="btn btn-default" id="searchBtn">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>
+				</td>
+			</tr>
+		</table>
 		<!-- 검색창 -->
-		<br> <br> <br> <br>
-	</div>
-	<div class="container-fluid">
-		<!-- 카테고리 및 상단 메뉴 -->
-		<!-- <div class="col-md-3">
-				
-				<div class="form-group">
-					<select class="form-control" id="sel1">
-						<option>인기순</option>
-						<option>최신순</option>
-					</select>
-				</div>
-			</div>
-			
-			<div class="col-md-6" id="btn">
-				<div class="btn-group" data-toggle="buttons" >
-					<label class="btn btn-default active"> <input type="radio"
-						name="options" id="option1" autocomplete="off" checked> 웹
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option2" autocomplete="off"> 모바일 앱
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 게임
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 데이터베이스
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 알고리즘
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 개발도구
-					</label>
-				</div>
-				<br>
-			</div>
-
-			<div class="col-md-3"></div> -->
-		<!-- 카테고리 및 상단 메뉴  끝-->
-
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 	</div>
 	<br>
 	<br>
@@ -207,9 +84,9 @@ h3 {
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="container-fluid" style="background-color: #D1F2EB;">자유게시판
-					순위</div>
-				<table class="table table-hover table-bordered">
+				<div class="container-fluid" id="freelist">자유게시판 좋아요 순위</div>
+				<br>
+				<table class="table table-hover table-void" id="freelist1">
 					<thead>
 						<tr>
 							<th style="text-align: center;">제목</th>
@@ -219,36 +96,46 @@ h3 {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="b" items="${board}">
+						<c:if test="${empty board}">
 							<tr align="center">
-								<td><a class="rankingcolor" href="${path}/community/freeboard/detail/${b.boardNo}">${b.title}</a></td>
-								<td><a class="rankingcolor" href="${path}/community/freeboard/detail/${b.boardNo}">${b.writer}</a></td>
-								<td><a class="rankingcolor" href="${path}/community/freeboard/detail/${b.boardNo}">${b.writeDate}</a></td>
-								<td><a class="rankingcolor" href="${path}/community/freeboard/detail/${b.boardNo}">${b.likes}</a></td>
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
+						<c:forEach var="b" items="${board}">
+							<tr align="center" class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
+								<td>${b.title}</td>
+								<td>${b.writer}</td>
+								<td>${b.writeDate}</td>
+								<td>${b.likes}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 			</div>
 			<div class="col-md-6">
-				<div class="container-fluid" style="background: #E8DAEF;">클래스룸게시판
-					순위</div>
-				<table class="table table-hover table-bordered">
+	<div class="container-fluid" id="freeboardLikes">자유게시판 조회수 순위</div>
+				<br>
+				<table class="table table-hover table-void" id="freeboardLikes1">
 					<thead>
 						<tr>
 							<th style="text-align: center;">제목</th>
 							<th style="text-align: center;">작성자</th>
 							<th style="text-align: center;">작성 날짜</th>
-							<th style="text-align: center;">좋아요</th>
+							<th style="text-align: center;">조회수</th>
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${empty board2}">
+							<tr align="center">
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach var="b" items="${board2}">
-							<tr>
-								<td><a class="rankingcolor" href="/class/detail/${b.boardNo}">${b.title}</a></td>
-								<td><a class="rankingcolor" href="/class/detail/${b.boardNo}">${b.writer}</a></td>
-								<td><a class="rankingcolor" href="/class/detail/${b.boardNo}">${b.writeDate}</a></td>
-								<td><a class="rankingcolor" href="/class/detail/${b.boardNo}">${b.likes}</a></td>
+							<tr class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
+								<td>${b.title}</td>
+								<td>${b.writer}</td>
+								<td>${b.writeDate}</td>
+								<td>${b.views}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -286,7 +173,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/SpringBoot">
+			<form method="post" action="${path}/tags/Spring Boot">
 			<figure>
 			<input type="hidden" id="tags_SpringBoot" name= "tags_SpringBoot" value="Spring Boot" />
 			<input type="image" src="/static/img/SpringBoot.png" ></input>
@@ -326,7 +213,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/웹-개발">
+			<form method="post" action="${path}/tags/웹 개발">
 			<figure>
 			<input type="hidden" id="tags_웹-개발" name= "tags_웹-개발" value="웹 개발" />
 			<input type="image" src="/static/img/webdevelop.png" ></input>
@@ -334,7 +221,7 @@ h3 {
 			</figure>
 			</form>
 
-			<form method="post" action="${path}/tags/앱-개발">
+			<form method="post" action="${path}/tags/앱 개발">
 			<figure>
 			<input type="hidden" id="tags_앱-개발" name= "tags_앱-개발" value="앱 개발" />
 			<input type="image" src="/static/img/appdevelop.png" ></input>
@@ -342,7 +229,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/HTML&CSS">
+			<form method="post" action="${path}/tags/HTMLCSS">
 			<figure>
 			<input type="hidden" id="tags_HTMLCSS" name= "tags_HTMLCSS" value="HTML/CSS" />
 			<input type="image" src="/static/img/htmlcss.png" ></input>
@@ -414,7 +301,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/게임-개발">
+			<form method="post" action="${path}/tags/게임 개발">
 			<figure>
 			<input type="hidden" id="tags_게임-개발" name= "tags_게임-개발" value="게임 개발" />
 			<input type="image" src="/static/img/gamedevelop.png" ></input>
@@ -454,7 +341,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/Nodejs">
+			<form method="post" action="${path}/tags/Node.js">
 			<figure>
 			<input type="hidden" id="tags_Node-js" name= "tags_Node-js" value="Node.js" />
 			<input type="image" src="/static/img/nodejs.png" ></input>
@@ -536,7 +423,7 @@ h3 {
 			</figure>
 			</form>
 		
-			<form method="post" action="${path}/tags/hacking">
+			<form method="post" action="${path}/tags/해킹">
 			<figure>
 			<input type="hidden" id="tags_hacking" name= "tags_hacking" value="hacking" />
 			<input type="image" src="/static/img/hacking.png" ></input>
@@ -606,7 +493,7 @@ h3 {
 			</figure>
 			</form>
 
-			<form method="post" action="${path}/tags/3D모델링">
+			<form method="post" action="${path}/tags/3D 모델링">
 			<figure>
 			<input type="hidden" id="tags_3D모델링" name= "tags_3D모델링" value="3D 모델링" />
 			<input type="image" src="/static/img/3D.png" ></input>
@@ -614,7 +501,7 @@ h3 {
 			</figure>
 			</form>
 
-			<form method="post" action="${path}/tags/After-Effects">
+			<form method="post" action="${path}/tags/After Effects">
 			<figure>
 			<input type="hidden" id="tags_After-Effects" name= "tags_After-Effects" value="After Effects" />
 			<input type="image" src="/static/img/AE.png" ></input>
@@ -622,7 +509,7 @@ h3 {
 			</figure>
 			</form>
 
-			<form method="post" action="${path}/tags/Premiere-Pro">
+			<form method="post" action="${path}/tags/Premiere Pro">
 			<figure>
 			<input type="hidden" id="tags_Premiere-Pro" name= "tags_Premiere-Pro" value="Premiere Pro" />
 			<input type="image" src="/static/img/Pr.png" ></input>
@@ -651,7 +538,7 @@ h3 {
 			</figure>
 			</form>
 			
-			<form method="post" action="${path}/tags/편집-디자인">
+			<form method="post" action="${path}/tags/편집 디자인">
 			<figure>
 			<input type="hidden" id="tags_편집-디자인" name= "tags_편집-디자인" value="편집 디자인" />
 			<input type="image" src="/static/img/edit-design.png" ></input>
@@ -675,14 +562,12 @@ h3 {
 	<!-- BackToTop -->
 	<div class="container">
 		<div class="BackToTop">
-         <a href="#"><img title="BacktoTop"
+		<a href="#"><img title="BacktoTop"
 				src="https://cdn.dribbble.com/assets/icon-backtotop-d9d209c36a169637612a8fe4a1f15ab9e5763a20dbe5b7706df4e23aadf6052e.png"
 				alt="Icon backtotop" style="height: 50px; width: 50px;"></a>
-      </div>
+	</div>
 	</div>
 	<!-- BackToTop -->
-	
-
 	<!-- Footer -->
 	<footer class="page-footer font-small blue pt-4">
 		<hr class="clearfix w-100 d-md-none pb-3">
@@ -690,7 +575,7 @@ h3 {
 		<div class="container-fluid text-center text-md-left">
 			<!-- Grid row -->
 			<div class="row">
-				<div class="col-md-2 mt-md-0 mt-0" style="text-align: left;">
+				<div class="col-md-2 mt-md-0 mt-2" style="text-align: left;">
 				</div>
 				<!-- Grid column -->
 				<div class="col-md-4 mt-md-0 mt-3" style="text-align: left;">
@@ -703,7 +588,7 @@ h3 {
 				</div>
 				<!-- Grid column -->
 				<!-- Grid column -->
-				<div class="col-md-3 mb-md-0 mb-3">
+				<div class="col-md-2 mb-md-0 mb-2">
 					<!-- Links -->
 					<h5 class="text-uppercase">Links</h5>
 					<ul class="list-unstyled">
@@ -713,6 +598,25 @@ h3 {
 						<li><a href="#!">Link 3</a></li>
 						<li><a href="#!">Link 4</a></li>
 					</ul>
+				</div>
+				<div class="col-md-2 mb-md-0 mb-2">
+					<br>
+					<br>
+					<table class="table table-hover table-void" style="text-align: center;" id="hit">
+						<thead>
+							<tr>
+								<th style="text-align: center;">Today Visitors</th>
+								<th style="text-align: center;">Total Visitors</th>
+							</tr>
+							<tr>
+								<td>${ getMainhits}</td>
+								<td>${ getMainhitsall}</td>
+							</tr>
+						</thead>
+
+					</table>
+				</div>
+				<div class="col-md-3 mb-md-0 mb-3">
 				</div>
 				<!-- Grid column -->
 				<!-- Grid column -->
@@ -732,26 +636,36 @@ h3 {
 	</footer>
 	<!-- Footer -->
 
-
-
 	<%@ include file="include/footer.jsp"%>
 </body>
 <script>
 	var acc = document.getElementsByClassName("accordion");
-	var i;
-
-	for (i = 0; i < acc.length; i++) {
+	for (var i = 0; i < acc.length; i++) {
 		acc[i].addEventListener("click", function() {
 			this.classList.toggle("active");
 			var panel = this.nextElementSibling;
 			if (panel.style.display === "block") {
 				panel.style.display = "none";
-
 			} else {
 				panel.style.display = "block";
-
 			}
 		});
 	}
+	// 검색 버튼이 눌렸을 경우
+	$("#searchBtn").on(
+			"click",
+			function() {
+				var viewCategory = "all";
+				searchfBoard($("#keyword").val(), $("#searchCode").val(), viewCategory);
+
+			});
+	// 검색창에서 엔터키를 입력할 경우
+	$("#keyword").keyup(
+			function(e) {
+				if (e.keyCode == 13) {
+					var viewCategory = "all";
+					searchfBoard($("#keyword").val(), $("#searchCode").val(), viewCategory);
+				}
+			});
 </script>
 </html>
