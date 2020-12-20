@@ -40,12 +40,15 @@
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="com.edu.member.domain.MemberDTO">
-	SELECT 	m.*, lec.lectureName lectureName, 
+	SELECT 	memberId, passwd, name, dateOfBirth, gender, tel, email, 
+			zipcode, address, addressDetail, regDate, grade, point, reward, 
+			IFNULL(m.lectureNo, 0) lectureNo, lec.lectureName lectureName, 
+			IFNULL(group1, 0) group1, IFNULL(group2, 0) group2, IFNULL(group3, 0) group3, 
 			g1.groupName groupName1, g2.groupName groupName2, g3.groupName groupName3 
-	FROM 	member m INNER JOIN lecture lec ON m.lectureNo = lec.lectureNo 
-			INNER JOIN grouplist g1 ON m.group1 = g1.groupNo 
-			INNER JOIN grouplist g2 ON m.group2 = g2.groupNo 
-			INNER JOIN grouplist g3 ON m.group3 = g3.groupNo 
+	FROM 	member m INNER JOIN lecture lec ON IFNULL(m.lectureNo, 1) = lec.lectureNo 
+			INNER JOIN grouplist g1 ON IFNULL(m.group1, 1) = g1.groupNo 
+			INNER JOIN grouplist g2 ON IFNULL(m.group2, 1) = g2.groupNo 
+			INNER JOIN grouplist g3 ON IFNULL(m.group3, 1) = g3.groupNo 
 	WHERE 	m.memberId = #{memberId} 
 	AND 	m.passwd = #{passwd} 
 	</select>
@@ -117,7 +120,7 @@
 	<select id="freeboardCommentToday" resultType="com.edu.freeboard.domain.FbcommentDTO">
 	SELECT 	*, 
 			(SELECT COUNT(likesNo) FROM fbcommentlikes WHERE commentNo = f.commentNo AND memberId = #{memberId}) commentLikesNum 
-	FROM 	fbcomment 
+	FROM 	fbcomment f 
 	WHERE 	writer = #{memberId} 
 	AND 	writeDate LIKE #{today} 
 	ORDER BY commentNo 
@@ -198,6 +201,39 @@
 	FROM 	groupboard g INNER JOIN grouplist gl ON g.groupNo = gl.groupNo 
 	WHERE 	writer = #{memberId} 
 	ORDER BY boardNo DESC 
+	</select>
+	
+	<!--  이력서 작성하기 -->
+	<insert id="resumeWriter">
+	INSERT INTO resume 
+			(writer, schoolName, schoolLevel, univMajor, schoolGrade, 
+			companyName, companyPart, position, workPeriod,	salary,	
+			license, certificateAgency, certificateDay, content1, content2, 
+			content3, title, writeDate) 
+	VALUES	(#{writer}, #{schoolName}, #{schoolLevel}, #{univMajor}, #{schoolGrade},  
+			#{companyName}, #{companyPart}, #{position}, #{workPeriod}, #{salary}, 
+			#{license},#{certificateAgency},#{certificateDay},#{content1}, #{content2},  
+			#{content3}, #{title}, SYSDATE()); 
+	</insert>
+	<!-- 이력서 resumeNo찾기 -->
+	<select id="selectResumeNo" resultType="Integer">
+	SELECT 	max(r.resumeNo) boardNo 
+	FROM 	member m INNER JOIN resume r ON m.memberId = r.writer 
+	WHERE 	(m.memberId LIKE #{memberId} OR r.writer LIKE #{writer})  
+	ORDER BY resumeNo DESC; 
+	</select>
+	<!-- 이력서 보기 -->
+	<select id="resumeView" resultType="com.edu.member.domain.ResumeDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	resume r INNER JOIN member m ON r.writer = m.memberId   
+	WHERE 	resumeNo = #{resumeNo} 
+	</select>
+	<!-- 내가 쓴 이력서 목록 보기 -->
+	<select id="resumeList" resultType="com.edu.member.domain.ResumeDTO">
+	SELECT 	r.*, m.name writerName 
+	FROM 	member m INNER JOIN resume r ON m.memberId = r.writer 
+	WHERE 	(m.memberId LIKE #{memberId} OR r.writer LIKE #{writer})  
+	ORDER BY resumeNo DESC; 
 	</select>
 	
 </mapper>

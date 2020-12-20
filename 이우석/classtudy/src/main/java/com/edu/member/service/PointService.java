@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.edu.member.domain.PointDTO;
+import com.edu.member.mapper.MemberMapper;
 import com.edu.member.mapper.PointMapper;
 
 @Service("com.edu.member.service.PointService")
@@ -29,6 +30,10 @@ public class PointService {
 	// 포인트 지급
 	public int addPoint(PointDTO pointDTO) throws Exception {
 		return pointMapper.addPoint(pointDTO);
+	}
+	// 멤버 등급 업데이트
+	public int setMemberGrade(String memberId, int memberGrade) throws Exception {
+		return pointMapper.setMemberGrade(memberId, memberGrade);
 	}
 	
 }

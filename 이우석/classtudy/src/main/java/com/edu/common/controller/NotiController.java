@@ -34,7 +34,7 @@ public class NotiController {
 	@ResponseBody
 	@RequestMapping(value="/load", method=RequestMethod.POST)
 	private int notiLoad(String memberId) throws Exception {
-		logger.info("NotiController notiCheck()....");
+		logger.info("NotiController notiLoad()....");
 		return notiService.notiLoad(memberId);
 	}
 	

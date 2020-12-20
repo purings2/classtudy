@@ -389,5 +389,5 @@
 	From visit
 	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Sunday');
 	</select>
-	    
+	
 </mapper>

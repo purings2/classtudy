@@ -24,6 +24,7 @@ import com.edu.groupboard.domain.GroupboardDTO;
 import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
+import com.edu.member.domain.ResumeDTO;
 import com.edu.member.service.MemberService;
 import com.edu.member.service.PointService;
 
@@ -167,15 +168,16 @@ public class MemberController {
 			// 오늘 로그인으로 포인트를 지급 받았는지 확인하는 작업을 서비스에게 의뢰한다.
 			String loginPointContent = "출석 포인트";
 			int loginPointCheck = pointService.isTodayPointCheck(memberId, loginPointContent);
+			LOGGER.info("loginPointCheck: " + loginPointCheck);
 			// 오늘 로그인으로 포인트를 지급 받지 않았다면
-			// 아래와 같은 내용으로 1포인트 지급해준다.
+			// 아래와 같은 내용으로 10포인트 지급해준다.
 			// (count값이 0보다 크면 이미 포인트를 지급 받은 것)
 			if (loginPointCheck == 0) {
 				// 포인트 객체에 내용 입력
 				PointDTO pointDTO = new PointDTO();
 				pointDTO.setContent(loginPointContent);
 				pointDTO.setMember(memberId);
-				pointDTO.setChangeVal(1);
+				pointDTO.setChangeVal(10);
 				// pointDTO 내용으로 포인트 지급
 				pointService.addPoint(pointDTO);
 			}
@@ -301,9 +303,9 @@ public class MemberController {
 		List<GrouplistDTO> groupList = new ArrayList<GrouplistDTO>();
 		if (member.getGroup1() != 1 && member.getGroup1() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup1(), member.getGroupName1())); }
-		if (member.getGroup2() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup2() != 1 && member.getGroup2() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup2(), member.getGroupName2())); }
-		if (member.getGroup3() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup3() != 1 && member.getGroup3() != 0) {
 			groupList.add(new GrouplistDTO(member.getGroup3(), member.getGroupName3())); }
 		model.addAttribute("groupList", groupList);
 		LOGGER.info("groupList: " + groupList);
@@ -411,6 +413,74 @@ public class MemberController {
 	private List<GroupboardDTO> groupboardList(String memberId) throws Exception {
 		LOGGER.info("MemberController groupboardList().....");
 		return memberService.groupboardList(memberId);
+	}
+	
+	// 이력서 & portfolio main
+	@RequestMapping(value={"/portfolio"})
+	private String portfolioList(HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
+		LOGGER.info("MemberController portfolioList().....");
+		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
+		// 없으면 로그인 화면으로 돌려보낸다.
+		if(session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		} else {
+			// session에서 memberDTO를 저장한다.
+			MemberDTO member = (MemberDTO)session.getAttribute("member");
+			String memberId = member.getMemberId();
+			model.addAttribute("list", memberService.resumeList(memberId));
+		}
+		return "/member/portfolio";
+	}
+	// 이력서 작성  GET
+	@RequestMapping(value = "/resume", method = RequestMethod.GET)
+	private String resume(HttpSession session, RedirectAttributes rttr, Model model) throws Exception{
+		LOGGER.info("MemberController resume GET...");
+		
+		// MemberDTO를 저장하기 위한 변수 선언
+		MemberDTO memberDTO = null;
+		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
+		if(session.getAttribute("member") != null) {
+			memberDTO = (MemberDTO)session.getAttribute("member");
+		} else {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		return "/member/resume";
+	}
+	// 이력서 작성POST
+	@RequestMapping(value = "/resume", method = RequestMethod.POST)
+	private String resume(ResumeDTO resumeDTO ,HttpSession session,Model model, HttpServletRequest request, RedirectAttributes rttr) throws Exception{
+		LOGGER.info("MemberController resume POST.....");
+				
+		// 세션에 MemberDTO가 있는지 확인하고 있으면 저장한다.
+		if(session.getAttribute("member") != null) {
+			session.getAttribute("member");
+		} else {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		// session에서 memberDTO를 저장한다.
+		ResumeDTO resume = (ResumeDTO)session.getAttribute("resume");
+		memberService.resumeWriter(resumeDTO);
+		// 이력서 writer에 해당하는 resumeNo찾기
+		int resumeNo = memberService.selectResumeNo(resumeDTO.getWriter());
+		LOGGER.info("resumeNo : " + resumeNo);
+		return "redirect:/member/resumeView/" + resumeNo;
+	}
+	// 이력서 보기
+	@RequestMapping(value = "/resumeView/{resumeNo}", method = RequestMethod.GET)
+	private String resumeView(@PathVariable int resumeNo ,HttpSession session, Model model, RedirectAttributes rttr) throws Exception{
+		LOGGER.info("MemberController resumeView().....");
+		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
+		if (session.getAttribute("member") == null) {
+			rttr.addFlashAttribute("msgLogin", false);
+			return "redirect:/member/login";
+		}
+		LOGGER.info("resumeView() : ResumeDTO :" + 	memberService.resumeView(resumeNo));
+		// resumeNo에 해당하는 자료를 model에 담는다.
+		model.addAttribute("resume", memberService.resumeView(resumeNo));
+		return "/member/resumeView";
 	}
 	
 }

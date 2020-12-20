@@ -1,7 +1,5 @@
 package com.edu.admin.cotroller;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -18,12 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.edu.admin.domain.AcademyDTO;
 import com.edu.admin.domain.AdminDTO;
 import com.edu.admin.domain.LectureDTO;
-import com.edu.admin.mapper.AdminMapper;
 import com.edu.admin.service.AdminBoardService;
 import com.edu.admin.service.AdminService;
 import com.edu.common.CommonUtils;
 import com.edu.common.service.MainService;
-import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.member.domain.MemberDTO;
 
 @Controller // 컨트롤러 빈으로 등록하는 어노테이션
@@ -54,6 +50,16 @@ public class AdminController {
 			rttr.addFlashAttribute("msgLogin", false);
 			return "redirect:/admin/login";
 		}
+		// 각 항목 보여줄 개수
+		int numOfPage = 8;
+		// 최근에 가입한 회원 목록
+		model.addAttribute("memberList", adminService.memberListAll(0, numOfPage));
+		// 최근에 추가된 강의 목록
+		model.addAttribute("lectureList", adminService.lectureListAll(0, numOfPage));
+		// 최근에 올라온 게시글
+		model.addAttribute("boardList", adminBoardService.adminBoardList(0, numOfPage));
+		// 최근에 올라온 댓글
+		model.addAttribute("commentList", adminBoardService.adminCommentList(0, numOfPage));
 		return "/admin/main";
 	}
 	
@@ -110,7 +116,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -139,7 +145,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 게시글의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -201,7 +207,7 @@ public class AdminController {
 		}
 		model.addAttribute("totalCount", totalCount);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -252,7 +258,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -293,7 +299,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -371,7 +377,7 @@ public class AdminController {
 		int pageNumber = pageNum.isPresent() ? (int)pageNum.get() : 1;
 		model.addAttribute("pageNumber", pageNumber);
 		// 화면에 보여줄 목록의 수
-		int numOfPage = 10;
+		int numOfPage = 13;
 		model.addAttribute("numOfPage", numOfPage);
 		// 현재 페이지 번호를 이용해서 출력될 페이지의 시작 번호를 구한다.
 		int startNo = (pageNumber-1) * numOfPage;
@@ -455,30 +461,28 @@ public class AdminController {
 		int memberCount = adminService.memberCount();
 		model.addAttribute("memberCount", adminService.memberCount());
 		
-		 //메인 페이지 방문자수(오늘)
-	    model.addAttribute("getMainhits", mainService.getMainhits());
-	    // 메인 페이지 방문자수(총방문자수)
-	    model.addAttribute("getMainhitsall", mainService.getMainhitsall());
-	    
-	    // 메인 페이지 방문자수(날짜별 카운트)
-	    //model.addAttribute("getDaycount", adminService.getDaycount());
-	    model.addAttribute("getMonday", adminService.getMonday());
-	    String getSunday = adminService.getSunday();
+		//메인 페이지 방문자수(오늘)
+		model.addAttribute("getMainhits", mainService.getMainhits());
+		// 메인 페이지 방문자수(총방문자수)
+		model.addAttribute("getMainhitsall", mainService.getMainhitsall());
+		
+		// 메인 페이지 방문자수(날짜별 카운트)
+		//model.addAttribute("getDaycount", adminService.getDaycount());
+		model.addAttribute("getMonday", adminService.getMonday());
+		String getSunday = adminService.getSunday();
 		logger.info("AdminController statistics()....." + getSunday );
-
+		
 		model.addAttribute("freeboardCount", adminService.freeboardCount());
 		model.addAttribute("groupsearchCount", adminService.groupsearchCount());
 		model.addAttribute("classboardCount", adminService.classboardCount());
 		model.addAttribute("groupboardCount", adminService.groupboardCount());
 		
-	    model.addAttribute("getTuesday", adminService.getTuesday());
-	    model.addAttribute("getWednesday", adminService.getWednesday());
-	    model.addAttribute("getThursday", adminService.getThursday());
-	    model.addAttribute("getFriday", adminService.getFriday());
-	    model.addAttribute("getSaturday", adminService.getSaturday());
-	    model.addAttribute("getSunday", adminService.getSunday());
-		
-	    model.addAttribute("board", adminBoardService.boardListService());
+		model.addAttribute("getTuesday", adminService.getTuesday());
+		model.addAttribute("getWednesday", adminService.getWednesday());
+		model.addAttribute("getThursday", adminService.getThursday());
+		model.addAttribute("getFriday", adminService.getFriday());
+		model.addAttribute("getSaturday", adminService.getSaturday());
+		model.addAttribute("getSunday", adminService.getSunday());
 		
 		return "/admin/statistics";
 	}

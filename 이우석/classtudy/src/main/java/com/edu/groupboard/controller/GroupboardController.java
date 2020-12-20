@@ -95,10 +95,10 @@ public class GroupboardController {
 		if (member.getGroup1() != 1 && member.getGroup1() != 0) {
 			int groupNo1 = member.getGroup1();
 			groupList.add(new GrouplistDTO(groupNo1, member.getGroupName1())); }
-		if (member.getGroup2() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup2() != 1 && member.getGroup2() != 0) {
 			int groupNo2 = member.getGroup2();
 			groupList.add(new GrouplistDTO(groupNo2, member.getGroupName2())); }
-		if (member.getGroup3() != 1 && member.getGroup1() != 0) {
+		if (member.getGroup3() != 1 && member.getGroup3() != 0) {
 			int groupNo3 = member.getGroup3();
 			groupList.add(new GrouplistDTO(groupNo3, member.getGroupName3())); }
 		model.addAttribute("groupList", groupList);

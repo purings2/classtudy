@@ -30,10 +30,9 @@ public class GroupsearchController {
 	@Inject
 	MemberService memberService;
 	
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GroupsearchController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GroupsearchController.class);
 	
-	@RequestMapping(value="/searchList", method=RequestMethod.GET)
+	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String getGroupBoardList(HttpSession session, Model model, RedirectAttributes rttr) throws Exception {
 		LOGGER.info("CommunityController getGroupBoardList().....");
 		// 로그인을 하지 않았으면 로그인 화면으로 보낸다.
@@ -51,21 +50,20 @@ public class GroupsearchController {
 			
 		List<GroupsearchDTO> groupList = null;
 		groupList = service.groupList();
-		LOGGER.info("CommunityController groupList : " + groupList);
-		model.addAttribute("List",groupList);
-		return "/groupboard/searchList";
+		model.addAttribute("groupList",groupList);
+		return "/groupboard/groupsearch";
 	}
 	
 	//게시물 작성 GET
 	@RequestMapping(value="/groupInsert", method = RequestMethod.GET)
 	public String getGroupInsert() throws Exception{
-		LOGGER.info("groupsearchController getInsert().....");
+		LOGGER.info("CommunityController getInsert().....");
 		return "/groupboard/groupInsert";
 	}
 	//게시물 작성 POST
 	@RequestMapping(value="/groupInsert", method = RequestMethod.POST)
 	public String groupInsertProc(GroupsearchDTO boardDTO, GrouplistDTO grouplistDTO, HttpServletRequest request)throws Exception{
-		LOGGER.info("groupsearchController POSTInsertProc().....");
+		LOGGER.info("CommunityController POSTInsertProc().....");
 		
 		String groupName = request.getParameter("groupName");
 		grouplistDTO.setGroupNo(0);
@@ -75,14 +73,14 @@ public class GroupsearchController {
 		boardDTO.setGroupNo(grouplistDTO.getGroupNo());
 		
 		service.groupInsert(boardDTO);
-	return "redirect:/community/groupsearch/searchList";
+	return "redirect:/community/groupsearch";
 	}
 	
 	//글 번호에 해당하는 자료를 삭제한다.
 	@RequestMapping("/delete/{boardNo}")
 	private String boardDelete(@PathVariable int boardNo) throws Exception {
 		service.boardDeleteService(boardNo);
-		return "redirect:/community/groupsearch/searchList";
+		return "redirect:/community/groupsearch";
 	}
 	
 	//mygroup
@@ -112,6 +110,7 @@ public class GroupsearchController {
 			 service.joinGroup3(groupNo, member.getMemberId());
 			LOGGER.info("insertGroup3Controller() Start");
 		} else {
+			
 			LOGGER.info("insertGroupElseController() Start");
 		}
 /*		
@@ -127,8 +126,9 @@ public class GroupsearchController {
 		} else {
 			 LOGGER.info("insertGroupElseController() Start");
 		}
-*/
-		return "redirect:/community/groupsearch/searchList";
+*/		
+		
+		return "redirect:/community/groupsearch";
 	}
  /*		
 	if(group1 == 1 || group2== 1 || group3 == 1) {

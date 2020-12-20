@@ -6,7 +6,6 @@ import javax.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
-import com.edu.member.controller.MemberController;
 import com.edu.groupboard.domain.GrouplistDTO;
 import com.edu.groupboard.domain.GroupsearchDTO;
 import com.edu.groupboard.mapper.GroupsearchMapper;
@@ -15,22 +14,14 @@ import com.edu.groupboard.mapper.GroupsearchMapper;
 public class GroupsearchService {
 	
 	// 로깅을 위한 변수 LOGGER를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(MemberController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GroupsearchService.class);
 
 	@Resource(name="com.edu.groupboard.mapper.GroupsearchMapper")
 	GroupsearchMapper boardMapper;
 	
-	
 	//게시글 목록 보기
 	public List<GroupsearchDTO> groupList() throws Exception {
-		LOGGER.info("GroupsearchService groupBoard().....");
-		return boardMapper.groupList();
-	}
-	
-	//게시글 목록 보기
-	public List<GroupsearchDTO> groupListInsert() throws Exception {
-		LOGGER.info("GroupsearchService mygroupBoard().....");
+		LOGGER.info("BoardService groupBoard().....");
 		return boardMapper.groupList();
 	}
 	
@@ -43,7 +34,13 @@ public class GroupsearchService {
 	public int groupListInsert(GrouplistDTO grouplistDTO) {
 		return boardMapper.groupListInsert(grouplistDTO);	
 	}
-
+	
+	//게시글 목록 보기
+	public List<GroupsearchDTO> groupListInsert() throws Exception {
+		LOGGER.info("BoardService mygroupBoard().....");
+		return boardMapper.groupList();
+	}
+	
 	//게시글 삭제
 	public int boardDeleteService(int boardNo) throws Exception {
 		return boardMapper.boardDelete(boardNo);
@@ -51,19 +48,19 @@ public class GroupsearchService {
 	
 	//joinGroup1
 	public int joinGroup1(int groupNo, String memberId) throws Exception {
-		LOGGER.info("joinGroup1Service Start");
+		LOGGER.info("joinGroup111Service Start");
 		return boardMapper.joinGroup1(groupNo, memberId);
 	}
 	
 	//joinGroup2
 	public int joinGroup2(int groupNo, String memberId) throws Exception {
-		LOGGER.info("joinGroup2Service Start");
+		LOGGER.info("joinGroup222Service Start");
 		return boardMapper.joinGroup2(groupNo, memberId);
 	}
 	
 	//joinGroup3
 	public int joinGroup3(int groupNo, String memberId) throws Exception {
-		LOGGER.info("joinGroup3Service Start");
+		LOGGER.info("joinGroup333Service Start");
 		return boardMapper.joinGroup3(groupNo, memberId);
 	}
 	

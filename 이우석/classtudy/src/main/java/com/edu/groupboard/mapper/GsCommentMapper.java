@@ -5,7 +5,6 @@ import org.springframework.stereotype.*;
 
 import com.edu.groupboard.domain.GsCommentDTO;
 
-
 @Repository("com.edu.groupboard.mapper.GsCommentMapper")
 public interface GsCommentMapper {
 	//댓글 갯수 구하기
@@ -22,6 +21,5 @@ public interface GsCommentMapper {
 
 	//댓글 삭제
 	public int gscommentDelete(int commentNo) throws Exception;
-
 	
 }

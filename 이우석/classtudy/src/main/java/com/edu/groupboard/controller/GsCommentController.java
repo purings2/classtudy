@@ -16,8 +16,7 @@ import com.edu.groupboard.service.GsCommentService;
 @RequestMapping("/gscomment")
 public class GsCommentController {	
 	//로깅을 위한 변수 logger를 선언한다.
-	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GsCommentController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GsCommentController.class);
 	
     @Resource(name="com.edu.groupboard.service.GsCommentService")
     GsCommentService gbCommentService;
@@ -27,7 +26,7 @@ public class GsCommentController {
     @ResponseBody
     private int gbCommentServiceInsert(GsCommentDTO gbcomment) throws Exception{
         
-    	LOGGER.info("댓글작성() Start......");
+    	//LOGGER.info("댓글작성() Start......");
     	//LOGGER.info("이름 "+gbcomment.getWriter());
     	//LOGGER.info("게시판 번호 :"+gbcomment.getBoardNo() );
     	//LOGGER.info("댓글 내용 :"+gbcomment.getContent());

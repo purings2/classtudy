@@ -48,6 +48,7 @@
 			<!-- 정상적으로 로그인을 하여 세션값을 받아온 경우 -->
 			<c:if test="${member != null}">
 				<div align="center">
+					<input type="hidden" id="loginSuccess" name="loginSuccess" value="yes"/>
 					<h4>로그인이 완료되었습니다.</h4><br>
 					<button id="mainBtn" type="button" class="btn btn-primary btn-lg"
 						onclick="location.href='${path}/'">메인으로</button>
@@ -81,6 +82,24 @@
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>
+		$(window).on("load", function(){
+			//로그인을 성공 했을 때
+			if($("#loginSuccess").val() == "yes") {
+				// 멤버 regDate값을 가지고 평일수를 구한다.
+				var workDay = getWorkDay(document.getElementById("regDate").value);
+				var memberId = document.getElementById("loginId").value;
+				
+				$.ajax({
+					url:	"/point/setGrade",
+					type:	"post",
+					data:	{"workDay": workDay},
+					success: function(data) {
+						if (data > 0) location.href = path + "/member/login";
+					}
+				});
+			}
+		});
+		
 		$(document).ready(function () {
 			// 로그인 버튼을 눌렀을 경우
 			$("#submit").on("click", function() {

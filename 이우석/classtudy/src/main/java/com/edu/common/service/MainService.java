@@ -29,17 +29,9 @@ public class MainService {
 	public List<MainDTO> freeBoardviewsList() throws Exception {
 		return mainMapper.freeBoardviewsList();
 	}
-	//게시글 목록
-	public List<FreeboardDTO> boardListAll(int startNo, int numOfPage) throws Exception{
-		return mainMapper.boardListAll(startNo, numOfPage);
-	}
 	// 게시판 목록 보기 - 선택된 태그만
 	public List<FreeboardDTO> boardList(String tags, int startNo, int numOfPage) throws Exception {
 		return mainMapper.boardList(tags, startNo, numOfPage);
-	}
-	// 화면에 보여줄 게시글 개수 추출
-	public int getBoardCountAll() throws Exception {
-		return mainMapper.getBoardCountAll();
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 선택된 태그만
 	public int getBoardCount(String tags) throws Exception {
@@ -47,20 +39,20 @@ public class MainService {
 	}
 	
 	// 게시글 제목+내용 검색
-	public List<FreeboardDTO> searchAll(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
-		return mainMapper.searchAll(keyword, startNo, numOfPage, viewCategory);
+	public List<FreeboardDTO> searchAll(String keyword, int startNo, int numOfPage, String tags) throws Exception {
+		return mainMapper.searchAll(keyword, startNo, numOfPage, tags);
 	}
 	// 게시글 제목 검색
-	public List<FreeboardDTO> searchTitle(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
-		return mainMapper.searchTitle(keyword, startNo, numOfPage, viewCategory);
+	public List<FreeboardDTO> searchTitle(String keyword, int startNo, int numOfPage, String tags) throws Exception {
+		return mainMapper.searchTitle(keyword, startNo, numOfPage, tags);
 	}
 	// 게시글 내용 검색
-	public List<FreeboardDTO> searchContent(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
-		return mainMapper.searchContent(keyword, startNo, numOfPage, viewCategory);
+	public List<FreeboardDTO> searchContent(String keyword, int startNo, int numOfPage, String tags) throws Exception {
+		return mainMapper.searchContent(keyword, startNo, numOfPage, tags);
 	}
 	// 게시글 작성자 검색
-	public List<FreeboardDTO> searchWriter(String keyword, int startNo, int numOfPage, String viewCategory) throws Exception {
-		return mainMapper.searchWriter(keyword, startNo, numOfPage, viewCategory);
+	public List<FreeboardDTO> searchWriter(String keyword, int startNo, int numOfPage, String tags) throws Exception {
+		return mainMapper.searchWriter(keyword, startNo, numOfPage, tags);
 	}
 	// 게시글 검색 - 정해진 말머리만
 	public List<FreeboardDTO> search(String keyword, String viewCategory, int startNo, int numOfPage) throws Exception {		
@@ -68,20 +60,20 @@ public class MainService {
 	}
 	
 	// 화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 했을 때
-	public int getSearchCountAll(String keyword) throws Exception {
-		return mainMapper.getSearchCountAll(keyword);
+	public int getSearchCountAll(String keyword, String tags) throws Exception {
+		return mainMapper.getSearchCountAll(keyword, tags);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 제목 검색 했을 때
-	public int getSearchCountTitle(String keyword) throws Exception {
-		return mainMapper.getSearchCountTitle(keyword);
+	public int getSearchCountTitle(String keyword, String tags) throws Exception {
+		return mainMapper.getSearchCountTitle(keyword, tags);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 내용 검색 했을 때
-	public int getSearchCountContent(String keyword) throws Exception {
-		return mainMapper.getSearchCountContent(keyword);
+	public int getSearchCountContent(String keyword, String tags) throws Exception {
+		return mainMapper.getSearchCountContent(keyword, tags);
 	}
 	// 화면에 보여줄 게시글 개수 추출 - 작성자 검색 했을 때
-	public int getSearchCountWriter(String keyword) throws Exception {
-		return mainMapper.getSearchCountWriter(keyword);
+	public int getSearchCountWriter(String keyword, String tags) throws Exception {
+		return mainMapper.getSearchCountWriter(keyword, tags);
 	}
 	// 메인 페이지 방문자수(오늘)
 	public String getMainhits() throws Exception {
@@ -103,5 +95,6 @@ public class MainService {
 	public String getRegdate() throws Exception{
 		return mainMapper.getRegdate();
 	}
+	
 	
 }

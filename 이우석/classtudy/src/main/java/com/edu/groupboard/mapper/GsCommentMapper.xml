@@ -31,7 +31,7 @@
   
     <!-- 댓글 삭제  --> 
     <delete id="gscommentDelete" parameterType="int">
-        DELETE FROM gscomment WHERE commentNo = #{commentNo} 
+        DELETE FROM gscomment WHERE commentNo = #{commentNo}
     </delete>
 
   

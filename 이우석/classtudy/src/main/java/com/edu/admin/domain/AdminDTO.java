@@ -1,7 +1,7 @@
 package com.edu.admin.domain;
 
 
-import java.sql.Date;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -18,6 +18,5 @@ public class AdminDTO {
 	private int hitNo;
 	private Date hitDate;
 	private String ctn;
-	
 	
 }

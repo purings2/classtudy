@@ -1,30 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>클래스터디</title>
-<%@ include file="include/header.jsp"%>
-
-<!-- MAIN CSS-->
-<link rel="stylesheet" href="/static/css/main.css"/>
-
+	<meta charset="UTF-8">
+	<title>클래스터디</title>
+	<%@ include file="include/header.jsp"%>
+	<!-- MAIN CSS-->
+	<link rel="stylesheet" href="/static/css/main.css"/>
 </head>
 <body>
-<!-- (오늘) 새로운 방문자 컬럼 추가 -->
-<input type="hidden" value="${ insertMainhits}">
-<!-- 방문자수(오늘) 증가 -->
-<input type="hidden" value="${ addMainhits}">
 	<%@ include file="include/topmenu.jsp"%>
-
+	<!-- (오늘) 새로운 방문자 컬럼 추가 -->
+	<input type="hidden" value="${ insertMainhits}">
+	<!-- 방문자수(오늘) 증가 -->
+	<input type="hidden" value="${ addMainhits}">
 	<div class="container-fluid" id="main" style="text-align: center;">
 		<!-- 여백 -->
 		<div class="container-fluid" id="space"></div>
 		<!-- 여백 -->
 		<!-- 로고 -->
-		<img src="/static/img/logo.png" alt="logo"
-			style="width: 180px; height: 180px;">
+		<img src="/static/img/classtudy_logo.png" alt="classtydy_logo" width="320" height="90">
+		<!-- <img src="/static/img/logo.png" alt="logo" style="width: 180px; height: 180px;"> -->
 		<!-- 로고 -->
 		<!-- 여백 -->
 		<div class="container-fluid" id="space"></div>
@@ -64,7 +60,6 @@
 									<option value="4" selected>작성자</option>
 								</c:if>
 							</select>
-
 						</div>
 						<input type="text" id="keyword" name="keyword"
 							class="form-control" value="${nowKeyword}"
@@ -101,8 +96,13 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${empty board}">
+							<tr align="center">
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach var="b" items="${board}">
-							 <tr align="center" class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
+							<tr align="center" class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
 								<td>${b.title}</td>
 								<td>${b.writer}</td>
 								<td>${b.writeDate}</td>
@@ -113,7 +113,7 @@
 				</table>
 			</div>
 			<div class="col-md-6">
-				<div class="container-fluid" id="freeboardLikes">자유게시판 조회수 순위</div>
+	<div class="container-fluid" id="freeboardLikes">자유게시판 조회수 순위</div>
 				<br>
 				<table class="table table-hover table-void" id="freeboardLikes1">
 					<thead>
@@ -125,8 +125,13 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${empty board2}">
+							<tr align="center">
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach var="b" items="${board2}">
-							<tr>
+							<tr class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
 								<td>${b.title}</td>
 								<td>${b.writer}</td>
 								<td>${b.writeDate}</td>
@@ -420,7 +425,7 @@
 		
 			<form method="post" action="${path}/tags/해킹">
 			<figure>
-			<input type="hidden" id="tags_hacking" name= "tags_hacking" value="해킹" />
+			<input type="hidden" id="tags_hacking" name= "tags_hacking" value="hacking" />
 			<input type="image" src="/static/img/hacking.png" ></input>
 				<figcaption>해킹</figcaption>
 			</figure>
@@ -482,7 +487,7 @@
 
 			<form method="post" action="${path}/tags/UIUX">
 			<figure>
-			<input type="hidden" id="tags_UIUX" name= "tags_UIUX" value="UIUX" />
+			<input type="hidden" id="tags_UIUX" name= "tags_UIUX" value="UI/UX" />
 			<input type="image" src="/static/img/uiux.png" ></input>
 				<figcaption>UI/UX</figcaption>
 			</figure>
@@ -557,13 +562,12 @@
 	<!-- BackToTop -->
 	<div class="container">
 		<div class="BackToTop">
-         <a href="#"><img title="BacktoTop"
+		<a href="#"><img title="BacktoTop"
 				src="https://cdn.dribbble.com/assets/icon-backtotop-d9d209c36a169637612a8fe4a1f15ab9e5763a20dbe5b7706df4e23aadf6052e.png"
 				alt="Icon backtotop" style="height: 50px; width: 50px;"></a>
-      </div>
+	</div>
 	</div>
 	<!-- BackToTop -->
-	
 	<!-- Footer -->
 	<footer class="page-footer font-small blue pt-4">
 		<hr class="clearfix w-100 d-md-none pb-3">
@@ -632,34 +636,36 @@
 	</footer>
 	<!-- Footer -->
 
-
-
 	<%@ include file="include/footer.jsp"%>
 </body>
 <script>
-// 검색 버튼이 눌렸을 경우
-$("#searchBtn").on(
-		"click",
-		function() {
-			var viewCategory = "all";
-			if ($("#searchCode").val() == 1, 2, 3, 4) {
-				viewCategory = "all";
+	var acc = document.getElementsByClassName("accordion");
+	for (var i = 0; i < acc.length; i++) {
+		acc[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var panel = this.nextElementSibling;
+			if (panel.style.display === "block") {
+				panel.style.display = "none";
 			} else {
-				viewCategory = $("#searchCode").val();
-			}
-			searchfBoard($("#keyword").val(), $("#searchCode").val(),
-					viewCategory);
-
-		});
-// 검색창에서 엔터키를 입력할 경우
-$("#keyword").keyup(
-		function(e) {
-			if (e.keyCode == 13) {
-
-				searchfBoard($("#keyword").val(), $("#searchCode")
-						.val(), $("#viewCategory").val());
+				panel.style.display = "block";
 			}
 		});
+	}
+	// 검색 버튼이 눌렸을 경우
+	$("#searchBtn").on(
+			"click",
+			function() {
+				var viewCategory = "all";
+				searchfBoard($("#keyword").val(), $("#searchCode").val(), viewCategory);
+
+			});
+	// 검색창에서 엔터키를 입력할 경우
+	$("#keyword").keyup(
+			function(e) {
+				if (e.keyCode == 13) {
+					var viewCategory = "all";
+					searchfBoard($("#keyword").val(), $("#searchCode").val(), viewCategory);
+				}
+			});
 </script>
 </html>
-

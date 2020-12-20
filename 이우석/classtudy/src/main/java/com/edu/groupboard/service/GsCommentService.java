@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.*;
 
-import com.edu.groupboard.controller.GsCommentController;
 import com.edu.groupboard.domain.GsCommentDTO;
 import com.edu.groupboard.mapper.GsCommentMapper;
 
@@ -20,7 +19,7 @@ public class GsCommentService {
     	
 	//로깅을 위한 변수 logger를 선언한다.
 	private static final Logger LOGGER
-		= LoggerFactory.getLogger(GsCommentController.class);
+		= LoggerFactory.getLogger(GsCommentService.class);
 	
     
     //댓글 목록

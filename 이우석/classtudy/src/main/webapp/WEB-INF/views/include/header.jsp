@@ -31,6 +31,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
 body {
 	font-family: 	'IBMPlexSansKR-Regular', sans-serif;
 	font-size: 		15px;

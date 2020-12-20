@@ -9,7 +9,6 @@
 <meta charset="UTF-8">
 <title>자유게시판</title>
 <%@ include file="../include/header.jsp"%>
-
 <style>
 #tags {
   text-align: left;
@@ -26,7 +25,7 @@
 </head>
 <body>
 	<%@ include file="../include/topmenu.jsp"%>
-		<%
+	<%
 	// 현재 페이지의 번호를 저장하는 변수
 	// pageNum에 값이 없으면 1, 있으면 해당하는 페이지를 가져온다.
 	int pageNumber = (int)request.getAttribute("pageNumber");
@@ -50,27 +49,25 @@
 	// 검색 여부에 따라 페이지 이동 버튼의 경로 다르게 설정
 	String paging = "tags/" + tags;
 	if (request.getAttribute("nowKeyword") != null) {
-		paging = "/search/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword");
+		paging = "/search/" + (int)request.getAttribute("searchCode") + "/" + (String)request.getAttribute("nowKeyword") + (String)request.getAttribute("tags");
 	}
-
-
 	%>
 	<div class="container" >
 	<div class="container" id="tagstyle">
 		<header>
 			<h1><%=tags %></h1>
+			<input type="hidden" id="thisTag" name="thisTag" value="">
 		</header>
 	</div>
 		<!-- 상단 부분 테이블 형태로 구성 -->
-	<table style="width: 100%;">
-		<tr>
-			<td align="left" style="padding-bottom: 15px; padding-left: 20px;">
-				
-			</td>
-			<td align=right style="padding-bottom: 15px; padding-right: 20px;">
-			</td>
-		</tr>
-	</table>
+		<table style="width: 100%;">
+			<tr>
+				<td align="left" style="padding-bottom: 15px; padding-left: 20px;">
+				</td>
+				<td align=right style="padding-bottom: 15px; padding-right: 20px;">
+				</td>
+			</tr>
+		</table>
 		<table class="table table-hover table-bordered ">
 			<thead>
 				<tr>
@@ -218,22 +215,32 @@
 			}
 			%>
 			</div>
-			<div class="container" style="height: 100px;"> </div>
 		</footer>
 	</div>
-	
+	<br><br><br>
 	<%@ include file="../include/footer.jsp"%>
-	<% 	session.setAttribute("tags", tags); %>
 	<script>
 	$(document).ready(function() {
 		
+		/*
 		// 검색 버튼이 눌렸을 경우
 		$("#searchBtn").on("click", function() {
-			searchfTagBoard($("#keyword").val(), $("#searchCode").val(), $("#tags").val());
+			// 검색어가 입력되었는지 확인
+			if($("#keyword").val() != ""){
+				location.href="/community/search/"  + $("#keyword").val() + "/" + $("#searchCategory").val();
+			} else {
+				alert("검색어를 입력해주세요.");
+				return false;
+			}
+		});
+		 */
+		// 검색 버튼이 눌렸을 경우
+		$("#searchBtn").on("click", function() {
+			searchfTagBoard($("#keyword").val(), $("#searchCode").val(), $("#tag").val());
 		});
 		// 검색창에서 엔터키를 입력할 경우
 		$("#keyword").keyup(function(e) {if (e.keyCode == 13) {
-			searchfTagBoard($("#keyword").val(), $("#searchCode").val(), $("#tags").val());
+			searchfTagBoard($("#keyword").val(), $("#searchCode").val(), $("#tag").val());
 		}});
 		
 	});

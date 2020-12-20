@@ -21,6 +21,7 @@
 				<h3 class="panel-title"><b>마이페이지</b></h3>
 			</div>
 			<div class="list-group">
+				<a class="list-group-item" href="#myGrade">나의 등급</a>
 				<a class="list-group-item" href="#myGroup">나의 그룹</a>
 				<a class="list-group-item" href="#myHistory">활동내역</a>
 				<a class="list-group-item" href="#myPoint">마이포인트</a>
@@ -46,27 +47,53 @@
 	</div>
 	<!-- 내용 영역 -->
 	<div class="col-sm-10 myPageContent" style="margin: 0; padding: 0;">
+		<!-- 나의 등급 -->
+		<div class="col-sm-6">
+			<div id="myGrade" class="panel panel-default">
+				<div class="panel-heading">
+					<h4><i class="fa fa-user"></i>&nbsp;&nbsp;<b>나의 등급</b></h4>
+				</div>
+				<div class="panel-body" style="padding-bottom: 0;">
+					<table class="table table-condensed" style="height: 110px;">
+						<tbody>
+							<tr>
+								<td style="border: none;"
+									><b><%=name%></b>님은 현재 <b style="font-size: 20px;"><%=grade%>등급 <img src="/static/img/icon/level_<%=grade%>.png" 
+										alt="<%=grade%>" width="22" height="22"></b>입니다.</td>
+							</tr>
+							<tr>
+								<td style="border: none;"><small
+									>회원등급은 하루 평균 포인트를 기준으로 선정됩니다.
+									<br>매일 꾸준한 활동으로 높은 등급에 도전해보세요!</small></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 		<!-- 나의 그룹 -->
-		<div class="col-sm-12">
+		<div class="col-sm-6">
 			<div id="myGroup" class="panel panel-default">
 				<div class="panel-heading">
 					<h4><i class="fa fa-users"></i>&nbsp;&nbsp;<b>나의 그룹</b></h4>
 				</div>
 				<div class="panel-body" style="padding-bottom: 0;">
-					<table class="table table-condensed">
-						<tbody id="pointListFirst">
-							<tr>
-								<!-- 가입한 그룹이 없을 때 -->
-								<c:if test="${empty groupList}">
+					<table class="table table-condensed" style="height: 110px;">
+						<tbody>
+							<!-- 가입한 그룹이 없을 때 -->
+							<c:if test="${empty groupList}">
+								<tr height="100">
 									<td style="border: none;">가입한 그룹이 없습니다.</td>
-								</c:if>
-								<!-- 가입한 그룹 출력 -->
-								<c:forEach var="list" items="${groupList}">
+								</tr>
+							</c:if>
+							<!-- 가입한 그룹 출력 -->
+							<c:forEach var="list" items="${groupList}">
+								<tr>
 									<td style="border: none; width: 200px;"
 										><i class="fa fa-caret-right"></i>&nbsp;&nbsp;<a href="${path}/community/groupboard/${list.groupNo}">${list.groupName}</a>
 									</td>
-								</c:forEach>
-							</tr>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>

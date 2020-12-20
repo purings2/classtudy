@@ -77,6 +77,9 @@
 						<c:if test="${list.gender == 'F'}">
 							<td>여성</td>
 						</c:if>
+						<c:if test="${list.gender != 'M' && list.gender != 'F'}">
+							<td>관리자</td>
+						</c:if>
 						<c:if test="${list.lectureNo == 0}">
 							<td>종료된 강의</td>
 						</c:if>

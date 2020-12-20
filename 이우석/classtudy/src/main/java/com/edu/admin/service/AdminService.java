@@ -13,7 +13,6 @@ import com.edu.admin.domain.AdminDTO;
 import com.edu.admin.domain.LectureDTO;
 import com.edu.admin.domain.RegisterlistDTO;
 import com.edu.admin.mapper.AdminMapper;
-import com.edu.freeboard.domain.FreeboardDTO;
 import com.edu.member.domain.MemberDTO;
 
 @Service("com.edu.admin.service.AdminService")
@@ -184,10 +183,6 @@ public class AdminService {
 	public int deleteAcademy(int academyNo) throws Exception {
 		return adminMapper.deleteAcademy(academyNo);
 	}
-	
-	//----------------------------------------------------------------
-	// 게시판 관리
-	//----------------------------------------------------------------
 	
 	//----------------------------------------------------------------
 	// 통계

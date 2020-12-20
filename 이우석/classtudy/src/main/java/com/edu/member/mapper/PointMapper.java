@@ -13,5 +13,7 @@ public interface PointMapper {
 	public int getNumOfSearchPointContent(PointDTO pointDTO) throws Exception;
 	// 포인트 지급
 	public int addPoint(PointDTO pointDTO) throws Exception;
+	// 멤버 등급 업데이트
+	public int setMemberGrade(String member, int memberGrade);
 	
 }

@@ -128,8 +128,7 @@ public interface AdminMapper {
 	public String getSaturday() throws Exception;
 	public String getSunday() throws Exception;
 	
-	// 학원 목록 - 강의 검색(학원이름)
+	// 날짜별 카운트
 	public List<AdminDTO> getDaycount() throws Exception;
-
 	
 }

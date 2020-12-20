@@ -25,9 +25,8 @@ public class FreeboardDTO {
 	// 게시글 번호(boardNo)에 해당하는 값을 가져온다.
 	private int 	commentNum;
 	
-	// main/list.jsp 에 쓰일 조회 컬럼
-	private String	tblName;		// 게시판이름 (groupsearch, freeboard)
-	public FreeboardDTO() {}
+	// 테이블 결합해서 사용시 테이블 이름을 저장
+	private String 	tblName;
 	
-
+	public FreeboardDTO() {}
 }

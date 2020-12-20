@@ -1,18 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.edu.member.domain.MemberDTO" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
 	// 로그인 여부 체크할 변수 선언
 	boolean isLogin = false;
 	// 세션에 MemberDTO가 있는지 확인하고
-	// 있으면 member의 name, memberId, lectureNo를 저장한다.
-	String name = "";
+	// 있으면 member의 name, memberId, lectureNo, regDate를 저장한다.
 	String memberId = "";
+	String name = "";
+	int grade = 0;
 	int lectureNo = 0;
+	String regDate = "";
 	if(session.getAttribute("member") != null) {
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
 		memberId = member.getMemberId();
 		name = member.getName();
+		grade = member.getGrade();
 		lectureNo = member.getLectureNo();
+		Date originalRegDate = member.getRegDate();
+		// 회원가입 날짜를 년-월-일 형식으로 저장한다.
+		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
+		regDate = fm.format(originalRegDate);
 		isLogin = true;
 	} else {
 		isLogin = false;
@@ -22,7 +31,8 @@
 <% if (isLogin) { %>
 	<input type="hidden" id="loginId" name="loginId" value="<%=memberId%>"/>
 	<input type="hidden" id="loginName" name="loginName" value="<%=name%>"/>
-	<nav class="navbar navbar-default navbar-stikcy-top" style="margin-bottom: 0px;">
+	<input type="hidden" id="regDate" name="regDate" value="<%=regDate%>"/>
+	<nav class="navbar navbar-default navbar-stikcy-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle"
@@ -32,7 +42,8 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="/${path}">
-					<span class="glyphicon glyphicon-education"></span>&nbsp;<span>클래스터디</span>
+					<img src="/static/img/classtudy_logo.png" alt="classtydy_logo" width="140" height="40">
+					<!-- <span class="glyphicon glyphicon-education"></span>&nbsp;<span>클래스터디</span> -->
 				</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
@@ -47,12 +58,12 @@
 									그룹 <span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="${path}/community/groupsearch/searchList">그룹찾기</a></li>
+									<li><a href="${path}/community/groupsearch/">그룹찾기</a></li>
 									<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 								</ul>
 							</li>
 							<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
-							<li><a href="${path}/community/incruit">채용공고</a></li>
+							<li><a href="${path}/incruit">채용공고</a></li>
 						</ul>
 					</li>
 					<li>
@@ -69,7 +80,8 @@
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<span class="glyphicon glyphicon-user"></span> <%=name%>님 <span class="caret"></span>
+							<img src="/static/img/icon/level_<%=grade%>.png" alt="<%=grade%>등급" width="20" height="20"
+							> <%=name%>님 <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
 							<li><a href="${path}/member/myPage">마이페이지</a></li>
@@ -106,7 +118,7 @@
 					<span class="icon-bar"></span>	
 				</button>
 				<a class="navbar-brand" href="/${path}">
-					<span class="glyphicon glyphicon-education"></span>&nbsp;<span>클래스터디</span>
+					<img src="/static/img/classtudy_logo.png" alt="classtydy_logo" width="140" height="40">
 				</a>
 			</div>
 			<div>
@@ -122,12 +134,12 @@
 										그룹 <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li><a href="${path}/community/groupsearch/searchList">그룹찾기</a></li>
+										<li><a href="${path}/community/groupsearch/">그룹찾기</a></li>
 										<li><a href="${path}/community/groupboard/1">그룹게시판</a></li>
 									</ul>
 								</li>
 								<li><a href="${path}/community/freeboard/all">자유게시판</a></li>
-								<li><a href="${path}/community/incruit">채용공고</a></li>
+								<li><a href="${path}/incruit">채용공고</a></li>
 							</ul>
 						</li>
 						<li>

@@ -22,7 +22,7 @@
 
 	</insert>
 
-	<!-- boardNo에 해당하는 자료를 삭제한다. -->
+		<!-- boardNo에 해당하는 자료를 삭제한다. -->
 	<delete id="boardDelete" parameterType="int">
 	DELETE
 	FROM	groupsearch
