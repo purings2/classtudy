@@ -44,7 +44,6 @@
 		<table style="width: 100%;">
 			<tr>
 				<td align=right style="padding-bottom: 15px; padding-right: 20px;">
-					<button class="btn btn-default" onclick="location.href='${path}/adboard/notice'">전체보기</button>&nbsp;
 					<button class="btn btn-success" onclick="location.href='${path}/adboard/writefreeboardNotice'">작성</button>
 				</td>
 			</tr>

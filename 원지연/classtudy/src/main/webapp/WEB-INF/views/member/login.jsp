@@ -88,17 +88,15 @@
 				// 멤버 regDate값을 가지고 평일수를 구한다.
 				var workDay = getWorkDay(document.getElementById("regDate").value);
 				var memberId = document.getElementById("loginId").value;
-						
-				if(workDay > 0) {
-					$.ajax({
-						url:	"/point/setGrade",
-						type:	"post",
-						data:	{"workDay": workDay},
-						success: function(data) {
-							if (data > 0) location.href = path + "/member/login";
-						}
-					});
-				}
+				
+				$.ajax({
+					url:	"/point/setGrade",
+					type:	"post",
+					data:	{"workDay": workDay},
+					success: function(data) {
+						if (data > 0) location.href = path + "/member/login";
+					}
+				});
 			}
 		});
 		

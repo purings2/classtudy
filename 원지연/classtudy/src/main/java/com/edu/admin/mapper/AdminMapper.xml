@@ -281,4 +281,113 @@
 	select count(*) from member where gender = "M";
 	</select>
 	
+	<!-- freeboardCount -->
+	<select id = "freeboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM freeBoard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupsearchCount -->
+	<select id = "groupsearchCount" resultType="Integer">
+	SELECT count(*)
+	FROM groupsearch
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- classboardCount -->
+	<select id = "classboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM classboard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupboardCount -->
+	<select id = "groupboardCount" resultType="Integer">
+	SELECT count(*)
+	FROM groupboard
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	
+   	<!-- freeboardComment -->
+	<select id = "freeboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM fbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupsearchComment -->
+	<select id = "groupsearchComment" resultType="Integer">
+	SELECT count(*)
+	FROM gscomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- classboardComment -->
+	<select id = "classboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM cbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	<!-- groupboardComment -->
+	<select id = "groupboardComment" resultType="Integer">
+	SELECT count(*)
+	FROM gbcomment
+	WHERE 	DATE(writeDate) = DATE(now());
+	</select>
+	
+	<!-- memberCount -->
+	<select id = "memberCount" resultType="Integer">
+	SELECT count(*)
+	FROM member
+	WHERE 	DATE(regDate) = DATE(now());
+	</select>
+	
+	<!--  요읾별 날짜 -->
+	<select id="getCountday" resultType="String">
+	SELECT DATE_FORMAT(hitDate, '%W') AS date , count(*)
+	FROM visit 
+	where hit
+	GROUP BY DATE_FORMAT(hitDate, '%W') 
+	ORDER BY date DESC;
+	</select>
+	
+	<!-- 요일별 카운트 수 -->
+	<select id="getMonday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Monday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getTuesday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Tuesday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getWednesday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Wednesday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getThursday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Thursday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getFriday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Friday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getSaturday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Saturday');
+	</select>
+	<!-- 요일별 카운트 수 -->
+	<select id="getSunday" resultType="String">
+	SELECT sum(hit)
+	From visit
+	where hit and DATE_FORMAT(hitDate, '%W') = DATE_FORMAT(hitDate, 'Sunday');
+	</select>
+	
 </mapper>

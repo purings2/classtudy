@@ -2,201 +2,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>클래스터디</title>
-<%@ include file="include/header.jsp"%>
-<style>
-#columns {
-	column-width: 100%;
-	column-gap: 10px;
-	text-align: center;
-}
-
-#columns figure {
-/* 	display: inline-block;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 15px 15px 15px 15px;
-	margin: 0;
-	margin-bottom: 40px;
-	margin-right: 11px;
-	padding: 17px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-	width: 200px;
-	cursor: pointer;
-	transition: 0.2s; */
-}
-#columns form {
-	display: inline-block;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 15px 15px 15px 15px;
-	margin: 0;
-	margin-bottom: 40px;
-	margin-right: 11px;
-	padding: 17px;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-	width: 200px;
-	cursor: pointer;
-	transition: 0.2s;
-}
-
-#columns :hover:not(img):not(figcaption):not(figure):not(input) {
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-#columns figure img,input {
-	width: 100%;
-	outline: 0;
-	/* pointer-events: none; */
-}
-
-#columns figure figcaption {
-	border-top: 1px solid rgba(0, 0, 0, 0.2);
-	padding: 14px;
-	margin-top: 11px;
-	/* pointer-events: none; */
-}
-
-#nav a {
-	color: #777;
-}
-
-#nav a:focus {
-	color: #494949;
-	/*  background-color: #5c8a36; */
-}
-
-#btn {
-	display: inline-block;
-	margin: 0 auto;
-	text-align: center;
-}
-
-#btn label:active {
-	color: #777;
-}
-
-#main {
-	background-color: #8EC5FC;
-	background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-}
-
-#footer {
-	padding: 60px;
-}
-
-.accordion {
-	background-color: #ECF0F1;
-	color: #444;
-	cursor: pointer;
-	padding: 10px;
-	width: 150px;
-	height: 40px;
-	border: none;
-	text-align: center;
-	outline: none;
-	font-size: 12px;
-	transition: 0.4s;
-	border: none;
-}
-
-.active, .accordion:hover {
-	background-color: #ccc;
-}
-
-.panel {
-	padding: 0 18px;
-	display: none;
-	background-color: white;
-	overflow: hidden;
-}
-
-h3 {
-	background-color: #F8F9F9;
-	padding: 5px;
-}
-
-.BackToTop {
-   z-index:    20;
-   position:    fixed;
-   bottom:    40px;
-   right: 	8%;
-   opacity: 50%
-}
-@media (max-width: 992px) {
-   .BackToTop {
-      z-index:    5;
-      position:    fixed;
-      bottom:    40px;
-  	  right:    30px;
-  	  opacity: 50%;
-  	  
-   }
-}
-.rankingcolor {
-	color: black;
-}
-
-#freelist {
-	border-radius: 15px 15px 15px 15px;
-	background-color: #d8dede;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-	height: 40px;
-	font-size: 24px;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-}
-
-#freelist1 {
-	border-collapse: collapse;
-	border-radius: 15px 15px 15px 15px;
-	background-color: #d8dede;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-	height: 40px;
-	font-size: 13px;
-}
-
-#freeboardLikes {
-	border-radius: 15px 15px 15px 15px;
-	background-color: #d8dede;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-	height: 40px;
-	font-size: 24px;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-}
-
-#freeboardLikes1 {
-	border-collapse: collapse;
-	border-radius: 15px 15px 15px 15px;
-	background-color: #d8dede;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-	height: 40px;
-	font-size: 13px;
-}
-
-#hit {
-	border-radius: 15px 15px 15px 15px;
-	background-color: #d8dede;
-	background-image: linear-gradient(315deg, #d8dede 0%, #e5bdf6 74%);
-	font-size: 14px;
-	height:300px;
-	width:300px;
-}
-</style>
-
-
-
+	<meta charset="UTF-8">
+	<title>클래스터디</title>
+	<%@ include file="include/header.jsp"%>
+	<!-- MAIN CSS-->
+	<link rel="stylesheet" href="/static/css/main.css"/>
 </head>
 <body>
 	<%@ include file="include/topmenu.jsp"%>
+	<!-- (오늘) 새로운 방문자 컬럼 추가 -->
+	<input type="hidden" value="${ insertMainhits}">
+	<!-- 방문자수(오늘) 증가 -->
+	<input type="hidden" value="${ addMainhits}">
 	<div class="container-fluid" id="main" style="text-align: center;">
-		<br> <br> <br> <br>
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 		<!-- 로고 -->
 		<img src="/static/img/classtudy_logo.png" alt="classtydy_logo" width="320" height="90">
 		<!-- <img src="/static/img/logo.png" alt="logo" style="width: 180px; height: 180px;"> -->
 		<!-- 로고 -->
-		<br>
-		<br>
-		<br>
-		<br>
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 		<!-- 검색창 -->
 		<table style="width: 100%;">
 			<tr>
@@ -246,58 +74,9 @@ h3 {
 			</tr>
 		</table>
 		<!-- 검색창 -->
-		<br> <br> <br> <br>
-		<!-- (오늘) 새로운 방문자 컬럼 추가 -->
-		<input type="hidden" value="${ insertMainhits}">
-	<%-- 	<!-- 메인 페이지 방문자수(오늘) -->
-		오늘 방문자수
-		${ getMainhits}
-		<!-- 메인 페이지 방문자수(총방문자수) -->
-		총 방문자수
-		${ getMainhitsall} --%>
-		<!-- 방문자수(오늘) 증가 -->
-		<input type="hidden" value="${ addMainhits}">
-		<!-- 방문자수(전체) 증가 -->
-		<%-- <input type="hidden" value="${ addMainhitsall}"> --%>
-	</div>
-	<div class="container-fluid">
-		<!-- 카테고리 및 상단 메뉴 -->
-		<!-- <div class="col-md-3">
-				
-				<div class="form-group">
-					<select class="form-control" id="sel1">
-						<option>인기순</option>
-						<option>최신순</option>
-					</select>
-				</div>
-			</div>
-			
-			<div class="col-md-6" id="btn">
-				<div class="btn-group" data-toggle="buttons" >
-					<label class="btn btn-default active"> <input type="radio"
-						name="options" id="option1" autocomplete="off" checked> 웹
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option2" autocomplete="off"> 모바일 앱
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 게임
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 데이터베이스
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 알고리즘
-					</label>
-					<label class="btn btn-default"> <input type="radio"
-						name="options" id="option3" autocomplete="off"> 개발도구
-					</label>
-				</div>
-				<br>
-			</div>
-
-			<div class="col-md-3"></div> -->
-		<!-- 카테고리 및 상단 메뉴  끝-->
+		<!-- 여백 -->
+		<div class="container-fluid" id="space"></div>
+		<!-- 여백 -->
 	</div>
 	<br>
 	<br>
@@ -323,7 +102,7 @@ h3 {
 							</tr>
 						</c:if>
 						<c:forEach var="b" items="${board}">
-							<tr class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
+							<tr align="center" class="rankingcolor" onClick="location.href='${path}/community/freeboard/detail/${b.boardNo}'" style="cursor:pointer;">
 								<td>${b.title}</td>
 								<td>${b.writer}</td>
 								<td>${b.writeDate}</td>

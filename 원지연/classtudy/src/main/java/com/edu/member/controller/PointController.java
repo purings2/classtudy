@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.common.domain.NotiDTO;
+import com.edu.common.service.NotiService;
 import com.edu.member.domain.MemberDTO;
 import com.edu.member.domain.PointDTO;
 import com.edu.member.service.MemberService;
@@ -29,9 +31,12 @@ public class PointController {
 	@Inject
 	MemberService memberService;
 	
+	@Inject
+	NotiService notiService;
+	
 	// 포인트 지급
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	private int addNewPoint(String pointContent, String member, int changeVal, int workDay) throws Exception {
+	private int addNewPoint(String pointContent, String member, int changeVal) throws Exception {
 		logger.info("PointController addNewPoint()....");
 		// 포인트 객체 만들어 전달 받은 내용 입력
 		PointDTO pointDTO = new PointDTO();
@@ -44,9 +49,7 @@ public class PointController {
 		if (numOfSearchPointContent > 0) {
 			return -1;
 		} else { // 결과값이 없을 경우 포인트를 지급한다.
-			pointService.addPoint(pointDTO);
-			//포인트에 변화가 있으므로 등급을 새로 산정한다.
-			return pointService.setMemberGrade(member, workDay);
+			return pointService.addPoint(pointDTO);
 		}
 	}
 	
@@ -60,9 +63,9 @@ public class PointController {
 			MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
 			String memberId = memberDTO.getMemberId();
 			// 평일수와 총 포인트를 가지고 등급을 산정한다.
-			int memberGrade = 0;
+			int memberGrade = 9;
 			// 전체 포인트를 가입일 이후의 평일수로 나누기
-			int memberAvgPoint = memberService.getMyPointSum(memberId) / workDay;
+			int memberAvgPoint = workDay == 0 ? 0 : memberService.getMyPointSum(memberId) / workDay;
 			// 평균 포인트를 기준으로 등급 선정
 			if(memberAvgPoint > 40) {
 				memberGrade = 1;
@@ -93,6 +96,16 @@ public class PointController {
 				session = req.getSession();
 				MemberDTO login = memberService.login(memberDTO);
 				session.setAttribute("member", login);
+				// 등급 변경 내역을 알림으로 발송한다.
+				NotiDTO notiDTO = new NotiDTO();
+				String notiContent = "";
+				notiContent += memberGrade + "등급";
+				notiContent += "<img src='/static/img/icon/level_" + memberGrade + ".png' width='20' height='20'>";
+				notiContent += " 이 되었습니다.";
+				notiDTO.setContent(notiContent);
+				notiDTO.setReceiver(memberId);
+				notiDTO.setChecked(false);
+				notiService.notiInsert(notiDTO);
 				return 1;
 			}
 		}
