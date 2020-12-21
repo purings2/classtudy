@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.common.mapper.MainMapper">
+
+	<!-- 자유게시판 좋아요 순위 -->
+	<select id="freeBoardlikesList" resultType="com.edu.common.domain.MainDTO">
+	SELECT f.*, m.name writerName
+	FROM freeboard f INNER JOIN member m on f.writer = m.memberId
+	ORDER BY
+	likes DESC LIMIT 5;
+	</select>
+	
+	<!-- 자유게시판 조회수 순위 -->
+	<select id="freeBoardviewsList" resultType="com.edu.common.domain.MainDTO">
+	SELECT f.*, m.name writerName
+	FROM freeboard f INNER JOIN member m on f.writer = m.memberId
+	ORDER BY
+	views DESC LIMIT 5;
+	</select>
+	
+	<!-- 게시글 작성 -->
+	<insert id="write" parameterType="com.edu.freeboard.domain.FreeboardDTO">
+	INSERT	INTO freeboard
+			(WRITER, TITLE, CONTENT, writeDate, category, tags) 
+	VALUES	(#{writer}, #{title}, #{content}, SYSDATE(), #{category}, #{tags})
+	</insert>
+	
+	<!-- 게시글 상세 보기 -->
+	<select id="boardDetail" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	SELECT 	f.*, m.name writerName 
+	FROM 	freeboard f INNER JOIN member m ON f.writer = m.memberId 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	
+	<!-- 게시글 제목+내용 검색 -->
+	<select id="searchAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	(SELECT	f.boardNo, f.writer, f.title, f.content, f.writeDate, f.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	AND 	(f.title LIKE #{keyword} OR f.content LIKE #{keyword})) 
+	UNION ALL 
+	(SELECT	g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM	groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	AND 	(g.title LIKE #{keyword} OR g.content LIKE #{keyword})) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 제목 검색 -->
+	<select id="searchTitle" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	(SELECT	f.boardNo, f.writer, f.title, f.content, f.writeDate, f.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	AND 	(f.title LIKE #{keyword})) 
+	UNION ALL 
+	(SELECT	g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM	groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	AND 	(g.title LIKE #{keyword})) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 내용 검색 -->
+	<select id="searchContent" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	(SELECT	f.boardNo, f.writer, f.title, f.content, f.writeDate, f.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	AND 	(f.content LIKE #{keyword})) 
+	UNION ALL 
+	(SELECT	g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM	groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	AND 	(g.content LIKE #{keyword})) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 작성자 검색 -->
+	<select id="searchWriter" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	(SELECT	f.boardNo, f.writer, f.title, f.content, f.writeDate, f.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	AND 	(f.writer LIKE #{keyword} or m.name LIKE #{keyword})) 
+	UNION ALL 
+	(SELECT	g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM	groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	AND 	(g.writer LIKE #{keyword} or m.name LIKE #{keyword})) 
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+
+	<!-- 게시글 목록(전체) -->
+	<select id="boardListAll" resultType="com.edu.freeboard.domain.FreeboardDTO">
+	(SELECT	f.boardNo, f.writer, f.title, f.content, f.writeDate, f.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName
+	FROM	freeboard f INNER JOIN member m on f.writer = m.memberId)
+	UNION ALL
+	(SELECT	g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName
+	FROM	groupsearch g INNER JOIN member m on g.writer = m.memberId)
+	ORDER BY writeDate DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 자유 + 그룹 게시글 목록 - 선택된 태그만 -->
+	<select id="boardList" resultType="com.edu.freeboard.domain.FreeboardDTO">
+    (SELECT f.boardNo, f.writer, f.title, f.content,f.writeDate, f.tags, m.name writerName, 
+	        (SELECT COUNT(commentNo) FROM fbcomment WHERE boardNo = f.boardNo) commentNum, 'freeboard' as tblName 
+	FROM    freeboard f INNER JOIN member m on f.writer = m.memberId 
+	WHERE   f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) 
+	UNION ALL
+	(SELECT g.boardNo, g.writer, g.title, g.content, g.writeDate, g.tags, m.name writerName, 
+	        (SELECT COUNT(commentNo) FROM gbcomment WHERE boardNo = g.boardNo) commentNum, 'groupsearch' as tblName 
+	FROM    groupsearch g INNER JOIN member m on g.writer = m.memberId 
+	WHERE   g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	ORDER BY writeDate desc LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	
+	<!-- 화면에 보여줄 게시글 개수 추출 - 선택된 태그만 -->
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	(SELECT COUNT(f.boardNo) FROM freeboard f 
+			WHERE 	f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+			OR 		f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags}) + 
+			(SELECT COUNT(g.boardNo) FROM groupsearch g 
+			WHERE 	g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+			OR 		g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags}) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (제목+내용 검색시) -->
+	<select id="getSearchCountAll" resultType="Integer">
+	SELECT 	(SELECT COUNT(f.boardNo) FROM freeboard f 
+			WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+					OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags})
+			AND 	(f.title LIKE #{keyword} OR f.content LIKE #{keyword})) + 
+			(SELECT COUNT(g.boardNo) FROM groupsearch g 
+			WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+					OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags})
+			AND 	(g.title LIKE #{keyword} OR g.content LIKE #{keyword})) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (제목 검색시) -->
+	<select id="getSearchCountTitle" resultType="Integer">
+	SELECT 	(SELECT COUNT(f.boardNo) FROM freeboard f 
+			WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+					OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags})
+			AND 	(f.title LIKE #{keyword})) + 
+			(SELECT COUNT(g.boardNo) FROM groupsearch g 
+			WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+					OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags})
+			AND 	(g.title LIKE #{keyword})) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (내용 검색시) -->
+	<select id="getSearchCountContent" resultType="Integer">
+	SELECT 	(SELECT COUNT(f.boardNo) FROM freeboard f 
+			WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+					OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags})
+			AND 	(f.content LIKE #{keyword})) + 
+			(SELECT COUNT(g.boardNo) FROM groupsearch g 
+			WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+					OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags})
+			AND 	(g.content LIKE #{keyword})) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 (작성자 검색시) -->
+	<select id="getSearchCountWriter" resultType="Integer">
+	SELECT 	(SELECT COUNT(f.boardNo) 
+			FROM freeboard f INNER JOIN member m ON f.writer = m.memberId 
+			WHERE 	(f.tags LIKE CONCAT('%,',#{tags},',%') OR f.tags LIKE CONCAT(#{tags},',%') 
+					OR f.tags LIKE CONCAT('%,',#{tags}) OR f.tags = #{tags})
+			AND 	(f.writer LIKE #{keyword} OR m.name LIKE #{keyword})) + 
+			(SELECT COUNT(g.boardNo) 
+			FROM groupsearch g INNER JOIN member m ON g.writer = m.memberId 
+			WHERE 	(g.tags LIKE CONCAT('%,',#{tags},',%') OR g.tags LIKE CONCAT(#{tags},',%') 
+					OR g.tags LIKE CONCAT('%,',#{tags}) OR g.tags = #{tags})
+			AND 	(g.writer LIKE #{keyword} OR m.name LIKE #{keyword})) 
+	</select>
+	
+	<!-- 방문자수 -->
+	<!-- 메인 페이지 방문자수(오늘) -->
+	<select id="getMainhits" resultType="String">
+	SELECT 	hit
+	FROM 	visit
+	WHERE 	DATE(hitDate) = DATE(now())
+	
+	</select>
+	
+	<!-- 메인 페이지 방문자수(총방문자수) -->
+	<select id="getMainhitsall" resultType="int">
+	SELECT sum(hit)
+	FROM visit
+	</select>
+	
+	<!-- 방문자수(오늘) 증가 -->
+	<update id="addMainhits" parameterType="int">
+	UPDATE 	visit 
+	SET 	hit = hit + 1
+	WHERE 	DATE(hitDate) = DATE(now())
+	</update>
+	
+	<!-- (오늘) 새로운 방문자 컬럼 추가 -->
+	<insert id="insertMainhits" parameterType="int">
+	INSERT	INTO visit
+			(hitDate, hit) 
+	VALUES	(now(),1)
+	</insert>
+	
+	<!-- 최근 날짜 컬럼 조회 -->
+	<select id="getRegdate" resultType="String">
+	SELECT 	hitDate 
+	FROM 	visit 
+	ORDER BY hitDate DESC LIMIT 1
+	</select>
+	
+	
+</mapper>

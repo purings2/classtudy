@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스를 기재한다. -->
+<mapper namespace="com.edu.classboard.mapper.ClassboardMapper">
+	
+	<!-- TIL 게시글 목록 -->
+	<select id="boardListTIL" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- TIL 게시글 목록 - 제목+내용 검색 -->
+	<select id="searchTILAll" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- TIL 게시글 목록 - 제목 검색 -->
+	<select id="searchTILTitle" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(title LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- TIL 게시글 목록 - 내용 검색 -->
+	<select id="searchTILContent" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, (SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 -->
+	<select id="getTILCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard c 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	</select>
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 - 제목+내용 검색 -->
+	<select id="getSearchTILCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	</select>
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 - 제목 검색 -->
+	<select id="getSearchTILCountTitle" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(title LIKE #{keyword}) 
+	</select>
+	<!-- 화면에 보여줄 TIL 게시글 개수 추출 - 내용 검색 -->
+	<select id="getSearchTILCountContent" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = 'TIL' 
+	AND 	writer = #{memberId} 
+	AND 	(content LIKE #{keyword}) 
+	</select>
+	
+	<!-- 게시글 목록 - 전체 -->
+	<select id="boardListAll" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	ORDER BY c.boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 목록 - 정해진 말머리만 -->
+	<select id="boardList" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	c.*, m.name writerName, 
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.lectureNo = #{lectureNo} 
+	AND 	c.category = #{viewCategory} 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 목록 - 제목+내용 검색 -->
+	<select id="searchAll" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	c.lectureNo = #{lectureNo} 
+	AND 	c.category LIKE #{viewCategory} 
+	AND 	(c.title LIKE #{keyword} OR c.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 목록 - 제목 검색 -->
+	<select id="searchTitle" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	c.lectureNo = #{lectureNo} 
+	AND 	c.category LIKE #{viewCategory} 
+	AND 	(c.title LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 목록 - 내용 검색 -->
+	<select id="searchContent" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	c.lectureNo = #{lectureNo} 
+	AND 	c.category LIKE #{viewCategory} 
+	AND 	(c.content LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 게시글 목록 - 작성자 검색 -->
+	<select id="searchWriter" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName,
+			(SELECT COUNT(commentNo) FROM cbcomment WHERE boardNo = c.boardNo) commentNum 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	WHERE 	c.lectureNo = #{lectureNo} 
+	AND 	c.category LIKE #{viewCategory} 
+	AND 	(c.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
+	ORDER BY boardNo DESC LIMIT #{startNo}, #{numOfPage} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 전체 -->
+	<select id="getBoardCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 정해진 말머리만 -->
+	<select id="getBoardCount" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category = #{viewCategory} 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 제목+내용 검색 -->
+	<select id="getSearchCountAll" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category LIKE #{viewCategory} 
+	AND 	(title LIKE #{keyword} OR content LIKE #{keyword}) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 제목 검색 -->
+	<select id="getSearchCountTitle" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category LIKE #{viewCategory} 
+	AND 	(title LIKE #{keyword}) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 내용 검색 -->
+	<select id="getSearchCountContent" resultType="Integer">
+	SELECT 	COUNT(boardNo) 
+	FROM 	classboard 
+	WHERE 	lectureNo = #{lectureNo} 
+	AND 	category LIKE #{viewCategory} 
+	AND 	(content LIKE #{keyword}) 
+	</select>
+	<!-- 화면에 보여줄 게시글 개수 추출 - 작성자 검색 -->
+	<select id="getSearchCountWriter" resultType="Integer">
+	SELECT 	COUNT(c.boardNo) 
+	FROM 	classboard c INNER JOIN member m on c.writer = m.memberId 
+	WHERE 	c.lectureNo = #{lectureNo} 
+	AND 	c.category LIKE #{viewCategory} 
+	AND 	(c.writer LIKE #{keyword} OR m.name LIKE #{keyword}) 
+	</select>
+	
+	<!-- 게시글 상세 보기 -->
+	<select id="boardDetail" resultType="com.edu.classboard.domain.ClassboardDTO">
+	SELECT 	*, m.name writerName 
+	FROM 	classboard c INNER JOIN member m ON c.writer = m.memberId 
+	AND 	c.boardNo = #{boardNo} 
+	</select>
+	<!-- 게시글 조회수 증가 -->
+	<update id="addViews">
+	UPDATE 	classboard 
+	SET 	views = views + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	<!-- 게시글 작성 -->
+	<insert id="write">
+	INSERT INTO classboard 
+			(writer, title, content, category, writeDate, lectureNo)
+	VALUES 	(#{writer}, #{title}, #{content}, #{category}, SYSDATE(), #{lectureNo})
+	</insert>
+	<!-- 게시글 수정 -->
+	<update id="update">
+	UPDATE 	classboard 
+	SET 	title = #{title}, content = #{content}, category = #{category} 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+	DELETE 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</delete>
+	
+	<!-- 게시글 좋아요수 증가 -->
+	<update id="addLikes">
+	UPDATE 	classboard 
+	SET 	likes = likes + 1 
+	WHERE 	boardNo = #{boardNo} 
+	</update>
+	<!-- 좋아요 내용 기록 -->
+	<insert id="writeLikes">
+	INSERT INTO cblikes 
+			(memberId, boardNo) 
+	VALUES 	(#{memberId}, #{boardNo})
+	</insert>
+	<!-- 게시글 좋아요수 가져오기 -->
+	<select id="getLikes" resultType="int">
+	SELECT 	likes 
+	FROM 	classboard 
+	WHERE 	boardNo = #{boardNo} 
+	</select>
+	<!-- 게시글 좋아요 여부 검사 -->
+	<select id="likeCheck" resultType="int">
+	SELECT 	COUNT(*) 
+	FROM 	cblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</select>
+	<!-- 게시글 좋아요수 감소 -->
+	<update id="subtractLikes">
+	UPDATE 	classboard 
+	SET 	likes = likes - 1 
+	WHERE 	boardNo = #{boardNo}
+	</update>
+	<!-- 좋아요 내용 삭제 -->
+	<delete id="deleteLikes">
+	DELETE 
+	FROM 	cblikes 
+	WHERE 	boardNo = #{boardNo} 
+	AND 	memberId = #{memberId} 
+	</delete>
+	
+</mapper>
