@@ -254,3 +254,10 @@ CREATE TABLE registerlist (
 	CONSTRAINT registerMemberId FOREIGN KEY (member) REFERENCES member(memberId) ON DELETE CASCADE,
 	CONSTRAINT registerLectureNo FOREIGN KEY (lectureNo) REFERENCES lecture(lectureNo) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- main 방문자수             
+CREATE TABLE visit (
+   hitNo 		INT(11) 		PRIMARY KEY AUTO_INCREMENT,
+   hitDate 		DATE 			NOT NULL,
+   hit 			INT(11) 		NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
